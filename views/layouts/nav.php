@@ -25,8 +25,8 @@
                         Registry
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="../master-page/register-products.php">Add Product</a></li>
-                        <li><a class="dropdown-item" href="../master-page/add-item.php">Add Stocks</a></li>
+                        <li><a class="dropdown-item" href="../master-page/register-products.php">Products</a></li>
+                        <li><a class="dropdown-item" href="../master-page/add-item.php">Stocks</a></li>
                         <li><a class="dropdown-item" href="../master-page/category.php">Category</a></li>
                     </ul>
                     </li>
