@@ -22,10 +22,10 @@
 
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Register
+                        Registry
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="../master-page/register-products.php">Register</a></li>
+                        <li><a class="dropdown-item" href="../master-page/register-products.php">Add Product</a></li>
                         <li><a class="dropdown-item" href="../master-page/add-item.php">Add Stocks</a></li>
                         <li><a class="dropdown-item" href="../master-page/category.php">Category</a></li>
                     </ul>
