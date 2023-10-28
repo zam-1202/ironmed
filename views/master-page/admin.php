@@ -78,7 +78,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role</label><span class="required" style="color:red;"> *</span>
                                 <select id="slc_role" class="form-select">
-                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="" disabled selected>Select</option>
                                     <option value="2">Admin</option>
                                     <option value="3">User</option>
                                 </select>
@@ -86,7 +86,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="col-md-6">
                                 <label for="status" class="form-label">Status</label><span class="required" style="color:red;"> *</span>
                                 <select id="slc_status" class="form-select">
-                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="" disabled selected>Select</option>
                                     <option value="1">Active</option>
                                     <option value="0" disabled>Deactivate</option>
                                 </select>
