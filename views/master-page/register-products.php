@@ -16,7 +16,7 @@ else if($_SESSION['user']['role'] === 3) {
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-    <section class="section product">
+    <section class="section product" style="border: none;">
         <!-- <h1 class="section__title">Admin</h1> -->
         <div class="container-fluid section__body">
             <div class="row">
