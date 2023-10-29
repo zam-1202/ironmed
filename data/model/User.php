@@ -259,4 +259,30 @@ class User
 
         return $result;
     }
+
+    public function searchUsers($searchTerm = '') {
+
+        $searchTerm = trim($searchTerm);
+
+        if (!empty($searchTerm)) {
+
+            $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login FROM users WHERE role != 1 AND (CONCAT(first_name, ' ', last_name) LIKE ? OR username LIKE ?)";
+            $stmt = $this->conn->prepare($sql);
+            $searchTerm = '%' . $searchTerm . '%';
+            $stmt->bind_param("ss", $searchTerm, $searchTerm);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+        } else {
+            $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login from users where role != 1";
+            $result = $this->conn->query($sql);
+        }
+    
+        $this->conn->close();
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+        
+        
+    
 }

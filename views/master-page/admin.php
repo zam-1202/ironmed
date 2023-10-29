@@ -17,13 +17,15 @@ else if($_SESSION['user']['role'] === 3) {
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-    <!-- <section class="section user"> -->
-        <!-- <h1 class="section__title">Admin</h1> -->
         <div class="container-fluid section__body">
             <div class="row">
                 <div class="col-lg-8 col-md-12 ">
                     <div class="user__table-wrapper">
                         <h2 class="section__sub-title">List of Accounts</h2>
+
+                        <div class="col-lg-8 col-md-12">
+                            <input type="text" id="live_search" class="form-control form-control-sm" placeholder="Search" />
+                        </div>
 
                         <div class="table-wrapper">
                             <table class="table table-bordered">
@@ -110,5 +112,4 @@ else if($_SESSION['user']['role'] === 3) {
 <script src="../../libs/scripts/master-page/admin.js" ></script>
 <script src="../../libs/scripts/master-page/change-password.js"></script>
 <script src="../../libs/scripts/pos/session_timer.js"></script>
-
 </html>

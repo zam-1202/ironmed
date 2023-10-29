@@ -251,3 +251,29 @@ const Admin = (() => {
 
     return thisAdmin;
 })();
+
+$("#live_search").on("input", function() {
+    const searchTerm = $(this).val();
+    searchUsers(searchTerm);
+});
+
+
+function searchUsers(searchTerm) {
+    $.ajax({
+        type: "GET",
+        url: USER_CONTROLLER + '?action=searchUsers',
+        data: { searchTerm: searchTerm },
+        dataType: "json",
+        success: function (response) {
+            if (response.length > 0) {
+                $('#tbody_users').html(response);
+            } else {
+                $('#tbody_users').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
+            }
+            $('.table').DataTable();
+        },
+        error: function () {
+            // Handle errors
+        }
+    });
+}

@@ -1343,3 +1343,12 @@ a.previous.round {
   box-shadow: 0 0 10px #719ECE;
   color: #fff;
 }
+
+.dataTables_filter{
+  display: none;
+  }
+
+
+.form-control.form-control-sm {
+    width: 200px;
+}
