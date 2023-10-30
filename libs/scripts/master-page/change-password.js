@@ -8,28 +8,59 @@ const btnUpdatePassword = document.querySelector('#btn_save');
 let fieldcheck = 0;
 
 
-// const validateUserName = () => {
-//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
-//     const username = $('#txt_user_name').val();
+const validateFirstName = () => {
+    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    const firstname = $('#txt_first_name').val().trim();
+    const mes = document.getElementById('mes');
+    const btnUpdatePassword = document.getElementById('btnUpdatePassword');
+    const txtFirstName = $('#txt_first_name');
 
-//     if (username.trim() === '') {
-//         $('#txt_user_name').removeClass('red-input green-input');
-//         document.getElementById('message').innerHTML = "";
-//         btnUpdatePassword.disabled = true;
-//     }
-//     else if (!regex.test(username)) {
-//         $('#txt_user_name').addClass('red-input').removeClass('green-input');
-//         document.getElementById('message').innerHTML = "Username contains invalid characters.";
-//         document.getElementById('message').style.color = 'red';
-//         btnUpdatePassword.disabled = true;
-//     }
-//     else {
-//         $('#txt_user_name').removeClass('red-input').removeClass('green-input');
-//         document.getElementById('message').style.color = 'green';
-//         document.getElementById('message').innerHTML = "";
-//         btnUpdatePassword.disabled = false;
-//     }
-// }
+    txtFirstName.removeClass('red-input green-input');
+    mes.innerHTML = "";
+
+    if (firstname === '') {
+        txtFirstName.removeClass('red-input green-input');
+        mes.innerHTML = "";
+        btnUpdatePassword.disabled = true;
+    } else if (!regex.test(firstname)) {
+        txtFirstName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "First name contains invalid characters.";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else {
+        txtFirstName.removeClass('red-input').addClass('green-input');
+        mes.style.color = 'green';
+        mes.innerHTML = "";
+        btnUpdatePassword.disabled = false;
+    }
+}
+const validateLastName = () => {
+    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    const lastname = $('#txt_last_name').val().trim();
+    const mes = document.getElementById('mesi');
+    const btnUpdatePassword = document.getElementById('btnUpdatePassword');
+    const txtLastName = $('#txt_last_name');
+
+    txtLastName.removeClass('red-input green-input');
+    mes.innerHTML = "";
+
+    if (lastname === '') {
+        txtLastName.removeClass('red-input green-input');
+        mes.innerHTML = "";
+        btnUpdatePassword.disabled = true;
+    } else if (!regex.test(lastname)) {
+        txtLastName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "Last name contains invalid characters.";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else {
+        txtLastName.removeClass('red-input').addClass('green-input');
+        mes.style.color = 'green';
+        mes.innerHTML = "";
+        btnUpdatePassword.disabled = false;
+    }
+}
+
 
 
 const validateEmail = () => {
@@ -109,26 +140,43 @@ const ChangePassword = (() => {
     thisChangePassword.validateConfirmPassword = () => {
         const newpassword = $('#txt_newpassword').val();
         const confirm_password = $('#txt_confirm_password').val();
-        
-        if(newpassword != confirm_password) {
-            $('#txt_confirm_password').removeClass('green-input')
-            $('#txt_confirm_password').addClass('red-input')
-            document.getElementById('confirmPass').innerHTML="";
-            document.getElementById('confirmPass').style.color = 'red';
-        }else if (confirm_password.trim() === '') {
-            $('#txt_confirm_password').removeClass('red-input green-input'); // Remove any custom classes
-            document.getElementById('confirmPass').innerHTML = ""; // Clear the error message
-            btnUpdatePassword.disabled = true;
     
-        } 
-        
-        
-        else {
-            $('#txt_confirm_password').addClass('green-input')
-            $('#txt_confirm_password').addClass('red-input')
-            document.getElementById('confirmPass').innerHTML=" ";
+        if (confirm_password.trim() === '') {
+            $('#txt_confirm_password').removeClass('red-input green-input');
+            document.getElementById('confirmPass').innerHTML = "";
+            btnUpdatePassword.disabled = true;
+        } else if (newpassword !== confirm_password) {
+            $('#txt_confirm_password').removeClass('green-input'); // Remove green class
+            $('#txt_confirm_password').addClass('red-input');
+            document.getElementById('confirmPass').innerHTML = "Passwords do not match";
+            document.getElementById('confirmPass').style.color = 'red';
+            btnUpdatePassword.disabled = true;
+        } else if (!isValidPasswordFormat(confirm_password)) {
+            $('#txt_confirm_password').removeClass('green-input'); // Remove green class
+            $('#txt_confirm_password').addClass('red-input');
+            document.getElementById('confirmPass').innerHTML = "Password format is incorrect";
+            document.getElementById('confirmPass').style.color = 'red';
+            btnUpdatePassword.disabled = true;
+        } else {
+            $('#txt_confirm_password').removeClass('red-input'); // Remove red class
+            $('#txt_confirm_password').addClass('green-input');
+            document.getElementById('confirmPass').innerHTML = "Passwords match";
+            document.getElementById('confirmPass').style.color = 'green';
+            btnUpdatePassword.disabled = false;
         }
     }
+    
+    function isValidPasswordFormat(password) {
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasSpecialChar = /[@$!%*?&_]/.test(password); // Include underscore
+        const hasNumber = /\d/.test(password);
+        const isLongEnough = password.length >= 8;
+    
+        return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
+    }
+    
+    
 
     thisChangePassword.confirm = () => {
         let passcheck = 0;

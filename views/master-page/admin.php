@@ -54,11 +54,11 @@ else if($_SESSION['user']['role'] === 3) {
                         <form class="row g-3">
                             <div class="col-md-12">
                                 <label for="username" class="form-label">First Name</label><span class="required" style="color:red;"> *</span>
-                                <input type="text" class="form-control" id="txt_first_name" maxlength="20">
+                                <input type="text" class="form-control" id="txt_first_name" maxlength="20" onkeyup = validateFirstName();><span id="mes"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="lastName" class="form-label">Last Name</label><span class="required" style="color:red;"> *</span>
-                                <input type="text" class="form-control" id="txt_last_name" maxlength="20">
+                                <input type="text" class="form-control" id="txt_last_name" maxlength="20" onkeyup = validateLastName();><span id="mesi"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="lastName" class="form-label">Username</label><span class="required" style="color:red;"> *</span>
