@@ -193,7 +193,7 @@ const ChangePassword = (() => {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Please fillout all fields',
+                title: 'Please fill out all fields',
                 showConfirmButton: true,
             })
 

@@ -293,12 +293,4 @@ class Product
         $this->conn->query($sql);
         $this->conn->close();
     }
-    // public function getOrderById($product_id)
-    // {
-    //     $sql = $this->getAllquery . " WHERE p.id = $product_id " . $this->orderBy;
-    //     $result = $this->conn->query($sql);
-
-    //     $this->conn->close();
-    //     return $result->fetch_assoc();
-    // }
 }

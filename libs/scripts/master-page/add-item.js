@@ -281,6 +281,7 @@ const Product = (() => {
     }
 
     thisProduct.save = () => {
+        const regex = /^[a-zA-Z1-9-'.' ]+$/;
         const product_barcode = $('#txt_product_barcode').val();
         const product_name = $('#txt_product_name').val();
         const product_category = $('#slc_product_category').val();
@@ -317,7 +318,7 @@ const Product = (() => {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Please fillout all fields',
+                title: 'Please fill out all fields',
                 showConfirmButton: true,
             })
             
@@ -353,7 +354,42 @@ const Product = (() => {
                 title: 'Buying price should be lower than Selling price',
                 showConfirmButton: true,
             })
-
+        }
+        else if (!regex.test(product_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Product Name',
+                text: 'Only letters, numbers, hyphen, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (product_name.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Product Name',
+                text: 'Please fill out the name field.',
+                showConfirmButton: true,
+            });
+        }
+        else if (!regex.test(location)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Location Name',
+                text: 'Only letters, numbers, hyphen, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (location.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Location Name',
+                text: 'Please fill out the location field.',
+                showConfirmButton: true,
+            });
         }
         else {
             $.ajax({
@@ -468,7 +504,7 @@ const Product = (() => {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Please fillout all fields',
+                title: 'Please fill out all fields',
                 showConfirmButton: true,
             })
         }
@@ -579,6 +615,55 @@ const Product = (() => {
 
     return thisProduct;
 })();
+
 window.onload = function(){
     document.getElementById("txt_product_barcode").focus();
+}
+
+const validateProductName = () => {
+    //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
+    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    const productname = $('#txt_product_name').val().trim();
+    const pname = document.getElementById('pname');
+    const txtProductName = $('#txt_product_name');
+
+    txtProductName.removeClass('red-input green-input');
+    pname.innerHTML = "";
+
+    if (productname === '') {
+        txtProductName.removeClass('red-input green-input');
+        pname.innerHTML = "";
+    } else if (!regex.test(productname)) {
+        txtProductName.addClass('red-input').removeClass('green-input');
+        // pname.innerHTML = "First name contains invalid characters.";
+        pname.style.color = 'red';
+    } else {
+        txtProductName.removeClass('red-input');
+        pname.style.color = 'green';
+        pname.innerHTML = "";
+    }
+}
+
+const validateLocationName = () => {
+    //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
+    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    const locationname = $('#txt_location').val().trim();
+    const lname = document.getElementById('pname');
+    const txtLocationName = $('#txt_location');
+
+    txtLocationName.removeClass('red-input green-input');
+    lname.innerHTML = "";
+
+    if (locationname === '') {
+        txtLocationName.removeClass('red-input green-input');
+        lname.innerHTML = "";
+    } else if (!regex.test(locationname)) {
+        txtLocationName.addClass('red-input').removeClass('green-input');
+        // pname.innerHTML = "First name contains invalid characters.";
+        lname.style.color = 'red';
+    } else {
+        txtLocationName.removeClass('red-input');
+        lname.style.color = 'green';
+        lname.innerHTML = "";
+    }
 }
