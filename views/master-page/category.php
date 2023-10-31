@@ -34,7 +34,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="productBarcode" class="form-label">Category Name</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
-                                        <input type="text" class="form-control" id="txt_category_name">
+                                        <input type="text" class="form-control" id="txt_category_name" maxlength="50" onkeyup=validateCategoryName();><span id="cname"></span>
                                     </div>
                                 </div>
                                 <div class="col-12">
