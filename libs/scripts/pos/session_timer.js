@@ -97,11 +97,11 @@ function startTimer() {
       toggle.checked = sessionTimeoutEnabled;
     }
   
-    toggle.addEventListener('change', function() {
-      toggleSessionTimeout();
-      // your JavaScript function goes here
-      console.log('Toggle is ' + (this.checked ? 'on' : 'off'));
-    });
+    // toggle.addEventListener('change', function() {
+    //   toggleSessionTimeout();
+    //   // your JavaScript function goes here
+    //   console.log('Toggle is ' + (this.checked ? 'on' : 'off'));
+    // });
   
     if (sessionTimeoutEnabled) {
       startTimer(); // Start the session timeout by default

@@ -85,7 +85,9 @@ else if($_SESSION['user']['role'] === 3) {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6 col-md-12">
+                <input type="text" id="regproduct_search" class="form-control form-control-sm" placeholder="Search" />
                     <table class="table table-bordered">
                         <thead>
                             <tr>

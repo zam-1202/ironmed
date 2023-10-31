@@ -26,11 +26,10 @@ if(!$_SESSION['user']) {
                                 <button type="button" onclick="Product.exportInventory();" class="btn btn-export">Export Inventory Report</button>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" id="live_search" class="form-control form-control-sm" placeholder="Search" />
+                                <input type="text" id="product_search" class="form-control form-control-sm" placeholder="Search" />
                             </div>
                         </div>
                     </div>
-
                         <div class="table-wrapper">
                             <table class="table table-bordered">
                                 <thead>
