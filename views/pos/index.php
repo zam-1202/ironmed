@@ -26,14 +26,14 @@ if(!$_SESSION['user']) {
 
                 <div class="pos__head__sale">
                     <p>
-                        Todays Sale: <span class="pos__head__amount">₱ 00.00</span>
+                        Today's Sales: <span class="pos__head__amount">₱ 00.00</span>
                     </p>
                 </div>
             </div>
 
             <div class="pos__body">
                 <div class="pos__body__header">
-                    <h2 class="pos__body__title">Home - Manage Sales</h2>
+                    <!-- <h2 class="pos__body__title">Home - Manage Sales</h2> -->
 
                     <div class="pos__body__discount">
                         <label for="">Apply Discount</label>
@@ -53,7 +53,7 @@ if(!$_SESSION['user']) {
 
                 <div class="pos__body__content">
                     <form class="pos__form" action="">
-                    <input type="number" id="bCode" placeholder="barcode" class="pos__form__barcode" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
+                    <input type="number" id="bCode" placeholder="Barcode" class="pos__form__barcode" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
                     
                         <input type="text" placeholder="Product" class="pos__form__product" disabled readonly>
                         <!-- <select name="" id="" class="pos__form__batch">
@@ -62,7 +62,7 @@ if(!$_SESSION['user']) {
                             <option value="">Batch 2</option>
                             <option value="">Batch 3</option>
                         </select> -->
-                        <input type="number" min="1" oninput="validity.valid || (value='')" placeholder="quantity" class="pos__form__quantity">
+                        <input type="number" min="1" oninput="validity.valid || (value='')" placeholder="Quantity" class="pos__form__quantity">
                         <button type="submit" class="pos__button pos__form__submit">Add to cart</button>
                         <button type="button" class="post__button pos__form__checkout" disabled style="background-color:gray">Check out</button>
                     </form>

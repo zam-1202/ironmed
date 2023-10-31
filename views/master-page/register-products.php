@@ -40,7 +40,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_product_name" class="form-label">Product Name</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-box2"></i></span>
-                                        <input type="text" class="form-control" id="txt_product_name" >
+                                        <input type="text" class="form-control" id="txt_product_name" maxlength="50" onkeyup=validateProductName();><span id="regname"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
