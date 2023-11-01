@@ -45,18 +45,19 @@ const validateFirstName = () => {
     txtFirstName.removeClass('red-input green-input');
     mes.innerHTML = "";
 
-    if (!regex.test(firstname) || /[ ]{2,}/.test(firstname)) {
-        txtFirstName.addClass('red-input').removeClass('green-input');
-        mes.innerHTML = "First name contains invalid characters or multiple spaces.";
-        mes.style.color = 'red';
-        btnUpdatePassword.disabled = true;
-    } 
-    else if (firstname === '') {
+
+    if (firstname === '') {
         txtFirstName.removeClass('red-input green-input');
         mes.innerHTML = "";
         btnUpdatePassword.disabled = true;
     }
     
+    else if (!regex.test(firstname) || /[ ]{2,}/.test(firstname)) {
+        txtFirstName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "First name contains invalid characters or multiple spaces.";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } 
     else {
         txtFirstName.removeClass('red-input').addClass('green-input');
         mes.style.color = 'green';

@@ -124,7 +124,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_location" class="form-label">Location  </label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="text" class="form-control" id="txt_location" maxlength="20" onkeyup = validateLocationName(); disabled><span id="lname">
+                                        <input type="text" class="form-control" id="txt_location" maxlength="30" onkeyup = validateLocationName(); disabled><span id="lname">
                                     </div>
                                 </div> 
                                 <div class="col-6">
