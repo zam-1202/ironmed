@@ -191,7 +191,7 @@ const ChangePassword = (() => {
         } else {
             $('#txt_confirm_password').removeClass('red-input'); // Remove red class
             $('#txt_confirm_password').addClass('green-input');
-            document.getElementById('confirmPass').innerHTML = "Passwords match";
+            document.getElementById('confirmPass').innerHTML = "Passwords matched";
             document.getElementById('confirmPass').style.color = 'green';
             btnUpdatePassword.disabled = false;
         }
