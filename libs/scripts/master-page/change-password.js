@@ -8,6 +8,33 @@ const btnUpdatePassword = document.querySelector('#btn_save');
 let fieldcheck = 0;
 
 
+// const validateFirstName = () => {
+//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
+//     const firstname = $('#txt_first_name').val().trim();
+//     const mes = document.getElementById('mes');
+//     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
+//     const txtFirstName = $('#txt_first_name');
+
+//     txtFirstName.removeClass('red-input green-input');
+//     mes.innerHTML = "";
+
+//     if (firstname === '') {
+//         txtFirstName.removeClass('red-input green-input');
+//         mes.innerHTML = "";
+//         btnUpdatePassword.disabled = true;
+//     } else if (!regex.test(firstname) || firstname.split(' ').length > 1 || firstname.indexOf('  ') !== -1) {
+//         txtFirstName.addClass('red-input').removeClass('green-input');
+//         mes.innerHTML = "First name contains invalid characters or multiple spaces.";
+//         mes.style.color = 'red';
+//         btnUpdatePassword.disabled = true;
+//     } else {
+//         txtFirstName.removeClass('red-input').addClass('green-input');
+//         mes.style.color = 'green';
+//         mes.innerHTML = "";
+//         btnUpdatePassword.disabled = false;
+//     }
+// }
+
 const validateFirstName = () => {
     const regex = /^[a-zA-Z1-9-'.' ]+$/;
     const firstname = $('#txt_first_name').val().trim();
@@ -18,48 +45,82 @@ const validateFirstName = () => {
     txtFirstName.removeClass('red-input green-input');
     mes.innerHTML = "";
 
-    if (firstname === '') {
+    if (!regex.test(firstname) || /[ ]{2,}/.test(firstname)) {
+        txtFirstName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "First name contains invalid characters or multiple spaces.";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } 
+    else if (firstname === '') {
         txtFirstName.removeClass('red-input green-input');
         mes.innerHTML = "";
         btnUpdatePassword.disabled = true;
-    } else if (!regex.test(firstname)) {
-        txtFirstName.addClass('red-input').removeClass('green-input');
-        mes.innerHTML = "First name contains invalid characters.";
-        mes.style.color = 'red';
-        btnUpdatePassword.disabled = true;
-    } else {
+    }
+    
+    else {
         txtFirstName.removeClass('red-input').addClass('green-input');
         mes.style.color = 'green';
         mes.innerHTML = "";
         btnUpdatePassword.disabled = false;
     }
 }
+ 
 const validateLastName = () => {
     const regex = /^[a-zA-Z1-9-'.' ]+$/;
     const lastname = $('#txt_last_name').val().trim();
-    const mes = document.getElementById('mesi');
+    const mesi = document.getElementById('mesi');
     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
     const txtLastName = $('#txt_last_name');
 
     txtLastName.removeClass('red-input green-input');
-    mes.innerHTML = "";
+    mesi.innerHTML = "";
 
     if (lastname === '') {
         txtLastName.removeClass('red-input green-input');
-        mes.innerHTML = "";
+        mesi.innerHTML = "";
         btnUpdatePassword.disabled = true;
-    } else if (!regex.test(lastname)) {
+    } else if (!regex.test(lastname) || /[ ]{2,}/.test(lastname)) {
         txtLastName.addClass('red-input').removeClass('green-input');
-        mes.innerHTML = "Last name contains invalid characters.";
-        mes.style.color = 'red';
+        mesi.innerHTML = "Last name contains invalid characters or multiple spaces.";
+        mesi.style.color = 'red';
         btnUpdatePassword.disabled = true;
     } else {
         txtLastName.removeClass('red-input').addClass('green-input');
-        mes.style.color = 'green';
-        mes.innerHTML = "";
+        mesi.style.color = 'green';
+        mesi.innerHTML = "";
         btnUpdatePassword.disabled = false;
     }
 }
+ 
+
+
+
+// const validateLastName = () => {
+//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
+//     const lastname = $('#txt_last_name').val().trim();
+//     const mes = document.getElementById('mesi');
+//     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
+//     const txtLastName = $('#txt_last_name');
+
+//     txtLastName.removeClass('red-input green-input');
+//     mes.innerHTML = "";
+
+//     if (lastname === '') {
+//         txtLastName.removeClass('red-input green-input');
+//         mes.innerHTML = "";
+//         btnUpdatePassword.disabled = true;
+//     } else if (!regex.test(lastname)) {
+//         txtLastName.addClass('red-input').removeClass('green-input');
+//         mes.innerHTML = "Last name contains invalid characters.";
+//         mes.style.color = 'red';
+//         btnUpdatePassword.disabled = true;
+//     } else {
+//         txtLastName.removeClass('red-input').addClass('green-input');
+//         mes.style.color = 'green';
+//         mes.innerHTML = "";
+//         btnUpdatePassword.disabled = false;
+//     }
+// }
 
 
 

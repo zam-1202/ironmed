@@ -39,55 +39,77 @@ const Admin = (() => {
         else {
             thisAdmin.update()
         }
+        
+        resetInputFields();
     }
+    
+    function resetInputFields() {
+        $('#txt_first_name').val('');
+        $('#txt_last_name').val('');
+        $('#txt_user_name').val('');
+        $('#txt_email').val('');
+        $('#txt_newpassword').val('');
+        $('#txt_confirm_password').val('');
+        $('#slc_role').val('');
+        $('#slc_status').val('');
+    
+        $('.form-control').removeClass('red-input green-input');
+        $('#mes').html(''); // Reset any error messages
+        $('#mesi').html('');
+        $('#mess').html('');
+        $('#message').html('');  
+        $('#confirmPass').html('');
+        $('#btn_save').prop('disabled', false);
+    }
+    
+    
 
     thisAdmin.save = () => {
-        const first_name = $('#txt_first_name').val();
-        const last_name = $('#txt_last_name').val();
+        const first_name = $('#txt_first_name').val().trim();
+        const last_name = $('#txt_last_name').val().trim(); // Trim the last_name field
         const username = $('#txt_user_name').val();
         const email = $('#txt_email').val();
         const newpassword = $('#txt_newpassword').val();
-        // const password = $('#txt_password').val();
         const confirm_password = $('#txt_confirm_password').val();
         const role = $('#slc_role').val();
         const status = $('#slc_status').val();
-
-        if(first_name == "" 
-        || last_name == ""
-        || username == ""
-        || email == ""    
-        || newpassword == ""
-        || confirm_password == ""
-        || role == null
-        || status == null) {
+        const registerButton = $('#registerButton');
+    
+        if (first_name === "" || /^\s+$/.test(first_name) || last_name === "" || /^\s+$/.test(last_name) || username === "" || email === "" || newpassword === "" || confirm_password === "" || role == null || status == null) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Please fillout all fields',
+                title: 'Please fill out all fields',
                 showConfirmButton: true,
-            })
+            });
+            // Disable the register button
+            registerButton.prop('disabled', true);
         } else if (!validateEmail(email)) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Please enter a valid email address',
                 showConfirmButton: true,
-            })
-        }
-        else if(newpassword != confirm_password) {
+            });
+            // Disable the register button
+            registerButton.prop('disabled', true);
+        } else if (newpassword != confirm_password) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Password Did not match',
                 showConfirmButton: true,
-            })
-        }
-        else {
+            });
+            // Disable the register button
+            registerButton.prop('disabled', true);
+        } else {
+            // Enable the register button
+            registerButton.prop('disabled', false);
             $.ajax({
                 type: "POST",
                 url: USER_CONTROLLER + '?action=save',
                 dataType: "json",
-                data:{
+                data: {
                     first_name: first_name,
                     last_name: last_name,
                     username: username,
@@ -96,14 +118,13 @@ const Admin = (() => {
                     role: role,
                     status: status,
                 },
-                success: function (response) 
-                {
-                 Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Account created successfully',
-                    showConfirmButton: true,
-                 })
+                success: function (response) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Account created successfully',
+                        showConfirmButton: true,
+                    });
                     thisAdmin.resetFields();
                     thisAdmin.loadTableData();
                 },
@@ -111,8 +132,10 @@ const Admin = (() => {
     
                 }
             });
-        }        
+        }
     }
+    
+    
 
     thisAdmin.clickUpdate = (id) => {
         user_id = id;
