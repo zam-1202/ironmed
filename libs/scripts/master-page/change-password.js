@@ -179,7 +179,7 @@ const ChangePassword = (() => {
         } else if (newpassword !== confirm_password) {
             $('#txt_confirm_password').removeClass('green-input'); // Remove green class
             $('#txt_confirm_password').addClass('red-input');
-            document.getElementById('confirmPass').innerHTML = "Passwords do not match";
+            document.getElementById('confirmPass').innerHTML = "Password mismatch";
             document.getElementById('confirmPass').style.color = 'red';
             btnUpdatePassword.disabled = true;
         } else if (!isValidPasswordFormat(confirm_password)) {

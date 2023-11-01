@@ -24,23 +24,7 @@ class Sales
         $this->conn->close();
         return $result->fetch_all(MYSQLI_ASSOC);
 
-        // $result = $this->conn->query($sql);
 
-        // $this->conn->close();
-        // $excel = $result->fetch_all(MYSQLI_ASSOC);
-        // return ['export' => $excel];  
 
     }
-
-    //     public function getAll($result)
-    // {
-    //     $sql = $this->getReport;
-
-    //     $result = $this->conn->query($sql);
-        
-    //     $this->conn->close();
-
-    //     return $result->fetch_all(MYSQLI_ASSOC);
-
-    // }
 }

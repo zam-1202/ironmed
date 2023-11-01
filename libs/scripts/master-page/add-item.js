@@ -573,6 +573,13 @@ const Product = (() => {
         $('#btn_save_product').html('Register Product');
     }
 
+    thisProduct.limitCharacterInput = (input, maxLength) => {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength);
+          }
+    }
+
+
     thisProduct.onChangeBarcode = () => {
         const product_barcode = $('#txt_product_barcode').val();
         $.ajax({

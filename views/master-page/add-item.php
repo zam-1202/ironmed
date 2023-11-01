@@ -67,21 +67,21 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_quantity" class="form-label">Quantity</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-box"></i></span>
-                                        <input type="number" min="1" oninput="validity.valid || (value='')" class="form-control" id="txt_quantity" max="1000000">
+                                        <input type="number" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_quantity" maxlength="6">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="txt_buying_price" class="form-label">Buying Price</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"(required)>₱</span>
-                                        <input type="number" step="0.01" min="1" oninput="validity.valid || (value='')" class="form-control" id="txt_buying_price" max="1000000">
+                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_buying_price" maxlenght="6">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="txt_selling_price" class="form-label" >Selling Price</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3" (required)>₱</span>
-                                        <input type="number" step="0.01" min="1" oninput="validity.valid || (value='')" class="form-control" id="txt_selling_price" max="1000000">
+                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_selling_price" maxlenght="6">
                                     </div>
                                 </div>                               
                                 <div class="col-md-4">
