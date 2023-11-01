@@ -33,7 +33,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <!-- <span class="required" style="color:red;"> *</span> -->
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="number" class="form-control" id="txt_product_barcode" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
+                                        <input type="number" class="form-control" id="txt_product_barcode" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 13)" required autofocus>
                                     </div>
                                 </div>
                                 <div class="col-md-12">

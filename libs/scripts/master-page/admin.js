@@ -40,30 +40,9 @@ const Admin = (() => {
             thisAdmin.update()
         }
         
-        resetInputFields();
-    }
-    
-    function resetInputFields() {
-        $('#txt_first_name').val('');
-        $('#txt_last_name').val('');
-        $('#txt_user_name').val('');
-        $('#txt_email').val('');
-        $('#txt_newpassword').val('');
-        $('#txt_confirm_password').val('');
-        $('#slc_role').val('');
-        $('#slc_status').val('');
-    
-        $('.form-control').removeClass('red-input green-input');
-        $('#mes').html(''); // Reset any error messages
-        $('#mesi').html('');
-        $('#mess').html('');
-        $('#message').html('');  
-        $('#confirmPass').html('');
-        $('#btn_save').prop('disabled', false);
-    }
+    };
     
     
-
     thisAdmin.save = () => {
         const first_name = $('#txt_first_name').val().trim();
         const last_name = $('#txt_last_name').val().trim(); // Trim the last_name field
@@ -125,6 +104,11 @@ const Admin = (() => {
                         title: 'Account created successfully',
                         showConfirmButton: true,
                     });
+                    document.getElementById('confirmPass').innerHTML = "";
+                    $('#txt_first_name').removeClass('green-input');
+                    $('#txt_last_name').removeClass('green-input');
+                    $('#txt_newpassword').removeClass('green-input');
+                    $('#txt_confirm_password').removeClass('green-input');
                     thisAdmin.resetFields();
                     thisAdmin.loadTableData();
                 },
