@@ -365,9 +365,17 @@ class ProductDetails
 
         return $result;
     }              
+
+
+    // public function searchRegisteredProduct()
+    // {
+    //     $sql = "SELECT name AS product_name, barcode FROM products;";
+    //     $result = $this->conn->query($sql);
+        
+    //     $this->conn->close();
+    //     return $result->fetch_all(MYSQLI_ASSOC);
+    // }
 }
-
-
 
 function date_compare($element1, $element2) {
     $datetime1 = strtotime($element1['expiration_date']);

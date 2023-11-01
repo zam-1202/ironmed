@@ -25,6 +25,7 @@ const Product = (() => {
     };
 
     thisProduct.register = () => {
+        const regex = /^[a-zA-Z1-9&-'.' ]+$/;
         var txt_product_barcode = $("#txt_product_barcode").val();
         var txt_product_name = $("#txt_product_name").val();
         var slc_product_category = $("#slc_product_category").val();
@@ -41,10 +42,27 @@ const Product = (() => {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Please fillout all fields',
+                title: 'Please fill out all fields',
                 showConfirmButton: true,
             })
-            
+        }
+        else if (!regex.test(txt_product_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Product Name',
+                text: 'Only letters, numbers, hyphen, ampersand, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (txt_product_name.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Product Name',
+                text: 'Please fill out the product name.',
+                showConfirmButton: true,
+            });
         }
         else{
             $.ajax({
@@ -67,6 +85,14 @@ const Product = (() => {
                             title: 'Product Succesfully Registered!',
                             showConfirmButton: true,
                         })
+                        // Clear the input fields after successful registration
+                        $("#txt_product_barcode").val('');
+                        $("#txt_product_name").val('');
+                        $("#slc_product_category").val('');
+                        $("#slc_status").val('');
+                        $("#slc_type").val('');
+                        $("#txt_location").val('');
+                        $('#txt_product_name').removeClass('green-input');
 
                         thisProduct.loadTableData();
                     }
@@ -281,3 +307,53 @@ const Category = (() => {
 
     return thisCategory;
 })()
+
+$("#regproduct_search").on("input", function() {
+    const searchRegProd = $(this).val();
+    searchRegisteredProduct(searchRegProd);
+});
+
+
+function searchRegisteredProduct(searchRegProd) {
+    $.ajax({
+        type: "GET",
+        url: PRODUCT_CONTROLLER + '?action=searchRegisteredProduct',
+        data: { searchRegProd: searchRegProd },
+        dataType: "json",
+        success: function (response) {
+            if (response.length > 0) {
+                $('#productsTable').html(response);
+            } else {
+                $('#productsTable').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
+            }
+            $('.table').DataTable();
+        },
+        error: function () {
+            // Handle errors
+        }
+    });
+}
+
+const validateProductName = () => {
+    //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, ampersand, and period
+    const regex = /^[a-zA-Z1-9&-'.' ]+$/;
+    const prname = $('#txt_product_name').val().trim();
+    const regname = document.getElementById('regname');
+    const txtProductName = $('#txt_product_name');
+
+    txtProductName.removeClass('red-input green-input');
+    regname.innerHTML = "";
+
+    if (prname === '') {
+        txtProductName.removeClass('red-input green-input');
+        regname.innerHTML = "";
+    } else if (!regex.test(prname)) {
+        txtProductName.addClass('red-input').removeClass('green-input');
+        // pname.innerHTML = "First name contains invalid characters.";
+        regname.style.color = 'red';
+    } else {
+        txtProductName.removeClass('red-input').addClass('green-input');;
+        regname.style.color = 'green';
+        regname.innerHTML = "";
+    }
+}

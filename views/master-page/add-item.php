@@ -20,33 +20,34 @@ else if($_SESSION['user']['role'] === 3) {
         <!-- <h1 class="section__title">Admin</h1> -->
         <div class="container-fluid section__body">
             <div class="row">
-                <div class="col-lg-6 col-md-12 ">
+                <div class="col-lg-6 col-md-14 ">
                     <div class="product__table-wrapper">
-                        <h2 class="section__sub-title" id="txt_title">Register Stocks</h2>
+                        <h2 class="form-wrapper" id="txt_title">Register Stocks</h2>
+
+                           <div>&nbsp;</div>
 
                         <div class="form-wrapper">
                             <form class="row g-3">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <label for="txt_product_barcode" class="form-label">Product Barcode</label>
-                                    <!-- <span class="required" style="color:red;"> *</span> -->
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="number" class="form-control" id="txt_product_barcode" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
+                                        <input type="text" class="form-control" id="txt_product_barcode" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 13)" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="txt_lot_number" class="form-label">Lot number  </label>
-                                    <!-- <span class="required" style="color:red;"> *</span> -->
+                                <div class="col-md-6">
+                                    <label for="txt_lot_number" class="form-label">Lot number</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="number" oninput="validity.valid || (value='')" class="form-control" id="txt_lot_number">
+                                        <input type="text" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 20)" class="form-control" id="txt_lot_number" maxlength="20">
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
                                     <label for="txt_product_name" class="form-label">Product Name</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-box2"></i></span>
-                                        <input type="text" class="form-control" id="txt_product_name" disabled>
+                                        <input type="text" class="form-control" id="txt_product_name" maxlength="50" disabled onkeyup = validateProductName();><span id="pname"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -108,7 +109,7 @@ else if($_SESSION['user']['role'] === 3) {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label for="slc_type" class="form-label">Type</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
@@ -119,16 +120,17 @@ else if($_SESSION['user']['role'] === 3) {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-7">
                                     <label for="txt_location" class="form-label">Location  </label>
-                                    <!-- <span class="required" style="color:red;"> *</span> -->
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="text" class="form-control" id="txt_location">
+                                        <input type="text" class="form-control" id="txt_location" maxlength="20" onkeyup = validateLocationName(); disabled><span id="lname">
                                     </div>
                                 </div> 
-                                <div class="col-12">
+                                <div class="col-6">
                                     <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-main">Add Stocks</button>
+                                </div>
+                                <div class="col-6">
                                     <button  onclick="Product.resetFields()" class="btn form-control btn-warning">Cancel</button>
                                 </div>
                             </form>

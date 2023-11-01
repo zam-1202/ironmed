@@ -22,7 +22,9 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-6 col-md-12 ">
                     <div class="product__table-wrapper">
-                        <h2 class="section__sub-title" id="txt_title">Register Products</h2>
+                    <h2 class="form-wrapper" id="txt_title">Register Products</h2>
+
+                    <div>&nbsp;</div>
 
                         <div class="form-wrapper">
                             <form class="row g-3">
@@ -38,7 +40,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_product_name" class="form-label">Product Name</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-box2"></i></span>
-                                        <input type="text" class="form-control" id="txt_product_name" >
+                                        <input type="text" class="form-control" id="txt_product_name" maxlength="50" onkeyup=validateProductName();><span id="regname"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -83,7 +85,9 @@ else if($_SESSION['user']['role'] === 3) {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6 col-md-12">
+                <input type="text" id="regproduct_search" class="form-control form-control-sm" placeholder="Search" />
                     <table class="table table-bordered">
                         <thead>
                             <tr>

@@ -1352,3 +1352,19 @@ a.previous.round {
 .form-control.form-control-sm {
     width: 200px;
 }
+
+.btn-export {
+  background-color: #2cafa8;
+  border: none;
+}
+
+.btn-export:hover {
+  background-color: #24958f;
+  color: #fff;
+  border: none;
+}
+
+.btn-export:active {
+  background-color: #24958f;
+  border: none;
+}

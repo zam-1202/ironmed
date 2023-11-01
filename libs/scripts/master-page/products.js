@@ -191,3 +191,30 @@ const Product = (() => {
 
     return thisProduct;
 })();
+
+$("#product_search").on("input", function() {
+    const searchProd = $(this).val();
+    console.log("Search Term: " + searchProd);
+    searchProduct(searchProd);
+});
+
+
+function searchProduct(searchProd) {
+    $.ajax({
+        type: "GET",
+        url: PRODUCT_CONTROLLER + '?action=searchProduct',
+        data: { searchProd: searchProd },
+        dataType: "json",
+        success: function (response) {
+            if (response.length > 0) {
+                $('#tbody_product').html(response);
+            } else {
+                $('#tbody_product').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
+            }
+            $('.table').DataTable();
+        },
+        error: function () {
+            // Handle errors
+        }
+    });
+}

@@ -293,12 +293,50 @@ class Product
         $this->conn->query($sql);
         $this->conn->close();
     }
-    // public function getOrderById($product_id)
-    // {
-    //     $sql = $this->getAllquery . " WHERE p.id = $product_id " . $this->orderBy;
-    //     $result = $this->conn->query($sql);
+    
+    public function searchProduct($searchProd = '') {
 
-    //     $this->conn->close();
-    //     return $result->fetch_assoc();
-    // }
+        $searchProd = trim($searchProd);
+
+        if (!empty($searchProd)) {
+
+            $sql = "SELECT * FROM products WHERE name LIKE ? OR barcode LIKE ?";
+            $stmt = $this->conn->prepare($sql);
+            $searchProd = '%' . $searchProd . '%';
+            $stmt->bind_param("ss", $searchProd, $searchProd);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+        } else {
+            $sql = "SELECT * FROM products";
+            $result = $this->conn->query($sql);
+        }
+    
+        $this->conn->close();
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function searchRegisteredProduct($searchRegProd = '') {
+
+        $searchRegProd = trim($searchRegProd);
+
+        if (!empty($searchRegProd)) {
+
+            $sql = "SELECT * FROM products WHERE name LIKE ? OR barcode LIKE ?";
+            $stmt = $this->conn->prepare($sql);
+            $searchRegProd = '%' . $searchRegProd . '%';
+            $stmt->bind_param("ss", $searchRegProd, $searchRegProd);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+        } else {
+            $sql = "SELECT * FROM products";
+            $result = $this->conn->query($sql);
+        }
+    
+        $this->conn->close();
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }

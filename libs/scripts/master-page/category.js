@@ -58,6 +58,7 @@ const Category = (() => {
     }
 
     thisCategory.save = () => {
+        const regex = /^[a-zA-Z1-9&-'.' ]+$/;
         const category_name = $('#txt_category_name').val();
         let existingCategories = ['MILK & DIAPERS', 'SUPPLEMENTS', 'BRANDED TABLETS', 'GENERIC TABLETS',
         'OINTMENTS', 'GALLENICALS', 'BRANDED SYRUP', 'GENERIC SYRUP','milk & diapers', 'supplements', 'branded tablets', 'generic tablets',
@@ -85,6 +86,24 @@ const Category = (() => {
                 position: 'center',
                 icon: 'warning',
                 title: 'Category name cannot contain numbers',
+                showConfirmButton: true,
+            });
+        }
+        else if (!regex.test(category_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Category Name',
+                text: 'Only letters, numbers, hyphen, ampersand, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (category_name.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Category Name',
+                text: 'Please fill out the category field.',
                 showConfirmButton: true,
             });
         }
@@ -140,7 +159,12 @@ const Category = (() => {
     }
 
     thisCategory.update = () => {
+        const regex = /^[a-zA-Z1-9&-'.' ]+$/;
         const category_name = $('#txt_category_name').val();
+        // let existingCategories = ['MILK & DIAPERS', 'SUPPLEMENTS', 'BRANDED TABLETS', 'GENERIC TABLETS',
+        // 'OINTMENTS', 'GALLENICALS', 'BRANDED SYRUP', 'GENERIC SYRUP','milk & diapers', 'supplements', 'branded tablets', 'generic tablets',
+        // 'ointments', 'gallenicals', 'branded syrup', 'generic syrup', 'Milk & Diapers', 'Supplements', 'Branded Tablets', 'Generic Tablets',
+        // 'Ointments', 'Gallenicals', 'Branded Syrup', 'Generic Syrup'];
 
         if(category_name == "") {
             Swal.fire({
@@ -149,6 +173,40 @@ const Category = (() => {
                 title: 'Category field should have value',
                 showConfirmButton: true,
             })
+        }
+        // else if (existingCategories.includes(category_name)) {
+        //     Swal.fire({
+        //       position: 'center',
+        //       icon: 'warning',
+        //       title: 'Category name already exists',
+        //       showConfirmButton: true,
+        //     })
+        //   } 
+        else if (/\d/.test(category_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Category name cannot contain numbers',
+                showConfirmButton: true,
+            });
+        }
+        else if (!regex.test(category_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Category Name',
+                text: 'Only letters, numbers, hyphen, ampersand, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (category_name.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Category Name',
+                text: 'Please fill out the category field.',
+                showConfirmButton: true,
+            });
         }
         else{
             $.ajax({
@@ -166,6 +224,7 @@ const Category = (() => {
                     thisCategory.loadSelectData();
                     $('#btn_save_category').html('Register Category');
                     toUpdate = false;
+                    $('#txt_category_name').removeClass('green-input');
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -186,12 +245,7 @@ const Category = (() => {
         $('#txt_category_name').val("")
         toUpdate = false;
         $('#btn_save_category').html('Register Category');
-    }
-
-    thisCategory.clickCancel = () => {
-        $('#txt_category_name').val("")
-        toUpdate = false;
-        $('#btn_save_category').html('Register Category');
+        validateCategoryName();
     }
 
     // thisCategory.clickDelete = (id) => {
@@ -241,3 +295,32 @@ const Category = (() => {
 
     return thisCategory;
 })()
+
+const validateCategoryName = () => {
+
+    const inputElement = document.getElementById('txt_category_name');
+    inputElement.value = inputElement.value.toUpperCase();
+
+
+    //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
+    const regex = /^[a-zA-Z1-9&-'.' ]+$/;
+    const categoryname = $('#txt_category_name').val().trim();
+    const cname = document.getElementById('cname');
+    const txtCategorynameName = $('#txt_category_name');
+
+    txtCategorynameName.removeClass('red-input green-input');
+    cname.innerHTML = "";
+
+    if (categoryname === '') {
+        txtCategorynameName.removeClass('red-input green-input');
+        cname.innerHTML = "";
+    } else if (!regex.test(categoryname)) {
+        txtCategorynameName.addClass('red-input').removeClass('green-input');
+        // pname.innerHTML = "First name contains invalid characters.";
+        cname.style.color = 'red';
+    } else {
+        txtCategorynameName.removeClass('red-input').addClass('green-input');;
+        cname.style.color = 'green';
+        cname.innerHTML = "";
+    }
+}

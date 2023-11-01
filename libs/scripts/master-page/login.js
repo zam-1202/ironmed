@@ -32,7 +32,7 @@ const Login = (() => {
                     Swal.fire({
                         position: 'center',
                         icon: 'warning',
-                        title: 'Please fillout all fields',
+                        title: 'Please fill outs all fields',
                         showConfirmButton: true,
                     })
                 }
