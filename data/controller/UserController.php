@@ -222,3 +222,18 @@ else if ($action == 'searchUsers') {
     // Output the $table_data as JSON
     echo json_encode($table_data);
 }
+
+else if($action == 'isUsernameTaken'  ){
+ if (isset($_POST['username'])){
+
+    $username = $_POST['username'];
+
+    $isTaken = $User->isUsernameTaken($username);
+    echo $isTaken ? 1 : 0;
+
+ }
+
+ else{
+    echo -1;
+ }
+}

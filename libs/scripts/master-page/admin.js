@@ -272,6 +272,34 @@ const Admin = (() => {
         $('#lbl_title').html("Create Account");
     }
 
+    thisAdmin.validateUsername = () => {
+        const username = $('#txt_user_name').val();
+    
+        if (username != '') {
+            $.ajax({
+                type: "POST",
+                url: USER_CONTROLLER + '?action=isUsernameTaken',
+                data: {
+                    username: username,
+                },
+                success: function (response) {
+                    console.log("Received Response:", response);
+                    if (response == 1) {
+                        $('#message').text('Username already taken!');
+                        
+                    } else if (response == 0) {
+                        $('#message').text('Username is available.');
+                    } else {
+                        $('#message').text('Error. Please contact the IT department.');
+                    }
+                }
+            });
+        } else {
+            $('#message').text(''); // Clear the message if the input is empty
+        }
+    }
+    
+
     return thisAdmin;
 })();
 
@@ -300,3 +328,28 @@ function searchUsers(searchTerm) {
         }
     });
 }
+
+// const validateUserName = () => {
+//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
+//     const username = $('#txt_user_name').val();
+
+//     if (username.trim() === '') {
+//         $('#txt_user_name').removeClass('red-input green-input');
+//         document.getElementById('message').innerHTML = "";
+//         btnUpdatePassword.disabled = true;
+//     }
+//     else if (!regex.test(username)) {
+//         $('#txt_user_name').addClass('red-input').removeClass('green-input');
+//         document.getElementById('message').innerHTML = "Username contains invalid characters.";
+//         document.getElementById('message').style.color = 'red';
+//         btnUpdatePassword.disabled = true;
+//     }
+//     else {
+//         $('#txt_user_name').removeClass('red-input').removeClass('green-input');
+//         document.getElementById('message').style.color = 'green';
+//         document.getElementById('message').innerHTML = "";
+//         btnUpdatePassword.disabled = false;
+//     }
+// }
+
+

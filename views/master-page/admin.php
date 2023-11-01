@@ -61,8 +61,8 @@ else if($_SESSION['user']['role'] === 3) {
                                 <input type="text" class="form-control" id="txt_last_name" maxlength="20" onkeyup = validateLastName();><span id="mesi"></span>
                             </div>
                             <div class="col-md-12">
-                                <label for="lastName" class="form-label">Username</label><span class="required" style="color:red;"> *</span>
-                                <input type="text" class="form-control" id="txt_user_name" maxlength="20" onkeyup = validateUserName();><span id="message"></span>
+                                <label for="UserName" class="form-label">Username</label><span class="required" style="color:red;"> *</span>
+                                <input type="text" class="form-control" id="txt_user_name" maxlength="20" onchange = "Admin.validateUsername()"><span id="message"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label">Email</label><span class="required" style="color:red;"> *</span>

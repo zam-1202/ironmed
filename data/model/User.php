@@ -282,7 +282,22 @@ class User
     
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-        
-        
     
+    public function isUsernameTaken($username)
+    {
+        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0){
+            return true;
+        }
+        else {
+        return false;
+    }
+
+}      
+         
 }

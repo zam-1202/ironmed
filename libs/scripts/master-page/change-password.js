@@ -94,37 +94,6 @@ const validateLastName = () => {
 }
  
 
-
-
-// const validateLastName = () => {
-//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
-//     const lastname = $('#txt_last_name').val().trim();
-//     const mes = document.getElementById('mesi');
-//     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
-//     const txtLastName = $('#txt_last_name');
-
-//     txtLastName.removeClass('red-input green-input');
-//     mes.innerHTML = "";
-
-//     if (lastname === '') {
-//         txtLastName.removeClass('red-input green-input');
-//         mes.innerHTML = "";
-//         btnUpdatePassword.disabled = true;
-//     } else if (!regex.test(lastname)) {
-//         txtLastName.addClass('red-input').removeClass('green-input');
-//         mes.innerHTML = "Last name contains invalid characters.";
-//         mes.style.color = 'red';
-//         btnUpdatePassword.disabled = true;
-//     } else {
-//         txtLastName.removeClass('red-input').addClass('green-input');
-//         mes.style.color = 'green';
-//         mes.innerHTML = "";
-//         btnUpdatePassword.disabled = false;
-//     }
-// }
-
-
-
 const validateEmail = () => {
     const email = $('#txt_email').val();
     const emailField = $('#txt_email');
