@@ -7,34 +7,6 @@ $(document).ready(function () {
 const btnUpdatePassword = document.querySelector('#btn_save');
 let fieldcheck = 0;
 
-
-// const validateFirstName = () => {
-//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
-//     const firstname = $('#txt_first_name').val().trim();
-//     const mes = document.getElementById('mes');
-//     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
-//     const txtFirstName = $('#txt_first_name');
-
-//     txtFirstName.removeClass('red-input green-input');
-//     mes.innerHTML = "";
-
-//     if (firstname === '') {
-//         txtFirstName.removeClass('red-input green-input');
-//         mes.innerHTML = "";
-//         btnUpdatePassword.disabled = true;
-//     } else if (!regex.test(firstname) || firstname.split(' ').length > 1 || firstname.indexOf('  ') !== -1) {
-//         txtFirstName.addClass('red-input').removeClass('green-input');
-//         mes.innerHTML = "First name contains invalid characters or multiple spaces.";
-//         mes.style.color = 'red';
-//         btnUpdatePassword.disabled = true;
-//     } else {
-//         txtFirstName.removeClass('red-input').addClass('green-input');
-//         mes.style.color = 'green';
-//         mes.innerHTML = "";
-//         btnUpdatePassword.disabled = false;
-//     }
-// }
-
 const validateFirstName = () => {
     const regex = /^[a-zA-Z1-9-'.' ]+$/;
     const firstname = $('#txt_first_name').val().trim();

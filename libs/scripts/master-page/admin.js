@@ -45,7 +45,7 @@ const Admin = (() => {
     
     thisAdmin.save = () => {
         const first_name = $('#txt_first_name').val().trim();
-        const last_name = $('#txt_last_name').val().trim(); // Trim the last_name field
+        const last_name = $('#txt_last_name').val().trim();
         const username = $('#txt_user_name').val();
         const email = $('#txt_email').val();
         const newpassword = $('#txt_newpassword').val();
@@ -82,43 +82,68 @@ const Admin = (() => {
             // Disable the register button
             registerButton.prop('disabled', true);
         } else {
-            // Enable the register button
-            registerButton.prop('disabled', false);
+            // Check if the username is taken
             $.ajax({
                 type: "POST",
-                url: USER_CONTROLLER + '?action=save',
-                dataType: "json",
+                url: USER_CONTROLLER + '?action=isUsernameTaken', // Add the action for checking username
                 data: {
-                    first_name: first_name,
-                    last_name: last_name,
-                    username: username,
-                    email: email,
-                    password: newpassword,
-                    role: role,
-                    status: status,
+                    username: username
                 },
                 success: function (response) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Account created successfully',
-                        showConfirmButton: true,
-                    });
-                    document.getElementById('confirmPass').innerHTML = "";
-                    $('#txt_first_name').removeClass('green-input');
-                    $('#txt_last_name').removeClass('green-input');
-                    $('#txt_newpassword').removeClass('green-input');
-                    $('#txt_confirm_password').removeClass('green-input');
-                    thisAdmin.resetFields();
-                    thisAdmin.loadTableData();
+                    if (response === "1") {
+                        // Username is already taken
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Username is already taken',
+                            showConfirmButton: true,
+                        });
+                    } else {
+                        // Username is available, proceed with registration
+                        // Enable the register button
+                        registerButton.prop('disabled', false);
+                        $.ajax({
+                            type: "POST",
+                            url: USER_CONTROLLER + '?action=save',
+                            dataType: "json",
+                            data: {
+                                first_name: first_name,
+                                last_name: last_name,
+                                username: username,
+                                email: email,
+                                password: newpassword,
+                                role: role,
+                                status: status,
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Account created successfully',
+                                    showConfirmButton: true,
+                                });
+                                $('#txt_user_name').removeClass('green-input');
+                                document.getElementById('confirmPass').innerHTML = "";
+                                $('#txt_first_name').removeClass('green-input');
+                                $('#txt_last_name').removeClass('green-input');
+                                $('#txt_newpassword').removeClass('green-input');
+                                $('#txt_confirm_password').removeClass('green-input');
+                                thisAdmin.resetFields();
+                                thisAdmin.loadTableData();
+                            },
+                            error: function () {
+                                // Handle error
+                            }
+                        });
+                    }
                 },
                 error: function () {
-    
+                    // Handle error
                 }
             });
         }
     }
-    
+        
     
 
     thisAdmin.clickUpdate = (id) => {
@@ -258,7 +283,7 @@ const Admin = (() => {
 
     thisAdmin.validateUsername = () => {
         const username = $('#txt_user_name').val();
-    
+        
         if (username != '') {
             $.ajax({
                 type: "POST",
@@ -269,10 +294,11 @@ const Admin = (() => {
                 success: function (response) {
                     console.log("Received Response:", response);
                     if (response == 1) {
-                        $('#message').text('Username already taken!');
-                        
+                        // $('#message').text('Username already taken');
+                        $('#txt_user_name').addClass('red-input').removeClass('green-input');
                     } else if (response == 0) {
-                        $('#message').text('Username is available.');
+                        // $('#message').text('Username is available');
+                        $('#txt_user_name').addClass('green-input').removeClass('red-input');
                     } else {
                         $('#message').text('Error. Please contact the IT department.');
                     }
@@ -280,8 +306,10 @@ const Admin = (() => {
             });
         } else {
             $('#message').text(''); // Clear the message if the input is empty
+            $('#txt_user_name').removeClass('red-input green-input');
         }
     }
+        
     
 
     return thisAdmin;
@@ -312,28 +340,4 @@ function searchUsers(searchTerm) {
         }
     });
 }
-
-// const validateUserName = () => {
-//     const regex = /^[a-zA-Z1-9-'.' ]+$/;
-//     const username = $('#txt_user_name').val();
-
-//     if (username.trim() === '') {
-//         $('#txt_user_name').removeClass('red-input green-input');
-//         document.getElementById('message').innerHTML = "";
-//         btnUpdatePassword.disabled = true;
-//     }
-//     else if (!regex.test(username)) {
-//         $('#txt_user_name').addClass('red-input').removeClass('green-input');
-//         document.getElementById('message').innerHTML = "Username contains invalid characters.";
-//         document.getElementById('message').style.color = 'red';
-//         btnUpdatePassword.disabled = true;
-//     }
-//     else {
-//         $('#txt_user_name').removeClass('red-input').removeClass('green-input');
-//         document.getElementById('message').style.color = 'green';
-//         document.getElementById('message').innerHTML = "";
-//         btnUpdatePassword.disabled = false;
-//     }
-// }
-
 

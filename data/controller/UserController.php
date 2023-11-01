@@ -223,17 +223,13 @@ else if ($action == 'searchUsers') {
     echo json_encode($table_data);
 }
 
-else if($action == 'isUsernameTaken'  ){
- if (isset($_POST['username'])){
-
-    $username = $_POST['username'];
-
-    $isTaken = $User->isUsernameTaken($username);
-    echo $isTaken ? 1 : 0;
-
- }
-
- else{
-    echo -1;
- }
+    else if($action == 'isUsernameTaken'  ){
+    if (isset($_POST['username'])){
+        $username = $_POST['username'];
+        $isTaken = $User->isUsernameTaken($username);
+        echo $isTaken ? 1 : 0;
+        }
+    else{
+        echo -1;
+    }
 }
