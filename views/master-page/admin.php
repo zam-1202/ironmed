@@ -71,7 +71,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="col-md-12">
                                 <label for="adminnewpassword" class="form-label">Password</label><span class="required" style="color:red;"> *</span>
                                 <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
-                                <input type="text" class="form-control" id="txt_adminnewpassword" onkeyup = validateAdminNewPass();><span id="adminmess"></span>
+                                <input type="text" class="form-control" id="txt_adminnewpassword" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="mess"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="adminconfirmPassword" class="form-label">Confirm Password</label><span class="required" style="color:red;"> *</span>

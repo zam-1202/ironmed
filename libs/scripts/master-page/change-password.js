@@ -140,35 +140,6 @@ const ChangePassword = (() => {
             
     }
 
-    const validateAdminNewPass = () => {
-        const upperCaseLetters = /[A-Z]/g;
-        const lowerCaseLetters = /[a-z]/g;
-        const numbers = /[0-9]/g;
-        const regex_symbols = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/g;
-        const newpassword = $('#txt_adminnewpassword').val();
-        console.log('New Password:', newpassword);
-    
-
-        if (newpassword.trim() === '') {
-            $('#txt_adminnewpassword').removeClass('red-input green-input'); // Remove any custom classes
-            document.getElementById('adminmess').innerHTML = ""; // Clear the error message
-            btnUpdatePassword.disabled = true;
-            console.log('Password is empty');
-        } else if (newpassword.length < 8 || !newpassword.match(upperCaseLetters) || !newpassword.match(lowerCaseLetters) || !newpassword.match(numbers) || !newpassword.match(regex_symbols)) {
-            $('#txt_adminnewpassword').removeClass('green-input').addClass('red-input');
-            document.getElementById('adminmess').style.color = 'red';
-            document.getElementById('adminmess').innerHTML = "Invalid password format";
-            btnUpdatePassword.disabled = true;
-            console.log('Invalid password format');
-        } else {
-            btnUpdatePassword.disabled = false;
-            $('#txt_adminnewpassword').removeClass('red-input').addClass('green-input');
-            document.getElementById('adminmess').style.color = 'green';
-            document.getElementById('adminmess').innerHTML = "";
-            console.log('Valid password format');
-        }
-    }
-    
     thisChangePassword.validateAdminConfirmPassword = () => {
         const newpassword = $('#txt_adminnewpassword').val();
         const confirm_password = $('#txt_adminconfirm_password').val();
@@ -188,6 +159,11 @@ const ChangePassword = (() => {
             document.getElementById('confirmPass').innerHTML = "Password mismatch";
             document.getElementById('confirmPass').style.color = 'red';
             // btnUpdatePassword.disabled = true; // You can remove this line to keep the button enabled
+        } else if (!isValidAdminPasswordFormat(newpassword)) {
+            // Validate the format of the 'newpassword'
+            $('#txt_adminnewpassword').removeClass('green-input').addClass('red-input');
+            document.getElementById('confirmPass').innerHTML = "Password format is incorrect";
+            document.getElementById('confirmPass').style.color = 'red';
         } else if (!isValidAdminPasswordFormat(confirm_password)) {
             $('#txt_adminconfirm_password').removeClass('green-input').addClass('red-input');
             document.getElementById('confirmPass').innerHTML = "Password format is incorrect";
