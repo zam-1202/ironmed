@@ -1107,6 +1107,11 @@ body {
   color: white;
 }
 
+.nav-link[aria-current="page"]{
+  text-decoration: underline wavy white 0.1rem;
+  text-underline-offset: 0.2rem;
+}
+
 .dropdown:hover>.dropdown-menu {
   display: block;
 }
