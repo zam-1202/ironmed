@@ -8,7 +8,9 @@ const btnUpdatePassword = document.querySelector('#btn_save');
 let fieldcheck = 0;
 
 const validateFirstName = () => {
-    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    // const regex = /^[a-zA-Z1-9-'.'']+$/;
+    const specialCharsRegex = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/;
+    const numbersRegex = /\d/;
     const firstname = $('#txt_first_name').val().trim();
     const mes = document.getElementById('mes');
     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
@@ -17,29 +19,42 @@ const validateFirstName = () => {
     txtFirstName.removeClass('red-input green-input');
     mes.innerHTML = "";
 
-
     if (firstname === '') {
         txtFirstName.removeClass('red-input green-input');
         mes.innerHTML = "";
         btnUpdatePassword.disabled = true;
-    }
-    
-    else if (!regex.test(firstname) || /[ ]{2,}/.test(firstname)) {
+    } else if (/  /.test(firstname) || firstname.startsWith(' ') || firstname.endsWith(' ')) {
         txtFirstName.addClass('red-input').removeClass('green-input');
-        mes.innerHTML = "First name contains invalid characters or multiple spaces.";
+        mes.innerHTML = "First name contains multiple spaces";
         mes.style.color = 'red';
         btnUpdatePassword.disabled = true;
-    } 
-    else {
+    } else if (specialCharsRegex.test(firstname)) {
+        // Special characters detected
+        txtFirstName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "First name should not contain special characters";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else if (numbersRegex.test(firstname)) {
+        // Numbers detected
+        txtFirstName.addClass('red-input').removeClass('green-input');
+        mes.innerHTML = "First name should not contain numbers";
+        mes.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else {
         txtFirstName.removeClass('red-input').addClass('green-input');
         mes.style.color = 'green';
         mes.innerHTML = "";
         btnUpdatePassword.disabled = false;
     }
 }
+
+
+
  
 const validateLastName = () => {
-    const regex = /^[a-zA-Z1-9-'.' ]+$/;
+    // const regex = /^[a-zA-Z1-9-'.'']+$/;
+    const specialCharsRegex = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/;
+    const numbersRegex = /\d/;
     const lastname = $('#txt_last_name').val().trim();
     const mesi = document.getElementById('mesi');
     const btnUpdatePassword = document.getElementById('btnUpdatePassword');
@@ -52,9 +67,21 @@ const validateLastName = () => {
         txtLastName.removeClass('red-input green-input');
         mesi.innerHTML = "";
         btnUpdatePassword.disabled = true;
-    } else if (!regex.test(lastname) || /[ ]{2,}/.test(lastname)) {
+    } else if (/  /.test(lastname) || lastname.startsWith(' ') || lastname.endsWith(' ')) {
         txtLastName.addClass('red-input').removeClass('green-input');
-        mesi.innerHTML = "Last name contains invalid characters or multiple spaces.";
+        mesi.innerHTML = "Last name contains multiple spaces";
+        mesi.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else if (specialCharsRegex.test(lastname)) {
+        // Special characters detected
+        txtLastName.addClass('red-input').removeClass('green-input');
+        mesi.innerHTML = "Last name should not contain special characters";
+        mesi.style.color = 'red';
+        btnUpdatePassword.disabled = true;
+    } else if (numbersRegex.test(lastname)) {
+        // Numbers detected
+        txtLastName.addClass('red-input').removeClass('green-input');
+        mesi.innerHTML = "Last name should not contain numbers";
         mesi.style.color = 'red';
         btnUpdatePassword.disabled = true;
     } else {
@@ -72,13 +99,13 @@ const validateEmail = () => {
     const emailPattern = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
     if (email.trim() === '') {
-        emailField.removeClass('red-input');
+        emailField.removeClass('red-input green-input');
         return false;
     } else if (!email.match(emailPattern)) {
-        emailField.addClass('red-input');
+        emailField.addClass('red-input').removeClass('green-input');
         return false;
     } else {
-        emailField.removeClass('red-input');
+        emailField.removeClass('red-input').addClass('green-input');
         return true;
     }
 }
@@ -163,10 +190,12 @@ const ChangePassword = (() => {
             $('#txt_adminnewpassword').removeClass('green-input').addClass('red-input');
             document.getElementById('adminmess').innerHTML = "Password format is incorrect";
             document.getElementById('adminmess').style.color = 'red';
+            $('#txt_adminconfirm_password').removeClass('red-input green-input');
+            document.getElementById('confirmPass').innerHTML = "";
         } else {
             // Case 2: Password format is correct
             $('#txt_adminnewpassword').removeClass('red-input').addClass('green-input');
-            document.getElementById('adminmess').innerHTML = "Password format is correct";
+            document.getElementById('adminmess').innerHTML = "";
             document.getElementById('adminmess').style.color = 'green';
     
             if (adminconfirm_password.trim() === '') {
@@ -175,7 +204,6 @@ const ChangePassword = (() => {
                 document.getElementById('confirmPass').innerHTML = "";
             } else if (adminnewpassword !== adminconfirm_password) {
                 // Case 5: Password doesn't match
-                $('#txt_adminnewpassword').removeClass('green-input').addClass('red-input');
                 $('#txt_adminconfirm_password').removeClass('green-input').addClass('red-input');
                 document.getElementById('adminmess').innerHTML = "";
                 document.getElementById('confirmPass').innerHTML = "Password doesn't match";

@@ -285,9 +285,8 @@ class User
     
     public function isUsernameTaken($username)
     {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
         $stmt->bind_param("s", $username);
-
         $stmt->execute();
         $stmt->store_result();
 
