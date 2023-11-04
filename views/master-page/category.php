@@ -18,8 +18,7 @@ else if($_SESSION['user']['role'] === 3) {
 
    
 
-    <section class="section user" style="border: none;">
-        <!-- <h1 class="section__title">Admin</h1> -->
+    <!-- <section class="section user" style="border: none;"> -->
         <div class="container-fluid section__body">
             <div class="row">
                 <div class="col-lg-6 col-md-12 ">
@@ -46,7 +45,7 @@ else if($_SESSION['user']['role'] === 3) {
                     </div>
                 </div>
 
-                <div class="col-lg-5 offset-lg-1">
+                <div class="col-lg-6 ">
                     <div class="table-wrapper">
                         <table class="table table-bordered">
                             <thead>
@@ -64,7 +63,7 @@ else if($_SESSION['user']['role'] === 3) {
             </div>
         </div>
 
-    </section>
+    <!-- </section> -->
     <?php include '../layouts/scripts.php' ?>
 </body>
 <script src="../../libs/scripts/master-page/category.js" ></script>

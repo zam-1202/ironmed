@@ -134,7 +134,7 @@ const validateNewPass = () => {
     } else if (newpassword.length < 8 || !newpassword.match(upperCaseLetters) || !newpassword.match(lowerCaseLetters) || !newpassword.match(numbers) || !newpassword.match(regex_symbols)) {
         $('#txt_newpassword').removeClass('green-input').addClass('red-input');
         document.getElementById('mess').style.color = 'red';
-        document.getElementById('mess').innerHTML = "Invalid password format";
+        document.getElementById('mess').innerHTML = "Password format is incorrect";
         btnUpdatePassword.disabled = true;
     } else {
         btnUpdatePassword.disabled = false;
@@ -152,8 +152,13 @@ const ChangePassword = (() => {
         const dboldpass = $('#old_password').val();
         const oldpass = $('#txt_oldpassword').val();
         // console.log(dboldpass);
-        
-        if(dboldpass != oldpass) {
+
+        if (oldpass.trim() === '') {
+            $('#txt_oldpassword').removeClass('red-input green-input');
+            document.getElementById('oldp').innerHTML=" ";
+            btnUpdatePassword.disabled = true;
+            return false;}
+        else if(dboldpass != oldpass) {
             $('#txt_oldpassword').removeClass('green-input')
             $('#txt_oldpassword').addClass('red-input')
             document.getElementById('oldp').innerHTML="Incorrect current password";

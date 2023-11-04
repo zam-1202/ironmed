@@ -65,3 +65,22 @@ const togglePassword = document.querySelector('#togglePassword');
                 // toggle the eye slash icon
                 event.target.classList.toggle('bi-eye');
             });
+
+ // Check for the success message in localStorage
+ const logoutMessage = localStorage.getItem('logoutMessage');
+
+ if (logoutMessage) {
+     // Display the message using SweetAlert or any other method you prefer
+     Swal.fire({
+         position: 'center',
+         icon: 'success',
+         title: 'Session Timeout',
+         text: logoutMessage,
+         showConfirmButton: true,
+     });
+
+     // Remove the message from localStorage to prevent displaying it again
+     localStorage.removeItem('logoutMessage');
+ }
+
+            

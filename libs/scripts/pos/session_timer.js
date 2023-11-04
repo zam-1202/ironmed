@@ -42,6 +42,7 @@ function startTimer() {
             dataType: "json",
             success: function (response)
             {
+              localStorage.setItem('logoutMessage', 'Successfully Logout');
               window.location.href = "../../views/master-page/login.php";
             },
             error: function () {
