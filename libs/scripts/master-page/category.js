@@ -299,7 +299,7 @@ const Category = (() => {
 const validateCategoryName = () => {
 
     const inputElement = document.getElementById('txt_category_name');
-    inputElement.value = inputElement.value.toUpperCase();
+    // inputElement.value = inputElement.value.toUpperCase();
 
 
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
