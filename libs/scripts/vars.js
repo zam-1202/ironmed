@@ -17,3 +17,4 @@ const SALES_CONTROLLER = HOST_2 + '/' + PATH_TO_CONTROLLER + '/SalesController.p
 const ACTIONLOG_CONTROLLER = HOST_2 + '/' + PATH_TO_CONTROLLER + '/ActionLogController.php';
 const PURCHASE_CONTROLLER = HOST_2 + '/' + PATH_TO_CONTROLLER + '/PurchaseController.php';
 const EXPORT_CONTROLLER = HOST_2 + '/' + PATH_TO_CONTROLLER + '/ExportController.php';
+const SESSION_CONTROLLER = HOST_2 + '/' + PATH_TO_CONTROLLER + '/SessionController.php';

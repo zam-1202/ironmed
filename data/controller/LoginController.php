@@ -2,6 +2,7 @@
 
 include_once('../../config/database.php');
 include_once('../model/User.php');
+include_once('../model/Session.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/Product.php');
 include_once('../model/ActionLog.php');

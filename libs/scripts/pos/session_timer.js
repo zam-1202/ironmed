@@ -1,10 +1,80 @@
+
+
+$(document).ready(function () {
+  $('.btn').click(function (event){
+      event.preventDefault()
+  })   
+});
+
 let sessionTimeoutEnabled = true;
 const localStorageKey = 'sessionTimeoutEnabled'; // Key used to store and retrieve from local storage
 let timeout;
 
+const Session = (() => {
+  const thisSession = {};
+
+thisSession.clickSaveButton= () => {
+  const hours = $('#hours_value').val();
+  const minutes = $('#minute_value').val();
+  
+  if (hours === '' || minutes === '') {
+      Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Please enter both hours and minutes',
+          showConfirmButton: true,
+      });
+      return; // Exit the function if the input fields are empty.
+  }
+
+  // const requestData = {
+  //     hours: hours,
+  //     minutes: minutes
+  // };
+
+  $.ajax({
+      type: "POST",
+      url: SESSION_CONTROLLER + '?action=save', // Adjust the URL to the correct path
+      dataType: "json",
+      data:{
+        hours: hours,
+        minutes: minutes
+      },
+      success: function (response) {
+          if (response === 'Successfully Save') {
+              Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Session saved successfully',
+                  showConfirmButton: true,
+              });
+          } else {
+              Swal.fire({
+                  position: 'center',
+                  icon: 'error',
+                  title: 'Error: ' + response,
+                  showConfirmButton: true,
+              });
+          }
+      },
+      error: function (error) {
+          console.log(error);
+          Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error: An error occurred while saving the session',
+              showConfirmButton: true,
+          });
+      }
+  });
+}
+return thisSession;
+})()
+
+// ----------------------------------------------------------------------
 
 function startTimer() {
-  timeout = setTimeout(logoutUser, 1800000); // 30 minutes
+  timeout = setTimeout(logoutUser, 3000000); // 30 minutes
   }
 
   function logoutUser() {
@@ -40,31 +110,13 @@ function startTimer() {
             type: "POST",
             url: LOGIN_CONTROLLER + '?action=logout',
             dataType: "json",
-            success: function (response) {
-              Swal.fire({
-                title: 'Session Timeout',
-                text: 'Your session has expired due to inactivity.',
-                html: 'Please log in again to continue.',
-                icon: 'info',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-              });
-              setTimeout(() => {
-                window.location.href = "../../views/master-page/login.php";
-              }, 10000); // Redirect after 10 seconds
+            success: function (response)
+            {
+              localStorage.setItem('logoutMessage', 'Successfully Logout');
+              window.location.href = "../../views/master-page/login.php";
             },
             error: function () {
-              Swal.fire({
-                title: 'Session Timeout',
-                text: 'Your session has expired due to inactivity.',
-                html: 'Please log in again to continue.',
-                icon: 'info',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-              });
-              setTimeout(() => {
-                window.location.href = "../../views/master-page/login.php";
-              }, 5000); // Redirect after 5 seconds
+              // alert("error");
             }
           });
         }
