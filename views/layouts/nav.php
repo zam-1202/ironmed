@@ -82,10 +82,10 @@
                 </li>
                 <li class="nav-item">
                 <span class="badge rounded-pill bg-danger" style="float:right;margin-bottom:-10px;"><?php 
-                    echo     $_SESSION['alert']['expiredToday'] +                     
-                             $_SESSION['alert']['nearExpire'] +
-                             $_SESSION['alert']['overStock'] +
-                             $_SESSION['alert']['underStock'] +
+                    echo     $_SESSION['alert']['expiredToday'] ,                     
+                             $_SESSION['alert']['nearExpire'] ,
+                             $_SESSION['alert']['overStock'] ,
+                             $_SESSION['alert']['underStock'] ,
                              $_SESSION['alert']['outofStock'];
                              ?></span> <!-- your badge -->
                     <a class="nav-link" aria-current="page" href="../master-page/alerts.php">Alerts</a>

@@ -1,8 +1,53 @@
 $(document).ready(function() {
+    allowRegister();
+
     Category.loadSelectData();
 
     Product.loadTableData();
   
+});
+
+const register_Barcode = document.querySelector('.input__barcode');
+const register_ProductName = document.querySelector('.input__product__name');
+const register_Category = document.querySelector('.input__category');
+const register_Status = document.querySelector('.input__status');
+const register_Type = document.querySelector('.input__type');
+const register_Button = document.querySelector('.btn-register');
+let enableCount = 0;
+
+const allowRegister = () => {
+    if (enableCount == 4 || enableCount == 5){
+        register_Button.disabled=false;
+        register_Button.style.backgroundColor="#00d199";
+    }
+    else{
+        register_Button.style.backgroundColor="#808080";
+    }
+}
+
+register_Barcode.addEventListener('change', (e)=> {
+    enableCount++;
+    allowRegister();
+});
+
+register_ProductName.addEventListener('change', (e)=> {
+    enableCount++;
+    allowRegister();
+});
+
+register_Category.addEventListener('change', (e)=> {
+    enableCount++;
+    allowRegister();
+});
+
+register_Status.addEventListener('change', (e)=> {
+    enableCount++;
+    allowRegister();
+});
+
+register_Type.addEventListener('change', (e)=> {
+    enableCount++;
+    allowRegister();
 });
 
 const Product = (() => {
@@ -23,6 +68,10 @@ const Product = (() => {
             }
         })
     };
+
+    // thisProduct.addEnabler = () => {
+    //     enableCount == 5;
+    // }
 
     thisProduct.register = () => {
         const regex = /^[a-zA-Z1-9&-'.' ]+$/;
