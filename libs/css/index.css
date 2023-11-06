@@ -33,7 +33,7 @@ nav {
 .section {
   background-color: #f5f5f5;
   border: 1px solid black;
-  padding: 1rem 10vw;
+  padding: 1rem 4vw;
 }
 
 .section__title {
@@ -1105,6 +1105,11 @@ body {
 
 .nav-item a {
   color: white;
+}
+
+.nav-link[aria-current="page"]{
+  text-decoration: underline wavy white 0.1rem;
+  text-underline-offset: 0.2rem;
 }
 
 .dropdown:hover>.dropdown-menu {

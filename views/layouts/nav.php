@@ -10,38 +10,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="../master-page/home.php">Home</a>
+                    <a class="nav-link" href="/ironmed/views/master-page/home.php">Home</a>
                 </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="../master-page/alerts.php">Alerts</a>
                 </li> -->
                 <?php if ($_SESSION['user']['role'] != 3) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../master-page/admin.php">Account</a>
+                        <a class="nav-link" href="/ironmed/views/master-page/admin.php">Account</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Registry
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="../master-page/register-products.php">Products</a></li>
-                        <li><a class="dropdown-item" href="../master-page/add-item.php">Stocks</a></li>
-                        <li><a class="dropdown-item" href="../master-page/category.php">Category</a></li>
-                    </ul>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Registry
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a class="dropdown-item" href="../master-page/register-products.php">Products</a></li>
+                            <li class="active"><a class="dropdown-item" href="../master-page/add-item.php">Stocks</a></li>
+                            <li class="active"><a class="dropdown-item" href="../master-page/category.php">Category</a></li>
+                        </ul>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../master-page/add-item.php">Register</a>
-                    </li>
+                    
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../master-page/category.php">Categories</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../master-page/logs.php">Logs</a>
+                        <a class="nav-link" href="/ironmed/views/master-page/logs.php">Logs</a>
                     </li>
+
                 <?php } ?>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="../master-page/products.php">Products</a>
+                    <a class="nav-link" href="/ironmed/views/master-page/products.php">Products</a>
                 </li>
                 <?php if ($_SESSION['user']['role'] != 3) { ?>
                 <li class="nav-item dropdown">
@@ -59,7 +55,7 @@
                     <a class="nav-link" href="../reports/invoice.php">Invoice</a>
                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="../pos/index.php">POS</a>
+                    <a class="nav-link" href="/ironmed/views/pos/index.php">POS</a>
                 </li>
 
             </ul>
@@ -76,7 +72,7 @@
                         <li><a class="dropdown-item" href="../master-page/change-password.php">Change Password</a></li>
                         <li><a class="dropdown-item" href="../master-page/toggle-session.php">Session Timeout Settings</a></li>
                         <li class="nav-item">
-                            <a class="dropdown-item" aria-current="page" href="#" onclick="logout()">Logout</a>
+                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
                         </li>
                     </ul>
                 </li>
@@ -88,7 +84,7 @@
                              $_SESSION['alert']['underStock'] ,
                              $_SESSION['alert']['outofStock'];
                              ?></span> <!-- your badge -->
-                    <a class="nav-link" aria-current="page" href="../master-page/alerts.php">Alerts</a>
+                    <a class="nav-link" href="/ironmed/views/master-page/alerts.php">Alerts</a>
                 </li>
 
             </ul>
@@ -103,3 +99,14 @@
         </div>
     </div>
 </nav>
+
+<script>
+document.querySelectorAll('.nav-link').forEach(link => {
+    // Remove the hostname and compare the paths
+    console.log("Comparing:", link.getAttribute('href'), window.location.pathname);
+    if (link.getAttribute('href') === window.location.pathname) {
+        link.setAttribute('aria-current', 'page');
+    }
+});
+
+</script>

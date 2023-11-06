@@ -4,7 +4,7 @@ let timeout;
 
 
 function startTimer() {
-  timeout = setTimeout(logoutUser, 1000000); // 30 minutes
+  timeout = setTimeout(logoutUser, 1800000); // 30 minutes
   }
 
   function logoutUser() {
@@ -40,12 +40,31 @@ function startTimer() {
             type: "POST",
             url: LOGIN_CONTROLLER + '?action=logout',
             dataType: "json",
-            success: function (response)
-            {
-              window.location.href = "../../views/master-page/login.php";
+            success: function (response) {
+              Swal.fire({
+                title: 'Session Timeout',
+                text: 'Your session has expired due to inactivity.',
+                html: 'Please log in again to continue.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+              });
+              setTimeout(() => {
+                window.location.href = "../../views/master-page/login.php";
+              }, 10000); // Redirect after 10 seconds
             },
             error: function () {
-              // alert("error");
+              Swal.fire({
+                title: 'Session Timeout',
+                text: 'Your session has expired due to inactivity.',
+                html: 'Please log in again to continue.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+              });
+              setTimeout(() => {
+                window.location.href = "../../views/master-page/login.php";
+              }, 5000); // Redirect after 5 seconds
             }
           });
         }

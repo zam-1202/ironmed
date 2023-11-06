@@ -31,6 +31,5 @@
     <?php include '../layouts/scripts.php' ?>
 </body>
 <script src="../../libs/scripts/master-page/login.js" ></script>
-<script src="../../libs/scripts/master-page/forget-password.js" ></script>
-           
+<script src="../../libs/scripts/master-page/forget-password.js" ></script>          
 </html>

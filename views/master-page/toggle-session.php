@@ -13,8 +13,7 @@ if (!$_SESSION['user']) {
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-    <section class="section user">
-        <!-- <h1 class="section__title">Admin</h1> -->
+
         <div class="container-fluid section__body">
             <div class="row">
                 <div class="col-lg-12 col-md-12 ">
@@ -38,12 +37,11 @@ if (!$_SESSION['user']) {
                         </form>
                     </div>
                    
-                    </script>
                 </div>
             </div>
         </div>
 
-    </section>
+ 
 
 
     <?php include '../layouts/scripts.php' ?>
