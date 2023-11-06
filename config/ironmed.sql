@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2023 at 03:36 AM
+-- Generation Time: Nov 01, 2023 at 11:08 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pos`
+-- Database: `ironmed`
 --
 
 -- --------------------------------------------------------
@@ -261,7 +261,136 @@ INSERT INTO `action_logs` (`id`, `datetime`, `role`, `username`, `action`) VALUE
 (219, '2023-07-04 12:23:29', 'O', 'owner', 'Account has logged in'),
 (220, '2023-07-04 06:25:03', 'O', 'owner', 'Successfully updated the Product'),
 (221, '2023-07-04 06:57:11', 'O', 'owner', 'Account has logged out'),
-(222, '2023-07-05 09:12:33', 'Owner', 'owner', 'Account has logged in');
+(222, '2023-07-05 09:12:33', 'Owner', 'owner', 'Account has logged in'),
+(223, '2023-10-24 17:41:28', 'Owner', 'owner', 'Account has logged in'),
+(224, '2023-10-25 18:32:06', 'Owner', 'owner', 'Account has logged in'),
+(225, '2023-10-25 19:37:15', 'Owner', 'owner', 'Account has logged in'),
+(226, '2023-10-25 20:29:17', 'Owner', 'owner', 'Successfully saved the User'),
+(227, '2023-10-25 21:05:35', 'Owner', 'owner', 'Account has logged out'),
+(228, '2023-10-25 22:58:33', 'Owner', 'owner', 'Account has logged in'),
+(229, '2023-10-26 11:46:55', 'Owner', 'owner', 'Account has logged in'),
+(230, '2023-10-26 12:26:28', 'Owner', 'owner', 'Account has logged out'),
+(231, '2023-10-26 12:27:20', 'Owner', 'owner', 'Account has logged in'),
+(232, '2023-10-26 12:59:50', 'Owner', 'owner', 'Successfully updated the User'),
+(233, '2023-10-26 12:59:55', 'Owner', 'owner', 'Successfully change password the User'),
+(234, '2023-10-26 13:31:28', 'Owner', 'owner', 'Account has logged out'),
+(235, '2023-10-26 13:36:19', 'Owner', 'owner', 'Account has logged in'),
+(236, '2023-10-26 13:56:28', 'Owner', 'owner', 'Account has logged out'),
+(237, '2023-10-26 14:11:25', 'Owner', 'owner', 'Account has logged in'),
+(238, '2023-10-26 15:10:29', 'Owner', 'owner', 'Account has logged out'),
+(239, '2023-10-26 22:15:22', 'Owner', 'owner', 'Account has logged in'),
+(240, '2023-10-26 23:06:21', 'Owner', 'owner', 'Account has logged out'),
+(241, '2023-10-26 23:47:13', 'Owner', 'owner', 'Account has logged in'),
+(242, '2023-10-26 23:48:31', 'Owner', 'owner', 'Account has logged out'),
+(243, '2023-10-26 23:48:54', 'Owner', 'owner', 'Account has logged in'),
+(244, '2023-10-26 23:49:00', 'Owner', 'owner', 'Successfully change password the User'),
+(245, '2023-10-26 23:49:07', 'Owner', 'owner', 'Account has logged out'),
+(246, '2023-10-26 23:49:28', 'User', 'Kenn', 'Account has logged in'),
+(247, '2023-10-26 23:49:36', 'User', 'Kenn', 'Account has logged out'),
+(248, '2023-10-26 23:51:30', 'Owner', 'owner', 'Account has logged in'),
+(249, '2023-10-27 13:39:37', 'Owner', 'owner', 'Account has logged out'),
+(250, '2023-10-27 13:56:12', 'Owner', 'owner', 'Account has logged in'),
+(251, '2023-10-27 20:35:15', 'Owner', 'owner', 'Account has logged out'),
+(252, '2023-10-27 21:39:37', 'Owner', 'owner', 'Account has logged in'),
+(253, '2023-10-27 21:39:51', 'Owner', 'owner', 'Account has logged out'),
+(254, '2023-10-27 21:40:10', 'Owner', 'owner', 'Account has logged in'),
+(255, '2023-10-27 21:40:44', 'Owner', 'owner', 'Account has logged out'),
+(256, '2023-10-27 21:49:29', 'Owner', 'owner', 'Account has logged in'),
+(257, '2023-10-27 21:49:43', 'Owner', 'owner', 'Account has logged out'),
+(258, '2023-10-27 21:52:15', 'Owner', 'owner', 'Account has logged in'),
+(259, '2023-10-27 21:52:58', 'Owner', 'owner', 'Account has logged out'),
+(260, '2023-10-27 21:58:25', 'Owner', 'owner', 'Account has logged in'),
+(261, '2023-10-27 22:11:12', 'Owner', 'owner', 'Account has logged out'),
+(262, '2023-10-27 22:17:06', 'Owner', 'owner', 'Account has logged in'),
+(263, '2023-10-27 22:29:53', 'Owner', 'owner', 'Successfully updated the User'),
+(264, '2023-10-27 22:30:09', 'Owner', 'owner', 'Successfully updated the User'),
+(265, '2023-10-27 22:44:35', 'Owner', 'owner', 'Successfully saved the Product details'),
+(266, '2023-10-27 22:56:26', 'Owner', 'owner', 'Successfully updated the Category'),
+(267, '2023-10-27 23:05:32', 'Owner', 'owner', 'Successfully updated the Product'),
+(268, '2023-10-27 23:05:41', 'Owner', 'owner', 'Successfully updated the Product'),
+(269, '2023-10-27 23:28:46', 'Owner', 'owner', 'Successfully updated the Product'),
+(270, '2023-10-27 23:28:58', 'Owner', 'owner', 'Account has logged out'),
+(271, '2023-10-27 23:29:16', 'Owner', 'owner', 'Account has logged in'),
+(272, '2023-10-28 20:53:23', 'Owner', 'owner', 'Account has logged out'),
+(273, '2023-10-28 21:04:05', 'Owner', 'owner', 'Account has logged in'),
+(274, '2023-10-28 21:05:23', 'Owner', 'owner', 'Successfully change password the User'),
+(275, '2023-10-28 21:51:09', 'Owner', 'owner', 'Account has logged out'),
+(276, '2023-10-28 21:51:15', 'Owner', 'owner', 'Account has logged in'),
+(277, '2023-10-28 22:18:16', 'Owner', 'owner', 'Account has logged out'),
+(278, '2023-10-28 22:27:11', 'Owner', 'owner', 'Account has logged in'),
+(279, '2023-10-28 22:55:50', 'Owner', 'owner', 'Account has logged in'),
+(280, '2023-10-28 22:55:50', 'Owner', 'owner', 'Account has logged in'),
+(281, '2023-10-28 22:55:50', 'Owner', 'owner', 'Account has logged in'),
+(282, '2023-10-28 22:55:51', 'Owner', 'owner', 'Account has logged in'),
+(283, '2023-10-29 00:00:30', 'Owner', 'owner', 'Account has logged out'),
+(284, '2023-10-29 00:01:16', 'Owner', 'owner', 'Account has logged in'),
+(285, '2023-10-30 10:09:10', 'Owner', 'owner', 'Account has logged in'),
+(286, '2023-10-30 10:09:11', 'Owner', 'owner', 'Account has logged in'),
+(287, '2023-10-30 10:09:12', 'Owner', 'owner', 'Account has logged in'),
+(288, '2023-10-30 10:09:12', 'Owner', 'owner', 'Account has logged in'),
+(289, '2023-10-30 10:09:12', 'Owner', 'owner', 'Account has logged in'),
+(290, '2023-10-30 10:09:14', 'Owner', 'owner', 'Account has logged in'),
+(291, '2023-10-30 10:09:14', 'Owner', 'owner', 'Account has logged in'),
+(292, '2023-10-30 10:09:17', 'Owner', 'owner', 'Account has logged in'),
+(293, '2023-10-30 10:09:17', 'Owner', 'owner', 'Account has logged in'),
+(294, '2023-10-30 10:09:18', 'Owner', 'owner', 'Account has logged in'),
+(295, '2023-10-30 10:09:19', 'Owner', 'owner', 'Account has logged in'),
+(296, '2023-10-30 10:09:23', 'Owner', 'owner', 'Account has logged in'),
+(297, '2023-10-30 10:09:25', 'Owner', 'owner', 'Account has logged in'),
+(298, '2023-10-30 22:14:42', 'Owner', 'owner', 'Account has logged out'),
+(299, '2023-10-30 22:14:56', 'Owner', 'owner', 'Account has logged in'),
+(300, '2023-10-30 22:51:17', 'Owner', 'owner', 'Account has logged out'),
+(301, '2023-10-30 23:04:40', 'Owner', 'owner', 'Account has logged in'),
+(302, '2023-10-30 23:04:53', 'Owner', 'owner', 'Account has logged out'),
+(303, '2023-10-30 23:09:09', 'Owner', 'owner', 'Account has logged in'),
+(304, '2023-10-30 23:14:36', 'Owner', 'owner', 'Successfully saved the User'),
+(305, '2023-10-31 00:34:12', 'Owner', 'owner', 'Successfully saved the User'),
+(306, '2023-10-31 01:01:29', 'Owner', 'owner', 'Account has logged out'),
+(307, '2023-10-31 01:01:46', 'Owner', 'owner', 'Account has logged in'),
+(308, '2023-10-31 01:03:31', 'Owner', 'owner', 'Successfully saved the User'),
+(309, '2023-10-31 08:08:40', 'Owner', 'owner', 'Account has logged out'),
+(310, '2023-11-01 12:10:14', 'Owner', 'owner', 'Account has logged in'),
+(311, '2023-11-01 12:10:19', 'Owner', 'owner', 'Account has logged in'),
+(312, '2023-11-01 12:23:29', 'Owner', 'owner', 'Successfully saved the User'),
+(313, '2023-11-01 12:54:09', 'Owner', 'owner', 'Account has logged out'),
+(314, '2023-11-01 12:56:56', 'Owner', 'owner', 'Account has logged in'),
+(315, '2023-11-01 12:58:21', 'Owner', 'owner', 'Successfully saved the User'),
+(316, '2023-11-01 13:00:39', 'Owner', 'owner', 'Account has logged in'),
+(317, '2023-11-01 13:01:45', 'Owner', 'owner', 'Successfully saved the User'),
+(318, '2023-11-01 13:05:58', 'Owner', 'owner', 'Successfully saved the User'),
+(319, '2023-11-01 13:09:34', 'Owner', 'owner', 'Successfully saved the User'),
+(320, '2023-11-01 13:10:57', 'Owner', 'owner', 'Successfully saved the User'),
+(321, '2023-11-01 13:12:14', 'Owner', 'owner', 'Successfully saved the User'),
+(322, '2023-11-01 13:15:39', 'Owner', 'owner', 'Successfully saved the User'),
+(323, '2023-11-01 13:17:22', 'Owner', 'owner', 'Successfully saved the User'),
+(324, '2023-11-01 13:27:36', 'Owner', 'owner', 'Account has logged out'),
+(325, '2023-11-01 13:27:41', 'Owner', 'owner', 'Account has logged in'),
+(326, '2023-11-01 13:28:20', 'Owner', 'owner', 'Successfully saved the User'),
+(327, '2023-11-01 13:44:04', 'Owner', 'owner', 'Successfully saved the Product details'),
+(328, '2023-11-01 13:44:04', 'Owner', 'owner', 'Successfully saved the Product details'),
+(329, '2023-11-01 13:46:43', 'Owner', 'owner', 'Successfully saved the Product details'),
+(330, '2023-11-01 13:47:25', 'Owner', 'owner', 'Successfully saved the Product details'),
+(331, '2023-11-01 14:08:10', 'Owner', 'owner', 'Successfully saved the Category'),
+(332, '2023-11-01 14:39:58', 'Owner', 'owner', 'Successfully updated the User'),
+(333, '2023-11-01 14:43:08', 'Owner', 'owner', 'Successfully updated the User'),
+(334, '2023-11-01 14:54:45', 'Owner', 'owner', 'Account has logged out'),
+(335, '2023-11-01 14:55:06', 'Owner', 'owner', 'Account has logged in'),
+(336, '2023-11-01 15:18:11', 'Owner', 'owner', 'Account has logged out'),
+(337, '2023-11-01 15:21:50', 'Owner', 'owner', 'Account has logged in'),
+(338, '2023-11-01 15:24:43', 'Owner', 'owner', 'Successfully saved the User'),
+(339, '2023-11-01 15:38:21', 'Owner', 'owner', 'Account has logged in'),
+(340, '2023-11-01 16:08:37', 'Owner', 'owner', 'Account has logged in'),
+(341, '2023-11-01 16:09:10', 'Owner', 'owner', 'Successfully saved the User'),
+(342, '2023-11-01 16:10:00', 'Owner', 'owner', 'Successfully saved the User'),
+(343, '2023-11-01 16:10:00', 'Owner', 'owner', 'Successfully saved the User'),
+(344, '2023-11-01 16:25:12', 'Owner', 'owner', 'Account has logged out'),
+(345, '2023-11-01 16:31:10', 'Owner', 'owner', 'Account has logged in'),
+(346, '2023-11-01 16:52:12', 'Owner', 'owner', 'Account has logged out'),
+(347, '2023-11-01 17:29:12', 'Owner', 'owner', 'Account has logged out'),
+(348, '2023-11-01 17:37:19', 'Owner', 'owner', 'Account has logged in'),
+(349, '2023-11-01 17:41:46', 'Owner', 'owner', 'Account has logged in'),
+(350, '2023-11-01 17:45:11', 'Owner', 'owner', 'Successfully saved the User'),
+(351, '2023-11-01 17:56:12', 'Owner', 'owner', 'Account has logged out');
 
 -- --------------------------------------------------------
 
@@ -286,7 +415,8 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 (5, 'SUPPLEMENTS'),
 (6, 'BRANDED SYRUP'),
 (7, 'GENERIC SYRUP'),
-(8, 'GALLENICALS');
+(8, 'GALLENICALS'),
+(9, 'IA  JKKSDB ASDBAJS  JASBD');
 
 -- --------------------------------------------------------
 
@@ -333,7 +463,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `barcode`, `name`, `sale_price`, `status`, `max_stock`, `min_stock`, `type`, `expired_products`, `stock_status`, `lot_num`) VALUES
-(6, 2, '4806512120054', 'Foskina Ointment', 25.5, 1, 100, 10, NULL, 0, 1, NULL),
+(6, 2, '4806512120054', 'Foskina Ointment', 25.5, 1, 100, 100, NULL, 0, 1, NULL),
 (7, 2, '4800333160329', 'Betnovate Ointment', 31, 1, 100, 10, NULL, 0, 1, NULL),
 (8, 2, '4800333160848', 'Dermovate Ointment', 35, 1, 100, 10, NULL, 0, 1, NULL),
 (9, 2, '4800304910021', 'Nizoral Cream', 40, 1, 100, 10, NULL, 0, 1, NULL),
@@ -373,7 +503,12 @@ INSERT INTO `products` (`id`, `category_id`, `barcode`, `name`, `sale_price`, `s
 (43, 7, '219', 'Cotrimoxazole 400mg susp    ', 60, 1, 100, 10, 'generic', 0, 1, NULL),
 (44, 7, '214', 'Cloxacillin 125mg susp       ', 55, 1, 100, 10, 'generic', 0, 1, NULL),
 (45, 7, '178', 'Salbutamol Syrup', 47, 1, 100, 10, 'generic', 0, 1, NULL),
-(56, 3, '34123413', 'Test', 85, 1, 0, 0, NULL, 0, 3, NULL);
+(56, 3, '34123413', 'Test', 85, 1, 100, 0, NULL, 0, 1, NULL),
+(57, 8, '8575322435789', 'bilat', NULL, 1, NULL, NULL, 'branded', 0, 0, NULL),
+(58, 8, '3412341241', 'keASGDVs      khuADSVuasy     YDSIuadsg', NULL, 1, NULL, NULL, '', 0, 0, NULL),
+(59, 8, '3412341241', 'keASGDVs      khuADSVuasy     YDSIuadsg', NULL, 1, NULL, NULL, '', 0, 0, NULL),
+(60, 2, '231212', 'QWE WQUEQWGY QWEYQWEYU   WQUEEW', NULL, 1, NULL, NULL, '', 0, 0, NULL),
+(61, 2, '231212', 'QWE WQUEQWGY QWEYQWEYU WQUEEW', NULL, 1, NULL, NULL, '', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -394,7 +529,7 @@ CREATE TABLE `product_details` (
   `designation` int(1) NOT NULL,
   `lot_number` varchar(20) NOT NULL,
   `lot_num` int(50) DEFAULT NULL,
-  `location` varchar(10) NOT NULL
+  `location` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -482,9 +617,10 @@ CREATE TABLE `trigger` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
+  `first_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `email` varchar(20) NOT NULL,
   `password` varchar(100) DEFAULT NULL,
   `role` int(1) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
@@ -496,10 +632,29 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `password`, `role`, `status`, `last_login`, `login_attempt`) VALUES
-(1, 'Jericho', 'Magsumbol', 'owner', '$2y$10$uovfGxUqgB7aaOXTlT832OEXoy52Kj1lJ6wzqchHhhnTi65937ZAS', 1, 1, '2023-07-05 09:12:33', 0),
-(8, 'Iron', 'Med', 'ironmed', '$2y$10$B9qxEA8k8OXLfJj/J1xXxOdCIs5KGOpSHoWNsfWHyyvXrrpLFUjNm', 2, 1, NULL, NULL),
-(9, 'Sam ', 'North', 'sammy', '$2y$10$LxG0D/blX.gLviuMi3piEuf/OyDNLGL5YdM9rngyIXIbUJBHm7ZYm', 3, 1, NULL, NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `role`, `status`, `last_login`, `login_attempt`) VALUES
+(1, 'Jericho', 'Magsumbol', 'owner', '', '$2y$10$uovfGxUqgB7aaOXTlT832OEXoy52Kj1lJ6wzqchHhhnTi65937ZAS', 1, 1, '2023-11-01 17:41:46', 0),
+(8, 'Iron', 'Med', 'ironmed', '', '$2y$10$B9qxEA8k8OXLfJj/J1xXxOdCIs5KGOpSHoWNsfWHyyvXrrpLFUjNm', 2, 1, NULL, NULL),
+(9, 'SamMY', 'North', 'sammy', '', '$2y$10$LxG0D/blX.gLviuMi3piEuf/OyDNLGL5YdM9rngyIXIbUJBHm7ZYm', 3, 1, NULL, NULL),
+(10, 'Kenneth', 'Pace', 'Kenn', '', '$2y$10$UXk8D2zjKyqaSOIflkfpFuMirDQGQ.MDxSNdVmSuH6qmWub3kWTZi', 3, 1, '2023-10-26 23:49:28', 0),
+(11, '                    ', '                    ', 'kenneth', 'kpace1226@gmail.com', '$2y$10$l1lQSQjdKenhEk8gPKfqg.m8NnEiR0Ud.9L/88Fkpnh3swuz.1L9e', 3, 1, NULL, NULL),
+(12, 'GADF', 'DSFAS', 'ADFADF', 'kpace1226@gmail.com', '$2y$10$r8gCfhM1qeB.xCHG.VIL6egs5Skg7lMELjpEdiLpyfB2vtUUOV432', 2, 1, NULL, NULL),
+(13, 'jkj', 'kknj', 'kjkjnj', 'kpace1226@gmail.com', '$2y$10$5K5KGvl0GGB1oUFmpIxUn.1ArDrpxsr.xV8tNta3xD8koSnBK5vJ.', 3, 1, NULL, NULL),
+(14, 'A', 'ASA', 'sfsf', 'kpace1226@gmail.com', '$2y$10$21WesxB9NF.MXKXxA9Ldfee.tYAqwy2KdkuF7Ik1Mh/pcwNVOfZMu', 3, 1, NULL, NULL),
+(15, 'Foskina', 'Ointment', 'foint', 'kimmy@gmail.com', '$2y$10$bsl/DXzTFB/PcwZFQq0VVuM3VSF5IIWUYUXmhUVLL5rHfghMQgi3K', 3, 1, NULL, NULL),
+(16, 'Salbutamol', 'Syrup', 'qwdwdq', 'dwdwqw@gmail.com', '$2y$10$aFAiePe5173Y5jsgxu5Fk.OBMelzl7ADwHSqM1AvCPjl4fxBHp1N6', 3, 1, NULL, NULL),
+(17, 'IVAN', 'qw', 'wd', 'kpace1226@gmail.com', '$2y$10$/ttE22PQ36HaAHtw7ZsLt.EcxP5yhzoqL4rClvkq5J2ABhLHgzTX6', 3, 1, NULL, NULL),
+(18, 'wdfg', 'dfdf', 'fqw', 'kpace1226@gmail.com', '$2y$10$95pgGmb5I/rwSVBUCx15w.eApNemgYowdUALlzcgBqNoP8Tbbsx/a', 3, 1, NULL, NULL),
+(19, 'CSC', 'ASCS', 'SC', 'kpace1226@gmail.com', '$2y$10$.cGSTSE4NEv3ZBcG3gs57OigUBQ8OK4eizvoMXJ79X.Gjr80Fu0EW', 3, 1, NULL, NULL),
+(20, 'ASsa', 'asddAS', 'ADSDa', 'kpace1226@gmail.com', '$2y$10$cJ.eBem3yP0SAz1HDp74vuT14vLXL3XUYCWib41DcWxbqJPLLjfEi', 3, 1, NULL, NULL),
+(21, 'qwfe', 'wdqwd', 'wedfqw', 'kpace1226@gmail.com', '$2y$10$Z.d0a6vDxv6IgpyjPfwW5.fsHE9RzKAFCejsRCF6w4w/1ksYT290y', 3, 1, NULL, NULL),
+(22, 'wqd', 'wsdqw', 'qd', 'kpace1226@gmail.com', '$2y$10$9weJq0FpmFY6iD2MD7jUUuvykqHNigYTLOzJYYyAJs/BSY53F79u.', 3, 1, NULL, NULL),
+(23, 'ADa', 'asd', 'AD', 'kpace1226@gmail.com', '$2y$10$wPkO7aey8dXT9NnWszZ56uabjVMHOMxREJhZkyY0/clxTfozzWOeK', 3, 1, NULL, NULL),
+(24, 'wqe', 'wewew', 'sammy', 'kpace1226@gmail.com', '$2y$10$o.wb7Mmjwu/qOVHTxPPQZOTd/jbLYwwu8h0QoQyz8naWNS3doy9.q', 3, 1, NULL, NULL),
+(25, 'Ddqw', 'ken', 'sdasd', 'kpace1226@gmail.com', '$2y$10$HRRlTGybbCqTE5xPYFwKRuDv.XHWlwOrcEN/GkHzGO4TFpSl/9WVi', 3, 1, NULL, NULL),
+(26, 'safSF', 'dASD', 'dasds', 'kpace1226@gmail.com', '$2y$10$Mb.goEM8rUh3FLY7bIu0MuBC2FYs2XK4YjhdYpesA2EHHFemCnGUG', 3, 1, NULL, NULL),
+(27, 'safSF', 'dASD', 'dasds', 'kpace1226@gmail.com', '$2y$10$/YOqHubgHiib.XlHWuL9HuipJGf6r/KPnxweTo2F4bdyiUJ1DEI6m', 3, 1, NULL, NULL),
+(28, 'djcndsjkh', 'asdjhasoh', 'ghdf', 'ken@gmail.com', '$2y$10$LnyM6GJHBHHgmAHxxGItde1TP6hiPsx3en6HnNsBA5zwGHYm.fVou', 3, 1, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -568,13 +723,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `action_logs`
 --
 ALTER TABLE `action_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=352;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `invoices`
@@ -586,7 +741,7 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `product_details`
@@ -610,7 +765,7 @@ ALTER TABLE `trigger`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables

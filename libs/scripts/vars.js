@@ -1,5 +1,5 @@
-const HOST = window.location.protocol + "//" + window.location.host + '/pos/';
-const HOST_CONTROLLER = window.location.protocol + "//" + window.location.host + '/pos/data/controller/';
+const HOST = window.location.protocol + "//" + window.location.host + '/ironmed/';
+const HOST_CONTROLLER = window.location.protocol + "//" + window.location.host + '/ironmed/data/controller/';
 
 // const HOST = window.location.protocol + "//" + window.location.host + '/inventory-pos/data/controller/';
 

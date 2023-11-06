@@ -1355,12 +1355,13 @@ a.previous.round {
 
 
 .form-control.form-control-sm {
-    width: 200px;
+    width: 300px;
 }
 
 .btn-export {
   background-color: #2cafa8;
   border: none;
+  margin-left: 400px;
 }
 
 .btn-export:hover {
