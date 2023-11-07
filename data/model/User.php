@@ -18,7 +18,7 @@ class User
 
     public function getAll()
     {
-        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login from users where role != 1";
+        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes from users where role != 1";
         $result = $this->conn->query($sql);
 
         $this->conn->close();
@@ -27,7 +27,7 @@ class User
 
     public function getById($user_id)
     {
-        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login FROM users WHERE id = $user_id";
+        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes FROM users WHERE id = $user_id";
         $result = $this->conn->query($sql);
 
         $this->conn->close();
@@ -65,6 +65,48 @@ class User
         return $result;
     }
 
+    public function save_session($user_id, $request)
+    {
+        $hours = $request['hours'];
+        $minutes = $request['minutes'];
+    
+        $sql = "UPDATE users SET hours = ?, minutes = ? WHERE id = ?";
+    
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iii", $hours, $minutes, $user_id);
+    
+        $result = '';
+        if ($stmt->execute() === TRUE) {
+            $result = "Successfully Saved";
+            $this->ActionLog->saveLogs('user', 'saved');
+        } else {
+            $result = "Error: " . $stmt->error;
+        }
+    
+        $stmt->close(); // Close the prepared statement
+    
+        return $result;
+    }
+
+    public function getSessionTimeout($user_id)
+{
+    $sql = "SELECT hours, minutes FROM users WHERE id = ?";
+    
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($hours, $minutes);
+    $stmt->fetch();
+    
+    $stmt->close();
+    
+    return [
+        'hours' => $hours,
+        'minutes' => $minutes,
+    ];
+}
+
+    
     public function update($request)
     {
         $user_id = $request['user_id'];

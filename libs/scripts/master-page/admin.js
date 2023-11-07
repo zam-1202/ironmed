@@ -284,6 +284,49 @@ const Admin = (() => {
             }
         }
         
+    thisAdmin.clickSaveSessionButton= () => {
+        const hours = $('#hours_value').val();
+        const minutes = $('#minute_value').val();
+            
+            if (hours === '' || minutes === '') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Please enter both hours and minutes',
+                    showConfirmButton: true,
+                });
+                return; // Exit the function if the input fields are empty.
+            }
+          
+            $.ajax({
+                type: "POST",
+                url: USER_CONTROLLER + '?action=save_session', // Adjust the URL to the correct path
+                dataType: "json",
+                data:{
+                  hours: hours,
+                  minutes: minutes
+                },
+                success: function (response) {
+                    // console.log('Response:', response);
+                        console.log('It was successful');
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Session saved successfully',
+                            showConfirmButton: true,
+                        });
+                },
+                error: function (error) {
+                    console.log(error);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error: An error occurred while saving the session',
+                        showConfirmButton: true,
+                    });
+                }
+            });
+          }
     
 
     thisAdmin.clickUpdate = (id) => {

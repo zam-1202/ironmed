@@ -98,6 +98,34 @@ else if ($action == 'save')
     echo json_encode($result);
 }
 
+else if ($action == 'save_session')
+{
+    $user_id = $_SESSION['user']['id'];
+    $hours = $_POST['hours'];
+    $minutes = $_POST['minutes'];
+
+    $request = [
+        'hours' => $hours,
+        'minutes' => $minutes
+    ];
+
+    $result = $User->save_session($user_id, $request);
+
+    echo json_encode($result);
+}
+
+else if ($action == 'getSessionTimeout')
+{
+    // Get the user's ID from the session
+    $user_id = $_SESSION['user']['id'];
+
+    // Call the getUserSessionTimeout function to retrieve the hours and minutes
+    $sessionTimeout = $User->getSessionTimeout($user_id);
+
+    // Return the session timeout as JSON
+    echo json_encode($sessionTimeout);
+}
+
 else if ($action == 'update')
 {
     $user_id = $_POST['user_id'];
