@@ -18,7 +18,7 @@ class User
 
     public function getAll()
     {
-        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes from users where role != 1";
+        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds from users where role != 1";
         $result = $this->conn->query($sql);
 
         $this->conn->close();
@@ -27,7 +27,7 @@ class User
 
     public function getById($user_id)
     {
-        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes FROM users WHERE id = $user_id";
+        $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds FROM users WHERE id = $user_id";
         $result = $this->conn->query($sql);
 
         $this->conn->close();
@@ -69,12 +69,13 @@ class User
     {
         $hours = $request['hours'];
         $minutes = $request['minutes'];
+        $seconds = $request['seconds'];
     
-        $sql = "UPDATE users SET hours = ?, minutes = ? WHERE id = ?";
-    
+        $sql = "UPDATE users SET hours = ?, minutes = ?, seconds = ? WHERE id = ?";
+        
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iii", $hours, $minutes, $user_id);
-    
+        $stmt->bind_param("iiii", $hours, $minutes, $seconds, $user_id);
+        
         $result = '';
         if ($stmt->execute() === TRUE) {
             $result = "Successfully Saved";
@@ -82,31 +83,26 @@ class User
         } else {
             $result = "Error: " . $stmt->error;
         }
-    
+        
         $stmt->close(); // Close the prepared statement
-    
+        
         return $result;
     }
+    
+    public function getSessionTimeoutSettings($user_id)
+    {
+        $sql = "SELECT hours, minutes, seconds FROM users WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($hours, $minutes, $seconds);
+        $stmt->fetch();
+        $stmt->close();
+    
+        return ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds];
+    }
+    
 
-    public function getSessionTimeout($user_id)
-{
-    $sql = "SELECT hours, minutes FROM users WHERE id = ?";
-    
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $stmt->bind_result($hours, $minutes);
-    $stmt->fetch();
-    
-    $stmt->close();
-    
-    return [
-        'hours' => $hours,
-        'minutes' => $minutes,
-    ];
-}
-
-    
     public function update($request)
     {
         $user_id = $request['user_id'];
@@ -224,7 +220,7 @@ class User
         $username = $request['username'];
         $password = $request['password'];
 
-        $sql = "SELECT id, password, first_name, last_name, email, role, login_attempt, status FROM users where username = ?";
+        $sql = "SELECT id, password, first_name, last_name, email, role, login_attempt, status, hours, minutes, seconds FROM users where username = ?";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $username);
@@ -239,7 +235,10 @@ class User
         $role = "";
         $login_attempt = "";
         $status = "";
-        $stmt->bind_result($id, $db_password, $first_name, $last_name, $email, $role, $login_attempt, $status);
+        $hours = "";
+        $minutes = "";
+        $seconds = "";
+        $stmt->bind_result($id, $db_password, $first_name, $last_name, $email, $role, $login_attempt, $status, $hours, $minutes, $seconds);
         $stmt->fetch();
 
 

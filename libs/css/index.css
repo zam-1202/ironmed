@@ -1374,3 +1374,18 @@ a.previous.round {
   background-color: #24958f;
   border: none;
 }
+
+#enableSessionTimeout{
+  background-color: #2dafa9;
+  border: white;
+}
+
+#disableTimeoutWarning{
+  background-color: #2dafa9;
+  border: white;
+}
+
+#forceLogoutOnTimeout{
+  background-color: #2dafa9;
+  border: white;
+}

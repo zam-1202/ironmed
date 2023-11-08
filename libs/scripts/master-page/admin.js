@@ -287,12 +287,13 @@ const Admin = (() => {
     thisAdmin.clickSaveSessionButton= () => {
         const hours = $('#hours_value').val();
         const minutes = $('#minute_value').val();
+        const seconds = $('#seconds_value').val();
             
-            if (hours === '' || minutes === '') {
+            if (hours === '' || minutes === '' || seconds === '') {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
-                    title: 'Please enter both hours and minutes',
+                    title: 'Please enter both hours, minutes, and seconds',
                     showConfirmButton: true,
                 });
                 return; // Exit the function if the input fields are empty.
@@ -304,7 +305,8 @@ const Admin = (() => {
                 dataType: "json",
                 data:{
                   hours: hours,
-                  minutes: minutes
+                  minutes: minutes,
+                  seconds: seconds
                 },
                 success: function (response) {
                     // console.log('Response:', response);

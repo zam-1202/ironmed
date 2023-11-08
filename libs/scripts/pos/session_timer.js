@@ -1,148 +1,139 @@
 $(document).ready(function () {
   $('.btn').click(function (event) {
-      event.preventDefault();
+    event.preventDefault();
   });
 
-  // Fetch the session timeout values (hours and minutes) from the user's session
-  const hours = <?php echo isset($_SESSION['user']['hours']) ? $_SESSION['user']['hours'] : 0; ?>;
-  const minutes = <?php echo isset($_SESSION['user']['minutes']) ? $_SESSION['user']['minutes'] : 0; ?>;
-  let sessionTimeoutEnabled = true;
-  const localStorageKey = 'sessionTimeoutEnabled'; // Key used to store and retrieve from local storage
+  // Timer to handle session timeout
   let timeout;
+  let sessionTimeoutEnabled = true;
+  const localStorageKey = 'sessionTimeoutEnabled';
 
-  // Function to convert hours and minutes to milliseconds
-  function calculateTimeout(hours, minutes) {
-    const timeoutInMilliseconds = (hours * 60 + minutes) * 60 * 1000;
-    return timeoutInMilliseconds;
-  }
+  // Function to handle session timeout
+  function handleSessionTimeout() {
+    console.log('handleSessionTimeout called');
 
-  function startTimer() {
-    timeout = setTimeout(logoutUser, calculateTimeout(hours, minutes));
-  }
-
-  function logoutUser() {
     if (sessionTimeoutEnabled) {
       Swal.fire({
-          title: "Are you still there?",
-          text: "You will be logged out in 2 seconds.",
-          html: 'I will close in <b></b> seconds.',
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonText: "Stay Logged In",
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          cancelButtonText: "Log Out",
-          reverseButtons: true,
-          timer: 10000,
-          timerProgressBar: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          didOpen: () => {
-              const b = Swal.getHtmlContainer().querySelector('b');
-              timerInterval = setInterval(() => {
-                  b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0);
-              }, 100);
-          },
+        title: "Are you still there?",
+        text: "You will be logged out in 2 seconds.",
+        html: 'I will close in <b></b> seconds.',
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Stay Logged In",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Log Out",
+        reverseButtons: true,
+        timer: 10000,
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          const b = Swal.getHtmlContainer().querySelector('b');
+          timerInterval = setInterval(() => {
+            b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0);
+          }, 100);
+        },
       }).then((result) => {
-          if (result.isConfirmed) {
-              clearTimeout(timeout);
-              startTimer();
-          } else {
-              $.ajax({
-                  type: "POST",
-                  url: LOGIN_CONTROLLER + '?action=logout',
-                  dataType: "json",
-                  success: function (response) {
-                      localStorage.setItem('logoutMessage', 'Successfully Logout');
-                      window.location.href = "../../views/master-page/login.php";
-                  },
-                  error: function () {
-                      // alert("error");
-                  }
-              });
-          }
+        if (result.isConfirmed) {
+          clearTimeout(timeout);
+          startTimer();
+        } else {
+          $.ajax({
+            type: "POST",
+            url: LOGIN_CONTROLLER + '?action=logout',
+            dataType: "json",
+            success: function (response) {
+              localStorage.setItem('logoutMessage', 'Successfully Logout');
+              window.location.href = "../../views/master-page/login.php";
+            },
+            error: function () {
+              // Handle error if needed
+            }
+          });
+        }
       });
     }
   }
 
-  startTimer();
+  // Timer to handle session timeout
+  function startTimer() {
+    console.log('startTimer called');
+    const hours = parseInt($('#hours_value').val());
+    const minutes = parseInt($('#minute_value').val());
+    const seconds = parseInt($('#seconds_value').val());
 
-  document.addEventListener("mousemove", function () {
-    if (sessionTimeoutEnabled)
-        resetSessionTimeout();
-  });
+    const timeoutDuration = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
-  document.addEventListener("keypress", function () {
-    if (sessionTimeoutEnabled)
-        resetSessionTimeout();
-  });
+    timeout = setTimeout(handleSessionTimeout, timeoutDuration);
+  }
 
+  // Reset the session timeout
   function resetSessionTimeout() {
+    console.log('resetSessionTimeout called');
     clearTimeout(timeout);
     startTimer();
   }
 
-  function toggleSessionTimeout() {
-    sessionTimeoutEnabled = !sessionTimeoutEnabled;
+  // Retrieve session timeout settings and initialize the timer
+  $.ajax({
+    type: "GET",
+    url: USER_CONTROLLER + '?action=getSessionTimeoutSettings',
+    dataType: "json",
+    success: function (response) {
+      if (response) {
+        $('#hours_value').val(response.hours);
+        $('#minute_value').val(response.minutes);
+        $('#seconds_value').val(response.seconds);
+        // Now that you have retrieved the settings, start the timer here if needed
+        startTimer();
+      }
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  });
+
+  // Add an event listener to the "Enable session timeout" checkbox
+  $('#enableSessionTimeout').change(function () {
+    sessionTimeoutEnabled = this.checked;
     console.log('Session timeout enabled: ' + sessionTimeoutEnabled);
     if (sessionTimeoutEnabled) {
-        resetSessionTimeout();
-        console.log('Session timeout has been enabled.');
+      resetSessionTimeout();
+      console.log('Session timeout has been enabled.');
     } else {
-        clearTimeout(timeout);
-        console.log('Session timeout has been disabled.');
+      clearTimeout(timeout);
+      console.log('Session timeout has been disabled.');
     }
     // Store the toggle state in local storage
-    localStorage.setItem(localStorageKey, sessionTimeoutEnabled);
+    localStorage.setItem('sessionTimeoutEnabled', sessionTimeoutEnabled);
+  });
+
+    // Start the timer based on user activity
+    startTimer();
+    
+  // Retrieve the toggle state from local storage on page load
+  const storedValue = localStorage.getItem('sessionTimeoutEnabled');
+  if (storedValue !== null) {
+    sessionTimeoutEnabled = JSON.parse(storedValue);
+    $('#enableSessionTimeout').prop('checked', sessionTimeoutEnabled);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.getElementById('toggle');
-
-    // Retrieve the toggle state from local storage on page load
-    const storedValue = localStorage.getItem(localStorageKey);
-    if (storedValue !== null) {
-        sessionTimeoutEnabled = JSON.parse(storedValue);
-        toggle.checked = sessionTimeoutEnabled;
+  document.addEventListener("mousemove", function () {
+    if (sessionTimeoutEnabled) {
+      console.log("Mouse moved. Resetting session timeout.");
+      clearTimeout(timeout);
+      startTimer();
     }
-
-    toggle.addEventListener('change', function () {
-        toggleSessionTimeout();
-        // your JavaScript function goes here
-        console.log('Toggle is ' + (this.checked ? 'on' : 'off'));
-    });
   });
 
-  // Fetch the session timeout values from the user's session when the page loads
-  startTimer();
+  document.addEventListener("keypress", function () {
+    if (sessionTimeoutEnabled) {
+      console.log("Keypress detected. Resetting session timeout.");
+      clearTimeout(timeout);
+      startTimer();
+    }
+  });
+
+
 });
-
-function getSessionTimeout() {
-  $.ajax({
-      type: 'GET',
-      url: USER_CONTROLLER + '?action=getSessionTimeout',
-      dataType: 'json',
-      success: function (response) {
-          // Response will contain the session timeout hours and minutes
-          const hours = response.hours;
-          const minutes = response.minutes;
-
-          // Use the retrieved hours and minutes as needed
-          // Set the session timeout based on the retrieved values
-
-                      // Use the retrieved hours and minutes as needed
-          console.log('Retrieved session timeout hours:', hours);
-          console.log('Retrieved session timeout minutes:', minutes);
-
-                      
-          // For example:
-          startTimer(hours, minutes);
-      },
-      error: function (error) {
-          console.error(error);
-      }
-  });
-}
-
-// Call getSessionTimeout to fetch and set the session timeout values
-getSessionTimeout();

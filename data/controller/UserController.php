@@ -103,27 +103,17 @@ else if ($action == 'save_session')
     $user_id = $_SESSION['user']['id'];
     $hours = $_POST['hours'];
     $minutes = $_POST['minutes'];
+    $seconds = $_POST['seconds'];
 
     $request = [
         'hours' => $hours,
-        'minutes' => $minutes
+        'minutes' => $minutes,
+        'seconds' => $seconds
     ];
 
     $result = $User->save_session($user_id, $request);
 
     echo json_encode($result);
-}
-
-else if ($action == 'getSessionTimeout')
-{
-    // Get the user's ID from the session
-    $user_id = $_SESSION['user']['id'];
-
-    // Call the getUserSessionTimeout function to retrieve the hours and minutes
-    $sessionTimeout = $User->getSessionTimeout($user_id);
-
-    // Return the session timeout as JSON
-    echo json_encode($sessionTimeout);
 }
 
 else if ($action == 'update')
@@ -251,7 +241,7 @@ else if ($action == 'searchUsers') {
     echo json_encode($table_data);
 }
 
-    else if($action == 'isUsernameTaken'  ){
+else if($action == 'isUsernameTaken'  ){
     if (isset($_POST['username'])){
         $username = $_POST['username'];
         $isTaken = $User->isUsernameTaken($username);
@@ -261,3 +251,11 @@ else if ($action == 'searchUsers') {
         echo -1;
     }
 }
+
+else if ($action == 'getSessionTimeoutSettings') {
+    $user_id = $_SESSION['user']['id'];
+    $sessionTimeoutSettings = $User->getSessionTimeoutSettings($user_id);
+    
+    echo json_encode($sessionTimeoutSettings);
+}
+

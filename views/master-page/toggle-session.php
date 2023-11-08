@@ -36,6 +36,13 @@ if (!$_SESSION['user']) {
                                     </div>
                                 </div>
 
+                                <div class="col-md-2">
+                                    <label for="minutes" class="form-label">Seconds</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
+                                        <input type="number" min="1" class="form-control" id="seconds_value">
+                                    </div>
+                                </div>
 
                                 <div class="col-md-2 align-self-end">
                                     <button type="submit" id="btn_save_session" onclick="Admin.clickSaveSessionButton()" class="btn form-control btn-main">Save</button>
@@ -58,18 +65,25 @@ if (!$_SESSION['user']) {
                             </div>
                             </div>
                         </form> -->
+
                         <form class="row g-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">Disable session timeout warning popup</label>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">Force logout on session timeout</label>
-                                    </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
+                                <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
+                            </div>
+
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="disableTimeoutWarning" name="disableTimeoutWarning">
+                                <label class="form-check-label" for="disableTimeoutWarning">Disable session timeout warning popup</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="forceLogoutOnTimeout" name="forceLogoutOnTimeout">
+                                <label class="form-check-label" for="forceLogoutOnTimeout">Force logout on session timeout</label>
+                            </div>
                         </form>
                     </div>
-                   
                 </div>
             </div>
         </div>
