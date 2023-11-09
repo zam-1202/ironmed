@@ -10,7 +10,7 @@ if(!$_SESSION['user']) {
 
 <body>
     <?php include '../layouts/nav.php'; ?>
-    <section class="section user">
+    <section class="section user" style="border: none;">
         <h1 class="section__title">Invoice</h1>
        
         <div class="container-fluid section__body">

@@ -64,16 +64,16 @@ if (!$_SESSION['user']) {
                         <div class="mb-5"></div>
 
                         <p style="text-align: justify; font-size: 13px; font-style: italic;">
-                        Before enabling the switch button, ensure that you have entered a time <br>
+                        Before <span style="color: #24958f;">enabling</span> the switch button, ensure that you have entered a time <br>
                         and successfully saved the configuration.
                         </p>
 
-<form class="row g-2">
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
-        <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
-    </div>
-</form>
+                    <form class="row g-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
+                            <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
+                        </div>
+                    </form>
 
                     </div>
                 </div>
