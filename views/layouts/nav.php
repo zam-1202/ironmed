@@ -103,7 +103,7 @@
 <script>
 document.querySelectorAll('.nav-link').forEach(link => {
     // Remove the hostname and compare the paths
-    console.log("Comparing:", link.getAttribute('href'), window.location.pathname);
+    // console.log("Comparing:", link.getAttribute('href'), window.location.pathname);
     if (link.getAttribute('href') === window.location.pathname) {
         link.setAttribute('aria-current', 'page');
     }

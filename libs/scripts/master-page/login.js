@@ -74,7 +74,8 @@ const togglePassword = document.querySelector('#togglePassword');
      Swal.fire({
          position: 'center',
          icon: 'success',
-         title: 'Session Timeout',
+         title: "Session Timeout",
+         html: 'Your session has expired due to inactivity.<br>Please log in again to continue.',
          text: logoutMessage,
          showConfirmButton: true,
      });

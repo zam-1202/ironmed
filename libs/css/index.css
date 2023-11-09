@@ -1389,3 +1389,9 @@ a.previous.round {
   background-color: #2dafa9;
   border: white;
 }
+
+.hide-session-inputs #hours_value,
+.hide-session-inputs #minute_value,
+.hide-session-inputs #seconds_value {
+  display: none;
+}

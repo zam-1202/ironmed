@@ -103,6 +103,12 @@ else if($_SESSION['user']['role'] === 3) {
         </div>
 
     </section>
+    
+    <body class="hide-session-inputs">
+            <input type="number" min="1" class="form-control" id="hours_value">
+            <input type="number" min="1" class="form-control" id="minute_value">
+            <input type="number" min="1" class="form-control" id="seconds_value">
+        </body>
 
     <?php include '../layouts/scripts.php' ?>
 </body>

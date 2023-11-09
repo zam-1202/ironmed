@@ -83,14 +83,20 @@ $totalQuantity = number_format($totalQuantity);
             </tr>
         </table>
 
+        <body class="hide-session-inputs">
+            <input type="number" min="1" class="form-control" id="hours_value">
+            <input type="number" min="1" class="form-control" id="minute_value">
+            <input type="number" min="1" class="form-control" id="seconds_value">
+        </body>
 
 
 
         <?php include '../layouts/scripts.php' ?>
 </body>
+<script src="../../libs/scripts/pos/session_timer.js"></script>
 <script src="../../libs/scripts/master-page/home.js" ></script>
 <script src="../../libs/scripts/pos/time.js"></script>
-<script src="../../libs/scripts/pos/session_timer.js"></script>
+
 
 
 </html>

@@ -1,21 +1,20 @@
-$(document).ready(function () {
-  $('.btn').click(function (event) {
-    event.preventDefault();
-  });
+
 
   // Timer to handle session timeout
   let timeout;
   let sessionTimeoutEnabled = true;
   const localStorageKey = 'sessionTimeoutEnabled';
+  let changesSaved = false;
 
+
+  let idleTimer;
   // Function to handle session timeout
   function handleSessionTimeout() {
-    console.log('handleSessionTimeout called');
-
     if (sessionTimeoutEnabled) {
+      console.log('Session timeout enabled. Starting Swal...');
+      // console.log('Timeout values:', $('#hours_value').val(), $('#minute_value').val(), $('#seconds_value').val());
       Swal.fire({
         title: "Are you still there?",
-        text: "You will be logged out in 2 seconds.",
         html: 'I will close in <b></b> seconds.',
         icon: "question",
         showCancelButton: true,
@@ -35,6 +34,7 @@ $(document).ready(function () {
           }, 100);
         },
       }).then((result) => {
+        // console.log('Swal closed. Result:', result);
         if (result.isConfirmed) {
           clearTimeout(timeout);
           startTimer();
@@ -56,84 +56,94 @@ $(document).ready(function () {
     }
   }
 
-  // Timer to handle session timeout
-  function startTimer() {
-    console.log('startTimer called');
-    const hours = parseInt($('#hours_value').val());
-    const minutes = parseInt($('#minute_value').val());
-    const seconds = parseInt($('#seconds_value').val());
-
-    const timeoutDuration = (hours * 3600 + minutes * 60 + seconds) * 1000;
-
-    timeout = setTimeout(handleSessionTimeout, timeoutDuration);
-  }
-
-  // Reset the session timeout
-  function resetSessionTimeout() {
-    console.log('resetSessionTimeout called');
-    clearTimeout(timeout);
-    startTimer();
-  }
-
-  // Retrieve session timeout settings and initialize the timer
-  $.ajax({
-    type: "GET",
-    url: USER_CONTROLLER + '?action=getSessionTimeoutSettings',
-    dataType: "json",
-    success: function (response) {
-      if (response) {
-        $('#hours_value').val(response.hours);
-        $('#minute_value').val(response.minutes);
-        $('#seconds_value').val(response.seconds);
-        // Now that you have retrieved the settings, start the timer here if needed
-        startTimer();
-      }
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  });
-
-  // Add an event listener to the "Enable session timeout" checkbox
-  $('#enableSessionTimeout').change(function () {
-    sessionTimeoutEnabled = this.checked;
-    console.log('Session timeout enabled: ' + sessionTimeoutEnabled);
+  document.addEventListener("mousemove", function() {
     if (sessionTimeoutEnabled) {
-      resetSessionTimeout();
-      console.log('Session timeout has been enabled.');
-    } else {
       clearTimeout(timeout);
-      console.log('Session timeout has been disabled.');
+      startTimer();
     }
-    // Store the toggle state in local storage
-    localStorage.setItem('sessionTimeoutEnabled', sessionTimeoutEnabled);
   });
+  
+  document.addEventListener("keypress", function() {
+    if (sessionTimeoutEnabled) {
+      clearTimeout(timeout);
+      startTimer();
+    }
+  });
+  
 
-    // Start the timer based on user activity
+    function resetSessionTimeout() {
+        clearTimeout(timeout);
+        startTimer();
+    }
+
+
+// Add an event listener to the "Enable session timeout" checkbox
+$('#enableSessionTimeout').change(function () {
+  sessionTimeoutEnabled = this.checked;
+  console.log('Toggle is ' + (this.checked ? 'on' : 'off'));
+  if (sessionTimeoutEnabled) {
     startTimer();
-    
+  } else {
+    clearTimeout(timeout);
+  }
+  localStorage.setItem(localStorageKey, JSON.stringify(sessionTimeoutEnabled));
+});
+
+
+
+// Retrieve session timeout settings and initialize the timer
+$.ajax({
+  type: "GET",
+  url: USER_CONTROLLER + '?action=getSessionTimeoutSettings',
+  dataType: "json",
+  success: function (response) {
+    console.log('Session timeout settings received:', response);
+    if (response) {
+      localStorage.setItem('sessionTimeoutSettings', JSON.stringify(response));
+      $('#hours_value').val(response.hours);
+      $('#minute_value').val(response.minutes);
+      $('#seconds_value').val(response.seconds);
+
+      // Reset the timer when the values are changed
+      $('#hours_value, #minute_value, #seconds_value').on('input', function () {
+        resetSessionTimeout();
+      });
+
+      // Now that you have retrieved the settings, start the timer here
+      startTimer();
+    }
+  },
+  error: function (error) {
+    console.log('Error retrieving session timeout settings:', error);
+  }
+});
+
+// Add an event listener for page load
+$(document).ready(function () {
   // Retrieve the toggle state from local storage on page load
-  const storedValue = localStorage.getItem('sessionTimeoutEnabled');
+  const storedValue = localStorage.getItem(localStorageKey);
+  // console.log('Stored value:', storedValue);
   if (storedValue !== null) {
     sessionTimeoutEnabled = JSON.parse(storedValue);
+    // console.log('Retrieved value:', sessionTimeoutEnabled);
     $('#enableSessionTimeout').prop('checked', sessionTimeoutEnabled);
   }
-
-  document.addEventListener("mousemove", function () {
-    if (sessionTimeoutEnabled) {
-      console.log("Mouse moved. Resetting session timeout.");
-      clearTimeout(timeout);
-      startTimer();
-    }
-  });
-
-  document.addEventListener("keypress", function () {
-    if (sessionTimeoutEnabled) {
-      console.log("Keypress detected. Resetting session timeout.");
-      clearTimeout(timeout);
-      startTimer();
-    }
-  });
-
-
 });
+
+  function startTimer() {
+    console.log('startTimer called');
+    if (sessionTimeoutEnabled) {
+      clearTimeout(timeout); // Clear any existing timer
+      const hours = parseInt($('#hours_value').val());
+      const minutes = parseInt($('#minute_value').val());
+      const seconds = parseInt($('#seconds_value').val());
+  
+      // console.log('Parsed values:', hours, minutes, seconds);
+  
+      const timeoutDuration = (hours * 3600 + minutes * 60 + seconds) * 1000;
+  
+      timeout = setTimeout(handleSessionTimeout, timeoutDuration);
+
+    }
+  }
+  

@@ -13,14 +13,26 @@ if (!$_SESSION['user']) {
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-
+    <section class="section product" style="border: none;">
         <div class="container-fluid section__body">
             <div class="row">
-                <div class="col-lg-12 col-md-12 ">
+                <div class="col-lg-6 col-md-12">
                     <div class="user__form-wrapper">
-                        <h2 class="section__sub-title" id="lbl_title">Session Timeout</h2>
+                        <h2 class="form-wrapper" id="txt_title">Session Timeout</h2>
+
+                        <p style="text-align: justify; font-size: 14px;">
+                        Welcome to the Session Timeout Configuration page! Here, you can customize the duration of inactivity
+                        that triggers an automatic logout from your account for security purposes. This is a security
+                        measure to protect your information in case you forget to log out or if you leave your computer unattended.
+                        </p>
+                        
+                        <div class="product__table-wrapper">
+
+
+                            <div class="mb-5"></div>
+
                         <form class="row g-3">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="hours" class="form-label">Hours</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
@@ -28,7 +40,7 @@ if (!$_SESSION['user']) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="minutes" class="form-label">Minutes</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
@@ -36,7 +48,7 @@ if (!$_SESSION['user']) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label for="minutes" class="form-label">Seconds</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
@@ -49,46 +61,26 @@ if (!$_SESSION['user']) {
                                 </div>
                         </form>
 
+                        <div class="mb-5"></div>
 
-<!-- <form class="row g-3">
-                            <div class = "float-container"> 
-                                <div class="float-child">
-                                    <label class="switch">
-                                        <input type="checkbox" checked id="toggle">
-                                        <span class="slider round"></span>
-                                        <span class="labels" data-on="ON" data-off="OFF"></span>
-                                    </label>
-                                </div>
-                                <div class="float-child">
-                                    <h6>&nbsp;&nbsp;&nbsp;Users will automatically be logged out after timeout session is met.</h6>
-                                </div>
-                            </div>
-                            </div>
-                        </form> -->
+                        <p style="text-align: justify; font-size: 13px; font-style: italic;">
+                        Before enabling the switch button, ensure that you have entered a time <br>
+                        and successfully saved the configuration.
+                        </p>
 
-                        <form class="row g-2">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
-                                <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
-                            </div>
+<form class="row g-2">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
+        <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
+    </div>
+</form>
 
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="disableTimeoutWarning" name="disableTimeoutWarning">
-                                <label class="form-check-label" for="disableTimeoutWarning">Disable session timeout warning popup</label>
-                            </div>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="forceLogoutOnTimeout" name="forceLogoutOnTimeout">
-                                <label class="form-check-label" for="forceLogoutOnTimeout">Force logout on session timeout</label>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
- 
+    </section>
 
 
     <?php include '../layouts/scripts.php' ?>

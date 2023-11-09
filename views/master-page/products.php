@@ -194,6 +194,12 @@ if(!$_SESSION['user']) {
         </div>
     </div>
 
+    <body class="hide-session-inputs">
+            <input type="number" min="1" class="form-control" id="hours_value">
+            <input type="number" min="1" class="form-control" id="minute_value">
+            <input type="number" min="1" class="form-control" id="seconds_value">
+    </body>
+
     <?php include '../layouts/scripts.php' ?>
 </body>
 <script src="../../libs/scripts/master-page/products.js"></script>
