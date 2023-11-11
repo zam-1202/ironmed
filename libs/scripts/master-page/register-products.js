@@ -357,31 +357,6 @@ const Category = (() => {
     return thisCategory;
 })()
 
-$("#regproduct_search").on("input", function() {
-    const searchRegProd = $(this).val();
-    searchRegisteredProduct(searchRegProd);
-});
-
-
-function searchRegisteredProduct(searchRegProd) {
-    $.ajax({
-        type: "GET",
-        url: PRODUCT_CONTROLLER + '?action=searchRegisteredProduct',
-        data: { searchRegProd: searchRegProd },
-        dataType: "json",
-        success: function (response) {
-            if (response.length > 0) {
-                $('#productsTable').html(response);
-            } else {
-                $('#productsTable').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
-            }
-            $('.table').DataTable();
-        },
-        error: function () {
-            // Handle errors
-        }
-    });
-}
 
 const validateProductName = () => {
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, ampersand, and period
