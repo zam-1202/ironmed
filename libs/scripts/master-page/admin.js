@@ -21,7 +21,9 @@ const Admin = (() => {
             dataType: "json",
             success: function (response) {
                 $('.table').DataTable().destroy();
-                
+                Object.keys(response).forEach((key) => {
+                    response[key] = response[key].trim();
+                });
                 $('#tbody_users').html(response);
 
                 $('.table').DataTable();
@@ -724,29 +726,15 @@ const Admin = (() => {
     return thisAdmin;
 })();
 
-$("#live_search").on("input", function() {
-    const searchTerm = $(this).val();
-    searchUsers(searchTerm);
-});
+// $(document).ready(function() {
+//     // Initial DataTable setup
+//     const table = $('.table').DataTable({
+//         // Other configurations...
+//     });
 
-
-function searchUsers(searchTerm) {
-    $.ajax({
-        type: "GET",
-        url: USER_CONTROLLER + '?action=searchUsers',
-        data: { searchTerm: searchTerm },
-        dataType: "json",
-        success: function (response) {
-            if (response.length > 0) {
-                $('#tbody_users').html(response);
-            } else {
-                $('#tbody_users').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
-            }
-            $('.table').DataTable();
-        },
-        error: function () {
-            // Handle errors
-        }
-    });
-}
-
+//     // Adding an event listener for the search input
+//     $('.table_filter input').on('input', function() {
+//         var searchTerm = this.value.trim(); // Trim excess white spaces
+//         table.search(searchTerm).draw(); // Apply the modified search term
+//     });
+// });

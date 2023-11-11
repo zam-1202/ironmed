@@ -191,56 +191,6 @@ else if($action == 'resetPassword')
     echo json_encode($result);
 }
 
-else if ($action == 'searchUsers') {
-    $searchTerm = $_GET['searchTerm'];
-    $results = $User->searchUsers($searchTerm);
-
-    // Initialize the $table_data variable
-    $table_data = '';
-    $counter = 1;
-
-    // Process the search results and append them to $table_data
-    foreach ($results as $user) {
-        $fullName = $user['first_name'] . ' ' . $user['last_name'];
-        $role = 'Admin';
-        if ($user['role'] == 3) {
-            $role = 'User';
-        }
-
-        $status = '<span class="badge bg-success">Active</span>';
-        if ($user['status'] == 0) {
-            $status = '<span class="badge bg-danger">Inactive</span>';
-        }
-
-        $last_login = '';
-        if ($user['last_login']) {
-            $last_login = date('F j, Y, g:i a', strtotime($user['last_login']));
-        }
-
-        // Format and append the user data to $table_data
-        $table_data .= '<tr>';
-        $table_data .= '<td>' . $counter . '</td>';
-        $table_data .= '<td>' . $fullName . '</td>';
-        $table_data .= '<td>' . $user['username'] . '</td>';
-        $table_data .= '<td>' . $user['email'] . '</td>';
-        $table_data .= '<td>' . $role . '</td>';
-        $table_data .= '<td>' . $status . '</td>';
-        $table_data .= '<td>' . $last_login . '</td>';
-        $table_data .= '<td class="col-actions">';
-        $table_data .= '<div class="btn-group" role="group" aria-label="Basic mixed styles example">';
-        $table_data .= '<button type="button" onclick="Admin.clickUpdate(' . $user['id'] . ')" class="btn btn-warning btn-sm"><i class="bi bi-list-check"></i> Update </button>';
-        $table_data .= '<button type  ="button" onclick="Admin.clickResetPassword(' . $user['id'] . ')" class="btn btn-info btn-sm"><i class="bi bi-key"></i> Reset Password </button>';
-        $table_data .= '</div>';
-        $table_data .= '</td>';
-        $table_data .= '</tr>';
-
-        $counter++;
-    }
-
-    // Output the $table_data as JSON
-    echo json_encode($table_data);
-}
-
 else if($action == 'isUsernameTaken'  ){
     if (isset($_POST['username'])){
         $username = $_POST['username'];

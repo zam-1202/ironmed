@@ -12,10 +12,24 @@
 
 
 <script>
-    $('.table').DataTable({
-        autoFill: false
-    });
+$(document).ready(function() {
+        const dataTable = $('.table').DataTable({
+            autoFill: false
+        });
 
+        const searchTerm = "your_search_term_here";
+
+        // Change the search term
+        dataTable.search(searchTerm).draw();
+
+        // Case-insensitive search
+        dataTable.search(searchTerm, false, true).draw();
+
+        // Exact phrase search
+        dataTable.search('"' + searchTerm + '"', false, false).draw();
+
+        // To perform a regular expression search:
+        // dataTable.search(yourRegularExpression, true).draw();
 
     const logout = () => {
 
@@ -38,11 +52,10 @@
                     {
                         window.location.href = "../../views/master-page/login.php";
                     },
-                    error: function () {
-                    }
-                }); 
-            }
-        })
-    }
-
+                    error: function () {}
+                    });
+                }
+            })
+        };
+    });
 </script>

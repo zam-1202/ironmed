@@ -1349,14 +1349,14 @@ a.previous.round {
   color: #fff;
 }
 
-.dataTables_filter{
+/* .dataTables_filter{
   display: none;
   }
 
 
 .form-control.form-control-sm {
     width: 300px;
-}
+} */
 
 .btn-export {
   background-color: #2cafa8;
