@@ -19,8 +19,8 @@
                 <input type="text" id="txt_username" placeholder="Username" maxlength="20">
                 <input type="password" name = "txt_password" id="txt_password" placeholder="Password" maxlength="20">
                 <span  id="togglePassword" style="cursor: pointer;" ></span>
-                <button class="btn form-control btn-main" onclick="Login.submit()" type="submit">Login</button>
-                <button class="btn form-control btn-main" onclick="redirectToForgotPassword()">Forgot Password</button>
+                <button class="btn form-control btn-primary" onclick="Login.submit()" type="submit">Login</button>
+                <button class="btn form-control btn-primary" onclick="redirectToForgotPassword()">Forgot Password</button>
             </form>
         </div>
  

@@ -49,14 +49,46 @@ nav {
 }
 
 
+/* Specificity increased */
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #06A1AD !important;
+}
+
+/* Primary hover added to increase specificity */
+.btn-primary:hover {
+  background-color: #24958f !important;
+  color: #fff !important;
+}
+
 .btn-main {
   background-color: #2cafa8;
 }
 
-.btn-main:hover {
-  background-color: #24958f;
+/* Specificity increased */
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #06A1AD !important;
+}
+
+/* Primary hover added to increase specificity */
+.btn-primary:hover {
+  background-color: #24958f !important;
   color: #fff !important;
 }
+
+.btn-main {
+  background-color: #2cafa8;
+}
+
+/* Changed order and specificity increased for main button hover */
+.btn-main:hover {
+  background-color: #24958f !important;
+  color: #fff !important;
+}
+
 
 label {
   color: #24958f;
@@ -1092,6 +1124,10 @@ body {
 
 .btn:hover {
   color: black;
+}
+
+.btn:active:hover {
+  background-color: #05a2af;
 }
 
 .navbar {
