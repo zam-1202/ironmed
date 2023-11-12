@@ -49,19 +49,6 @@ nav {
 }
 
 
-/* Specificity increased */
-.btn-primary,
-.btn-primary:active,
-.btn-primary:visited {
-  background-color: #06A1AD !important;
-}
-
-/* Primary hover added to increase specificity */
-.btn-primary:hover {
-  background-color: #24958f !important;
-  color: #fff !important;
-}
-
 .btn-main {
   background-color: #2cafa8;
 }
@@ -70,7 +57,7 @@ nav {
 .btn-primary,
 .btn-primary:active,
 .btn-primary:visited {
-  background-color: #06A1AD !important;
+  background-color: #2cafa8 !important;
 }
 
 /* Primary hover added to increase specificity */

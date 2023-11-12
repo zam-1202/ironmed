@@ -37,7 +37,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" id="btn_save_category" onclick="Category.clickSaveButton()" class="btn form-control btn-main">Register Category</button>
+                                    <button type="submit" id="btn_save_category" onclick="Category.clickSaveButton()" class="btn form-control btn-primary">Register Category</button>
                                     <div class="mb-2"></div>
                                     <button  onclick="Category.clickCancel()" class="btn form-control btn-warning">Cancel</button>
                                 </div>

@@ -128,7 +128,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     </div>
                                 </div> 
                                 <div class="col-6">
-                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-main">Add Stocks</button>
+                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-primary">Add Stocks</button>
                                 </div>
                                 <div class="col-6">
                                     <button  onclick="Product.resetFields()" class="btn form-control btn-warning">Cancel</button>

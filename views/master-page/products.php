@@ -21,10 +21,13 @@ if(!$_SESSION['user']) {
                         <div class="col-lg-12 col-md-12">
                         <div class="row">
                             <div class=" col-md-6">
-                                <button type="button" onclick="Product.exportInventory();" class="btn btn-export">Export Inventory Report</button>                               
+                                <button type="button" onclick="Product.exportInventory();" class="btn btn-primary">Export Inventory Report</button>                               
                             </div>
                         </div>
                     </div>
+                    
+                    <div>&nbsp;</div>
+                    
                         <div class="table-wrapper">
                             <table class="table table-bordered">
                                 <thead>
