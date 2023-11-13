@@ -236,6 +236,74 @@ const ChangePassword = (() => {
     
         return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
     }
+
+    thisChangePassword.validateConfirmPassword = () => {
+        const newpassword = $('#txt_newpassword').val();
+        const confirm_password = $('#txt_confirm_password').val();
+    
+        if (newpassword.trim() === '') {
+            // Handle the case where 'newpassword' is empty
+            $('#txt_newpassword').removeClass('green-input red-input');
+            document.getElementById('mess').innerHTML = "";
+            if (confirm_password.trim() === '') {
+                // Handle the case where both fields are empty
+                $('#txt_confirm_password').removeClass('red-input green-input');
+                document.getElementById('confirmPass').innerHTML = "";
+            } else {
+                // Case 4: Fill out the first password field
+                $('#txt_confirm_password').removeClass('green-input').addClass('red-input');
+                document.getElementById('confirmPass').innerHTML = "Fill out the first password field";
+                document.getElementById('confirmPass').style.color = 'red';
+            }
+        } else if (!isValidPasswordFormat(newpassword)) {
+            // Case 1: Password format is incorrect
+            $('#txt_newpassword').removeClass('green-input').addClass('red-input');
+            document.getElementById('mess').innerHTML = "Password format is incorrect";
+            document.getElementById('mess').stylecolor = 'red';
+            $('#txt_confirm_password').removeClass('red-input green-input');
+            document.getElementById('confirmPass').innerHTML = "";
+        } else {
+            // Case 2: Password format is correct
+            $('#txt_newpassword').removeClass('red-input').addClass('green-input');
+            document.getElementById('mess').innerHTML = "";
+            document.getElementById('mess').style.color = 'green';
+    
+            if (confirm_password.trim() === '') {
+                // Handle the case where 'confirm_password' is empty
+                $('#txt_confirm_password').removeClass('red-input green-input');
+                document.getElementById('confirmPass').innerHTML = "";
+            } else if (newpassword !== confirm_password) {
+                // Case 5: Password doesn't match
+                $('#txt_confirm_password').removeClass('green-input').addClass('red-input');
+                document.getElementById('mess').innerHTML = "";
+                document.getElementById('confirmPass').innerHTML = "Password doesn't match";
+                document.getElementById('confirmPass').style.color = 'red';
+            } else if (!isValidPasswordFormat(confirm_password)) {
+                // Case 3: Password format is incorrect for confirmation
+                $('#txt_confirm_password').removeClass('green-input').addClass('red-input');
+                document.getElementById('confirmPass').innerHTML = "Password format is incorrect";
+                document.getElementById('confirmPass').style.color = 'red';
+            } else {
+                // Case 6: Password matches
+                $('#txt_confirm_password').removeClass('red-input').addClass('green-input');
+                document.getElementById('mess').innerHTML = "";
+                document.getElementById('mess').style.color = 'green';
+                document.getElementById('confirmPass').innerHTML = "Passwords matched";
+                document.getElementById('confirmPass').style.color = 'green';
+            }
+        }
+    }
+
+    function isValidPasswordFormat(password) {
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasSpecialChar = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/.test(password); // Include underscore
+        const hasNumber = /\d/.test(password);
+        const isLongEnough = password.length >= 8;
+    
+        return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
+    }
+
     
 
     thisChangePassword.confirm = () => {
