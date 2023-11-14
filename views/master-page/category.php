@@ -17,7 +17,6 @@ else if($_SESSION['user']['role'] === 3) {
     <?php include '../layouts/nav.php'; ?>
 
    
-
     <section class="section user" style="border: none;">
         <div class="container-fluid section__body">
             <div class="row">
@@ -64,7 +63,7 @@ else if($_SESSION['user']['role'] === 3) {
             </div>
         </div>
 
-    <!-- </section> -->
+    </section>
 
     <body class="hide-session-inputs">
             <input type="number" min="1" class="form-control" id="hours_value">
