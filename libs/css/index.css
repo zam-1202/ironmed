@@ -1418,3 +1418,9 @@ a.previous.round {
 .hide-session-inputs #seconds_value {
   display: none;
 }
+
+.highlight {
+  background-color: #2dafa9;
+  color:white;
+  /* opacity: 20%; */
+}

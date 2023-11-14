@@ -1,6 +1,8 @@
 <script src="../../libs/plugins/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="../../libs/plugins/jquery/jquery-3.6.1.min.js"></script>
+<script src="../../libs/plugins/jquery/jquery-3.7.1.min.js"></script>
+<script src="../../libs/plugins/jquery/jquery.highlight.js"></script>
 <script src="../../libs/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../libs/plugins/datatables/dataTables.searchHighlight.min.js"></script>
 <script src="../../libs/plugins/datatables/dataTables.bootstrap5.min.js"></script>
 <script src="../../libs/plugins/chart.js/Chart.min.js"></script>
 <script src="../../libs/plugins/chart.js/Chart.bundle.min.js"></script>
