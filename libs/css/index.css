@@ -1131,7 +1131,7 @@ body {
 }
 
 .nav-link[aria-current="page"]{
-  text-decoration: underline wavy white 0.1rem;
+  text-decoration: underline solid white 0.1rem;
   text-underline-offset: 0.2rem;
 }
 
