@@ -96,6 +96,9 @@ class ActionLog
             case 'void':
                 $request['action'] = 'Successfully void the item';
                 break;
+            case 'inventory_export':
+                $request['action'] = 'Exported an Inventory Report';
+                break;
             default:
                 # code...
                 break;
