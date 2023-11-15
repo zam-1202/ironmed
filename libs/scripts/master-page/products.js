@@ -193,10 +193,15 @@ const Product = (() => {
 
     }
 
-    thisProduct.exportInventory = () => {
+    thisProduct.chooseCSV = () => {
+        $('#chosen_Export').html('Export CSV');
+        thisProduct.exportCSV();
+    }
+
+    thisProduct.exportCSV = () => {
         $.ajax({
             type: "POST",
-            url: PRODUCT_CONTROLLER + '?action=inventoryExcel',
+            url: PRODUCT_CONTROLLER + '?action=inventoryCSV',
             dataType: "json",
             success: function (data) {
             
@@ -227,6 +232,61 @@ const Product = (() => {
         });
     }
 
+    thisProduct.chooseXLSX = () => {
+        $('#chosen_Export').html('Export XLSX');
+        thisProduct.exportXLSX();
+    }
+
+    thisProduct.exportXLSX = () => {
+        $.ajax({
+            type: "POST",
+            url: PRODUCT_CONTROLLER + '?action=inventoryXLSX',
+            dataType: "json",
+            success: function (data) {
+            
+                var currentDate = new Date();
+                var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
+                var filename = `Inventory Report ${formattedDate}.xlsx`; // Construct the filename with the current date
+
+
+                var xlsxContent = "data:text/xlsx;charset=utf-8,";
+                xlsxContent += Object.keys(data[0]).join(",") + "\n";
+                data.forEach(function (item) {
+                    var row = Object.values(item).join(",");
+                    xlsxContent += row + "\n";
+                });
+                
+                var encodedUri = encodeURI(xlsxContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", filename);
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    thisProduct.choosePDF = () => {
+        $('#chosen_Export').html('Export PDF');
+        thisProduct.exportPDF();
+    }
+
+    thisProduct.exportPDF = () => {
+        var currentDate = new Date();
+        var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-');
+        var filename = `Inventory Report ${formattedDate}.pdf`;
+    
+        var url = PRODUCT_CONTROLLER + '?action=inventoryPDF';
+    
+        // Open a new window with the PDF content
+        window.open(url, '_blank');
+    }
+    
     thisProduct.resetFields = () => {
 
         $('#txt_product_barcode').val("");
@@ -243,3 +303,30 @@ const Product = (() => {
 
     return thisProduct;
 })();
+
+$("#product_search").on("input", function() {
+    const searchProd = $(this).val();
+    console.log("Search Term: " + searchProd);
+    searchProduct(searchProd);
+});
+
+
+function searchProduct(searchProd) {
+    $.ajax({
+        type: "GET",
+        url: PRODUCT_CONTROLLER + '?action=searchProduct',
+        data: { searchProd: searchProd },
+        dataType: "json",
+        success: function (response) {
+            if (response.length > 0) {
+                $('#tbody_product').html(response);
+            } else {
+                $('#tbody_product').html('<tr><td colspan="8" class="text-center">No matching records</td></tr>');
+            }
+            $('.table').DataTable();
+        },
+        error: function () {
+            // Handle errors
+        }
+    });
+}
