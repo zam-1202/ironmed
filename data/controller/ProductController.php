@@ -4,11 +4,13 @@ include_once('../../config/database.php');
 include_once('../model/Category.php');
 include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
+include_once('../model/TCPDF.php');
 
 $action = $_GET['action'];
 $Category = new Category($conn);
 $Product = new Product($conn);
 $ProductDetails = new ProductDetails($conn);
+$TCPDF = new PDF($conn);
 
 if(isset($_GET['barcode'])){
     $barcode = $_GET['barcode'];
@@ -130,7 +132,7 @@ else if ($action == 'getProductTable')
     
 // }
 
-else if ($action == "inventoryExcel")
+else if ($action == "inventoryCSV")
 {
     $result = $Product->getAll();
     $resultExpired = $Product->getAllExpired();
@@ -176,6 +178,104 @@ else if ($action == "inventoryExcel")
     }
 
     echo json_encode($column_name);
+}
+
+else if ($action == "inventoryXLSX")
+{
+    $result = $Product->getAll();
+    $resultExpired = $Product->getAllExpired();
+    $designatory = $ProductDetails->getDesignations();
+
+    $productExpiredQty =[];
+    foreach($resultExpired as $productExpired){
+        $productExpiredQty[$productExpired['barcode']] = $productExpired['total_quantity'];
+    }
+
+    $designatedProductsQty =[];
+    foreach($designatory as $designatedProducts){
+        $designatedProductsQty[$designatedProducts['barcode']] = $designatedProducts['designation'];
+    }
+
+    $column_name = [];
+    foreach ($result as $inventory){
+        $status = ($inventory['status'] == 1) ? 'Active' : 'Deactivate';
+        $product_name = "'" . addslashes($inventory['product_name']) . "'";
+
+        $totalExpired = 0;
+        if(array_key_exists($inventory['barcode'], $productExpiredQty)){
+            $totalExpired = $productExpiredQty[$inventory['barcode']];
+        }
+
+        $totalDesignated = 0;
+        if(array_key_exists($inventory['barcode'], $designatedProductsQty)){
+            $totalDesignated = $productExpiredQty[$inventory['designation']];
+        }
+
+        $column_name[] = [
+            'Product' => $inventory['product_name'],
+            'Category' => $inventory['category_name'],
+            'Type' => $inventory['type'],
+            'Barcode' => $inventory['barcode'],
+            'Quantity' => $inventory['total_quantity'],
+            'Max Stock' => $inventory['max_stock'],
+            'Min Stock' => $inventory['min_stock'],
+            'Status' => $status,
+            'Expired Products' => $totalExpired,
+            'Designated Products' => $totalDesignated
+        ];
+    }
+
+    echo json_encode($column_name);
+}
+
+else if ($action == "inventoryPDF") {
+    // Fetch data similar to your original code
+    $result = $Product->getAll();
+    $resultExpired = $Product->getAllExpired();
+    $designatory = $ProductDetails->getDesignations();
+
+    $productExpiredQty = [];
+    foreach ($resultExpired as $productExpired) {
+        $productExpiredQty[$productExpired['barcode']] = $productExpired['total_quantity'];
+    }
+
+    $designatedProductsQty = [];
+    foreach ($designatory as $designatedProducts) {
+        $designatedProductsQty[$designatedProducts['barcode']] = $designatedProducts['designation'];
+    }
+
+    $data = [];
+    foreach ($result as $inventory) {
+        $status = ($inventory['status'] == 1) ? 'Active' : 'Deactivate';
+
+        $totalExpired = 0;
+        if (array_key_exists($inventory['barcode'], $productExpiredQty)) {
+            $totalExpired = $productExpiredQty[$inventory['barcode']];
+        }
+
+        $totalDesignated = 0;
+        if (array_key_exists($inventory['barcode'], $designatedProductsQty)) {
+            $totalDesignated = $designatedProductsQty[$inventory['designation']];
+        }
+
+        $data[] = [
+            'Product' => $inventory['product_name'],
+            'Category' => $inventory['category_name'],
+            'Type' => $inventory['type'],
+            'Barcode' => $inventory['barcode'],
+            'Quantity' => $inventory['total_quantity'],
+            'Max Stock' => $inventory['max_stock'],
+            'Min Stock' => $inventory['min_stock'],
+            'Status' => $status,
+            'Expired Products' => $totalExpired,
+            'Designated Products' => $totalDesignated
+        ];
+    }
+
+    $result = $TCPDF->ProcessTCPDF($data);
+
+    echo json_encode($data);
+
 }
 
 
