@@ -20,7 +20,7 @@ if(!$_SESSION['user']) {
                         <h2 class="form-wrapper">List of Products</h2>
                         <div class="col-lg-12 col-md-12">
                         <div class="row">
-                        <div class=" col-md-6">
+                            <div class=" col-md-6">
                         <div class="btn-group dropend" role="group">
                             <button class="btn btn-primary dropdown-toggle btn-export" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">
                             Export
@@ -32,11 +32,12 @@ if(!$_SESSION['user']) {
                                     </ul>
                         </div>
                         </div>     
-                            <div class="col-md-6">
-                                <input type="text" id="product_search" class="form-control form-control-sm" placeholder="Search" />
                             </div>
                         </div>
                     </div>
+                    
+                    <div>&nbsp;</div>
+                    
                         <div class="table-wrapper">
                             <table class="table table-bordered">
                                 <thead>
@@ -202,6 +203,12 @@ if(!$_SESSION['user']) {
             </div>
         </div>
     </div>
+
+    <body class="hide-session-inputs">
+            <input type="number" min="1" class="form-control" id="hours_value">
+            <input type="number" min="1" class="form-control" id="minute_value">
+            <input type="number" min="1" class="form-control" id="seconds_value">
+    </body>
 
     <?php include '../layouts/scripts.php' ?>
 </body>
