@@ -20,23 +20,23 @@ if(!$_SESSION['user']) {
                         <h2 class="form-wrapper">List of Products</h2>
                         <div class="col-lg-12 col-md-12">
                         <div class="row">
+                        <div class="nav-item dropdown active">
                             <div class=" col-md-6">
-                        <div class="btn-group dropend" role="group">
-                            <button class="btn btn-primary dropdown-toggle btn-export" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">
+                            <div class="btn-group dropend" role="group">
+                            <button class="btn form-control btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">
                             Export
                             </button>
                                     <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" onclick="Product.chooseCSV()">CSV</a></li>
-                                            <li><a class="dropdown-item" onclick="Product.chooseXLXS()">XLSX</a></li>
-                                            <li><a class="dropdown-item" onclick="Product.choosePDF()">PDF</a></li>
+                                    <li class="active"><a class="dropdown-item" onclick="Product.chooseCSV()">CSV</a></li>
+                                    <li class="active"><a class="dropdown-item" onclick="Product.chooseXLXS()">XLSX</a></li>
+                                    <li class="active"><a class="dropdown-item" onclick="Product.choosePDF()">PDF</a></li>
                                     </ul>
+                        </div>
                         </div>
                         </div>     
                             </div>
                         </div>
                     </div>
-                    
-                    <div>&nbsp;</div>
                     
                         <div class="table-wrapper">
                             <table class="table table-bordered">
