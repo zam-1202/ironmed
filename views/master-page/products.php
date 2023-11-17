@@ -28,7 +28,7 @@ if(!$_SESSION['user']) {
                             </button>
                                     <ul class="dropdown-menu">
                                     <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseCSV()">CSV</a></li>
-                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLXS()">XLSX</a></li>
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLSX()">XLSX</a></li>
                                     <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
                                     </ul>
                         </div>
