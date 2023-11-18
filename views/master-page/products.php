@@ -21,6 +21,12 @@ if(!$_SESSION['user']) {
                         <div class="col-lg-12 col-md-12">
                         <div class="row">
                         <div class="nav-item dropdown active">
+                        <select class="form-control" name="" id="slc_product_category">
+                                        <option value="" selected="true" disabled>Select Category</option>
+                                        <option value="">Catgeory 1</option>
+                                        <option value="">Catgeory 2</option>
+                                        <option value="">Catgeory 3</option>
+                        </select>
                             <div class=" col-md-6">
                             <div class="btn-group dropend" role="group">
                             <button class="btn form-control btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">

@@ -243,33 +243,25 @@ const Product = (() => {
             url: PRODUCT_CONTROLLER + '?action=inventoryXLSX',
             dataType: "json",
             success: function (data) {
-            
-                var currentDate = new Date();
-                var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
-                var filename = `Inventory Report ${formattedDate}.xlsx`; // Construct the filename with the current date
-
-
-                var xlsxContent = "data:text/xlsx;charset=utf-8,";
-                xlsxContent += Object.keys(data[0]).join(",") + "\n";
-                data.forEach(function (item) {
-                    var row = Object.values(item).join(",");
-                    xlsxContent += row + "\n";
-                });
-                
-                var encodedUri = encodeURI(xlsxContent);
+                var filename = data.filename; // Extract filename from the response
+                var fileUrl = PRODUCT_CONTROLLER + '?action=download&filename=' + filename;
+    
                 var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
+                link.setAttribute("href", fileUrl);
                 link.setAttribute("download", filename);
                 link.style.display = "none";
+    
                 document.body.appendChild(link);
                 link.click();
+    
                 document.body.removeChild(link);
             },
             error: function () {
-
+                // Handle error
             }
         });
     }
+    
 
     thisProduct.choosePDF = () => {
         $('#chosen_Export').html('Export PDF');
@@ -288,39 +280,39 @@ const Product = (() => {
     }
 
 
-    thisProduct.exportInventory = () => {
-        $.ajax({
-            type: "POST",
-            url: PRODUCT_CONTROLLER + '?action=inventoryExcel',
-            dataType: "json",
-            success: function (data) {
+    // thisProduct.exportInventory = () => {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: PRODUCT_CONTROLLER + '?action=inventoryExcel',
+    //         dataType: "json",
+    //         success: function (data) {
             
-                var currentDate = new Date();
-                var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
-                var filename = `Inventory Report ${formattedDate}.csv`; // Construct the filename with the current date
+    //             var currentDate = new Date();
+    //             var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
+    //             var filename = `Inventory Report ${formattedDate}.csv`; // Construct the filename with the current date
 
 
-                var csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += Object.keys(data[0]).join(",") + "\n";
-                data.forEach(function (item) {
-                    var row = Object.values(item).join(",");
-                    csvContent += row + "\n";
-                });
+    //             var csvContent = "data:text/csv;charset=utf-8,";
+    //             csvContent += Object.keys(data[0]).join(",") + "\n";
+    //             data.forEach(function (item) {
+    //                 var row = Object.values(item).join(",");
+    //                 csvContent += row + "\n";
+    //             });
                 
-                var encodedUri = encodeURI(csvContent);
-                var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", filename);
-                link.style.display = "none";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            },
-            error: function () {
+    //             var encodedUri = encodeURI(csvContent);
+    //             var link = document.createElement("a");
+    //             link.setAttribute("href", encodedUri);
+    //             link.setAttribute("download", filename);
+    //             link.style.display = "none";
+    //             document.body.appendChild(link);
+    //             link.click();
+    //             document.body.removeChild(link);
+    //         },
+    //         error: function () {
 
-            }
-        });
-    }
+    //         }
+    //     });
+    // }
 
     thisProduct.resetFields = () => {
 

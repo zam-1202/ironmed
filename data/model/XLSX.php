@@ -1,19 +1,19 @@
+
 <?php
 
-require 'vendor/autoload.php';
+include_once('../../vendor/autoload.php');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class EXCEL extends \PhpOffice\PhpSpreadsheet\Writer\Xlsx
+class EXCEL
 {
     private $conn;
-    private $ActionLog;
 
     public function __construct($connection)
     {
         $this->conn = $connection;
-        $this->ActionLog = new ActionLog($connection);
     }
 
     public function ExportXLSX($data)
@@ -31,15 +31,16 @@ class EXCEL extends \PhpOffice\PhpSpreadsheet\Writer\Xlsx
         }
     
         // Save the spreadsheet with a dynamic filename
-        $filename = 'Inventory_Report_' . date('Ymd_His') . '.xlsx';
+        $filename = 'Inventory_Reports_' . date('Ymd_gis') . '.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($filename);
-    
-        // Optionally return the filename for further use
         return $filename;
-        $result = $XLSX->ExportXLSX($column_name);
+        // Output debugging information
+        echo 'File saved: ' . $filename;
+        header('Location: ' . $filename);
+        exit;
+
     }
 }    
-
 
 ?>

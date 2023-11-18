@@ -5,14 +5,14 @@ include_once('../model/Category.php');
 include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/TCPDF.php');
-// include_once('../model/XLSX.php');
+include_once('../model/XLSX.php');
 
 $action = $_GET['action'];
 $Category = new Category($conn);
 $Product = new Product($conn);
 $ProductDetails = new ProductDetails($conn);
 $TCPDF = new PDF($conn);
-// $XLSX = new EXCEL($conn);
+$XLSX = new EXCEL($conn);
 
 if(isset($_GET['barcode'])){
     $barcode = $_GET['barcode'];
