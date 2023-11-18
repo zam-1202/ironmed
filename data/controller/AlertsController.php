@@ -55,7 +55,7 @@ else if ($action == 'getTableDataStockStatus')
     foreach ($result as $product) {
         // $stock_status = $product['stock_status'];
 
-        if ($product['stock_status'] == 0) 
+        if ($product['stock_status'] == 4) 
         {
             $stock_status = '<span class="category category--black">Out of Stock</span>';
         }         
@@ -66,6 +66,10 @@ else if ($action == 'getTableDataStockStatus')
         else if($product['stock_status'] == 2) 
         {
             $stock_status = '<span class="category category--orange">Insufficient</span>';
+        }
+        else if ($product['stock_status'] == 0)
+        {
+            $stock_status = '<span class="category category--orange">Newly added product, kindly add stocks at Add Stocks page.</span>';
         }
        
 
