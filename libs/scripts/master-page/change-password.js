@@ -245,6 +245,8 @@ const ChangePassword = (() => {
             // Handle the case where 'newpassword' is empty
             $('#txt_newpassword').removeClass('green-input red-input');
             document.getElementById('mess').innerHTML = "";
+            document.getElementById('confirmPass').innerHTML = "Fill out the first password field";
+            document.getElementById('confirmPass').style.color = 'red';
             if (confirm_password.trim() === '') {
                 // Handle the case where both fields are empty
                 $('#txt_confirm_password').removeClass('red-input green-input');
@@ -376,6 +378,21 @@ const ChangePassword = (() => {
                             window.location.href = 'http://localhost/pos/views/master-page/login.php';
                         }
                     });
+                    $('#old_password').val();
+                    $('#txt_newpassword').val("");
+                    $('#txt_confirm_password').val("");
+                    $('#old_password').removeClass('green-input');
+                    $('#old_password').removeClass('red-input');
+                    $('#txt_newpassword').removeClass('green-input');
+                    $('#txt_confirm_password').removeClass('green-input');
+                    $('#txt_newpassword').removeClass('red-input');
+                    $('#txt_confirm_password').removeClass('red-input');
+                    document.getElementById('oldp').innerHTML = "";
+                    document.getElementById('mess').innerHTML = "";
+                    document.getElementById('confirmPass').innerHTML = "";
+
+                    thisChangePassword.resetFields();
+                    thisChangePassword.loadTableData();
                 },
                 error: function () {
                     Swal.fire({
@@ -383,7 +400,6 @@ const ChangePassword = (() => {
                         text: "Failed to make the request to the server.",
                         icon: "error"
                     });
-    
                 }
             });
         }

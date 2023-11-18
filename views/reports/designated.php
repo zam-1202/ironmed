@@ -18,7 +18,7 @@ if(!$_SESSION['user']) {
             <div class="row">
                 <div class="col-lg-12 col-md-12 ">
                     <div class="user__table-wrapper">
-                        <h2 class="section__sub-title">Designation of Expired Products</h2>
+                        <h2 class="section__sub-title">Expired Products</h2>
 
                         <div class="table-wrapper">
                             <table class="table table-bordered">
