@@ -96,7 +96,7 @@ class Product
     
         if ($stmt->execute() === TRUE) {
             $result = "Successfully Saved";
-            $this->ActionLog->saveLogs('product', 'saved');
+            $this->ActionLog->saveLogs('product', 'saved');        
             return $this->conn->insert_id;
         } else {
             return "Error: " . $sql . "<br>" . $this->conn->error;
@@ -262,12 +262,12 @@ class Product
                     FROM product_details
                     GROUP BY product_id
                 ) AS pd ON pd.product_id = products.id
-        SET stock_status = 0 
+        SET stock_status = 4 
         WHERE pd.total_quantity = 0;";
         
         $this->conn->query($sql);
 
-        $sql = "SELECT count(*) as total_outofstock FROM products WHERE stock_status = 0";
+        $sql = "SELECT count(*) as total_outofstock FROM products WHERE stock_status = 4";
        
         $result = $this->conn->query($sql);
         $count = $result->fetch_assoc();
