@@ -12,7 +12,6 @@ if(!$_SESSION['user']) {
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-    <section class="section user" style="border: none;">
         <!-- <h1 class="section__title">Admin</h1> -->
         <div class="container-fluid section__body">
             <div class="row">
@@ -70,7 +69,6 @@ if(!$_SESSION['user']) {
             </div>
         </div>
 
-    </section>
 
     <body class="hide-session-inputs">
             <input type="number" min="1" class="form-control" id="hours_value">
