@@ -5,7 +5,7 @@ include_once('../model/Category.php');
 include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/TCPDF.php');
-// include_once('../model/XLSX.php');
+include_once('../model/XLSX.php');
 
 $action = $_GET['action'];
 $Category = new Category($conn);
@@ -227,8 +227,8 @@ else if ($action == "inventoryXLSX")
         ];
     }
 
-    $result = $XLSX->ExportXLSX($column_name);
-    echo json_encode(['filename' => $result]);
+    $filename = generateProductXLSX($column_name);
+    echo json_encode(['filename' => $filename]);
 }
 
 else if ($action == "inventoryPDF") {

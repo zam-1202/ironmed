@@ -236,7 +236,7 @@ const Product = (() => {
         $('#chosen_Export').html('Export XLSX');
         thisProduct.exportXLSX();
     }
-
+    
     thisProduct.exportXLSX = () => {
         $.ajax({
             type: "POST",
@@ -246,14 +246,14 @@ const Product = (() => {
                 var filename = data.filename; // Extract filename from the response
                 var fileUrl = PRODUCT_CONTROLLER + '?action=download&filename=' + filename;
     
-                var link = document.createElement("a");
-                link.setAttribute("href", fileUrl);
-                link.setAttribute("download", filename);
-                link.style.display = "none";
-    
+
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', filename);
+            
                 document.body.appendChild(link);
                 link.click();
-    
+            
                 document.body.removeChild(link);
             },
             error: function () {
@@ -261,6 +261,9 @@ const Product = (() => {
             }
         });
     }
+    
+    
+    
     
 
     thisProduct.choosePDF = () => {
