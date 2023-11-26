@@ -316,5 +316,21 @@ class User
     }
 
 }      
-         
+
+public function changeForgottenPassword($email, $newPassword)
+{
+    // Check if the email exists in the users table
+
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+        $sql = "UPDATE users SET password = ? WHERE email = ?";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ss", $hashedPassword, $email);
+        
+        $result = $stmt->execute(); // Use the result directly as a boolean
+        $stmt->close(); // Close the prepared statement
+
+        return $result;
+}
 }

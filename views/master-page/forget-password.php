@@ -19,7 +19,7 @@
             </div>
             <form class="login__form" action="">
                 <input type="text" id="txt_email" placeholder="Email">
-                <button class="btn form-control btn-main" onclick="" type="submit">Send OTP</button>
+                <button class="btn form-control btn-primary" id="sendOTPButton" type="button">Send OTP</button>
             </form>
         </div>
  
@@ -29,7 +29,8 @@
 
     <?php include '../layouts/scripts.php' ?>
 </body>
-<script src="../../libs/scripts/master-page/login.js" ></script>
+<!-- <script src="../../libs/scripts/master-page/login.js" ></script> -->
+<script src="../../libs/scripts/master-page/mail.js" ></script>
 
            
 </html>

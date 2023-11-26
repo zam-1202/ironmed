@@ -144,7 +144,7 @@ const validateNewPass = () => {
     }
 }
 
-
+    
 const ChangePassword = (() => {
     const thisChangePassword = {};
 
@@ -375,7 +375,7 @@ const ChangePassword = (() => {
                         allowEscapeKey: false,
                     }).then((result) => {
                         if(result.isConfirmed) {
-                            window.location.href = 'http://localhost/pos/views/master-page/login.php';
+                            window.location.href = "../../views/master-page/login.php";
                         }
                     });
                     $('#old_password').val();
@@ -404,6 +404,222 @@ const ChangePassword = (() => {
             });
         }
     }
+
+        // __________________________________ Forget Password Validation
+
+        thisChangePassword.validateNewForgetPass = () => {
+            const adminnewpassword = $('#txt_newforgetpassword').val();
+            const adminconfirm_password = $('#txt_confirmforgetPassword').val();
+        
+            if (adminnewpassword.trim() === '') {
+                // Handle the case where 'adminnewpassword' is empty
+                $('#txt_newforgetpassword').removeClass('green-input red-input');
+                document.getElementById('forgetpass').innerHTML = "";
+                if (adminconfirm_password.trim() === '') {
+                    // Handle the case where both fields are empty
+                    $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "";
+                } else {
+                    // Case 4: Fill out the first password field
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "Fill out the first password field";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                }
+            } else if (!isValidAdminPasswordFormat(adminnewpassword)) {
+                // Case 1: Password format is incorrect
+                $('#txt_newforgetpassword').removeClass('green-input').addClass('red-input');
+                document.getElementById('forgetpass').innerHTML = "Password format is incorrect";
+                document.getElementById('forgetpass').style.color = 'red';
+                $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                document.getElementById('confirmforgetpass').innerHTML = "";
+            } else {
+                // Case 2: Password format is correct
+                $('#txt_newforgetpassword').removeClass('red-input').addClass('green-input');
+                document.getElementById('forgetpass').innerHTML = "";
+                document.getElementById('forgetpass').style.color = 'green';
+        
+                if (adminconfirm_password.trim() === '') {
+                    // Handle the case where 'adminconfirm_password' is empty
+                    $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "";
+                } else if (adminnewpassword !== adminconfirm_password) {
+                    // Case 5: Password doesn't match
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('forgetpass').innerHTML = "";
+                    document.getElementById('confirmforgetpass').innerHTML = "Password doesn't match";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                } else if (!isValidAdminPasswordFormat(adminconfirm_password)) {
+                    // Case 3: Password format is incorrect for confirmation
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "Password format is incorrect";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                } else {
+                    // Case 6: Password matches
+                    $('#txt_confirmforgetPassword').removeClass('red-input').addClass('green-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "Passwords matched";
+                    document.getElementById('confirmforgetpass').style.color = 'green';
+                }
+            }
+        }
+        
+        function isValidAdminPasswordFormat(password) {
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasSpecialChar = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/.test(password); // Include underscore
+            const hasNumber = /\d/.test(password);
+            const isLongEnough = password.length >= 8;
+        
+            return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
+        }
+    
+        thisChangePassword.validateConfirmForgetPassword = () => {
+            const newpassword = $('#txt_newforgetpassword').val();
+            const confirm_password = $('#txt_confirmforgetPassword').val();
+        
+            if (newpassword.trim() === '') {
+                // Handle the case where 'newpassword' is empty
+                $('#txt_newforgetpassword').removeClass('green-input red-input');
+                document.getElementById('forgetpass').innerHTML = "";
+                document.getElementById('confirmforgetpass').innerHTML = "Fill out the first password field";
+                document.getElementById('confirmforgetpass').style.color = 'red';
+                if (confirm_password.trim() === '') {
+                    // Handle the case where both fields are empty
+                    $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "";
+                } else {
+                    // Case 4: Fill out the first password field
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "Fill out the first password field";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                }
+            } else if (!isValidPasswordFormat(newpassword)) {
+                // Case 1: Password format is incorrect
+                $('#txt_newforgetpassword').removeClass('green-input').addClass('red-input');
+                document.getElementById('forgetpass').innerHTML = "Password format is incorrect";
+                document.getElementById('forgetpass').stylecolor = 'red';
+                $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                document.getElementById('confirmforgetpass').innerHTML = "";
+            } else {
+                // Case 2: Password format is correct
+                $('#txt_newforgetpassword').removeClass('red-input').addClass('green-input');
+                document.getElementById('forgetpass').innerHTML = "";
+                document.getElementById('forgetpass').style.color = 'green';
+        
+                if (confirm_password.trim() === '') {
+                    // Handle the case where 'confirm_password' is empty
+                    $('#txt_confirmforgetPassword').removeClass('red-input green-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "";
+                } else if (newpassword !== confirm_password) {
+                    // Case 5: Password doesn't match
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('forgetpass').innerHTML = "";
+                    document.getElementById('confirmforgetpass').innerHTML = "Password doesn't match";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                } else if (!isValidPasswordFormat(confirm_password)) {
+                    // Case 3: Password format is incorrect for confirmation
+                    $('#txt_confirmforgetPassword').removeClass('green-input').addClass('red-input');
+                    document.getElementById('confirmforgetpass').innerHTML = "Password format is incorrect";
+                    document.getElementById('confirmforgetpass').style.color = 'red';
+                } else {
+                    // Case 6: Password matches
+                    $('#txt_confirmforgetPassword').removeClass('red-input').addClass('green-input');
+                    document.getElementById('forgetpass').innerHTML = "";
+                    document.getElementById('forgetpass').style.color = 'green';
+                    document.getElementById('confirmforgetpass').innerHTML = "Passwords matched";
+                    document.getElementById('confirmforgetpass').style.color = 'green';
+                }
+            }
+        }
+    
+        function isValidPasswordFormat(password) {
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasSpecialChar = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const isLongEnough = password.length >= 8;
+        
+            return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
+        }
+
+
+    // _____
+
+
+        thisChangePassword.confirmforgetpassword = () => {
+            const newPassword = $('#txt_newforgetpassword').val();
+            const confirm_password = $('#txt_confirmforgetPassword').val();
+            const email = sessionStorage.getItem('verification_email');
+                
+            if(confirm_password == ""|| newPassword=="") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Please fill out all fields',
+                    showConfirmButton: true,
+                })
+    
+            }
+            else if(newPassword != confirm_password) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Password Did not match',
+                    showConfirmButton: true,
+                })
+    
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: USER_CONTROLLER + '?action=changeForgottenPassword',
+                    dataType: "json",
+                    data: {
+                        email: email,
+                        newPassword: newPassword,
+                        confirmPassword: confirm_password
+                    },
+                    success: function (response) 
+                    {
+                        passcheck = 0;
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Password changed successfully',
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if(result.isConfirmed) {
+                                window.location.href = "../../views/master-page/login.php";
+                            }
+                        });
+                        $('#txt_newforgetpassword').val("");
+                        $('#txt_confirmforgetPassword').val("");
+                        $('#old_password').removeClass('green-input');
+                        $('#old_password').removeClass('red-input');
+                        $('#txt_newforgetpassword').removeClass('green-input');
+                        $('#txt_confirmforgetPassword').removeClass('green-input');
+                        $('#txt_newforgetpassword').removeClass('red-input');
+                        $('#txt_confirmforgetPassword').removeClass('red-input');
+                        document.getElementById('forgetpass').innerHTML = "";
+                        document.getElementById('confirmforgetpass').innerHTML = "";
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Failed to make the request to the server.",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        }
+    
+    
+
+    
+        // __________________________________ END
+
 
     return thisChangePassword;
 })();

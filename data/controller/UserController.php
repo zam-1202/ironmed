@@ -209,3 +209,25 @@ else if ($action == 'getSessionTimeoutSettings') {
     echo json_encode($sessionTimeoutSettings);
 }
 
+else if ($action == "changeForgottenPassword") {
+    // Check if 'email', 'newPassword', and 'confirmPassword' are set in $_POST
+    if (isset($_POST['email']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword'])) {
+        $email = $_POST['email'];
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
+
+        if ($newPassword === $confirmPassword) {
+            $result = $User->changeForgottenPassword($email, $newPassword);
+
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Password changed successfully']);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'FailedToChangePassword']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'error' => 'PasswordMismatch']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'error' => 'EmailOrPasswordNotSet']);
+    }
+}
