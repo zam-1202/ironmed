@@ -138,7 +138,7 @@ else if($_SESSION['user']['role'] === 3) {
                     </div>
                 </div>
 
-                <div class="col-lg-5 offset-md-1">
+                <div class="col-lg-6">
                 <div class="col-2">
         
     </div>
