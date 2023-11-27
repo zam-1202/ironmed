@@ -36,9 +36,9 @@ if ($action == 'sendOTP') {
         $mail->setFrom('ironmed@gmail.com', 'IronMed');
         $mail->addAddress($email);
 
-        $mail->addCC('kpace1226@gmail.com', 'Kenneth Pace');
-        $mail->addCC('jirespende@gmail.com', 'John Ivan Respende');
-        $mail->addCC('pupsrcdom.fernandez@gmail.com', 'Dom Fernandez');
+        // $mail->addCC('kpace1226@gmail.com', 'Kenneth Pace');
+        // $mail->addCC('jirespende@gmail.com', 'John Ivan Respende');
+        // $mail->addCC('pupsrcdom.fernandez@gmail.com', 'Dom Fernandez');
 
         // Email content
         $mail->isHTML(true);
