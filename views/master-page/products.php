@@ -19,36 +19,34 @@ if(!$_SESSION['user']) {
                     <div class="user__table-wrapper">
                         <h2 class="form-wrapper">List of Products</h2>
                         <div class="col-lg-12 col-md-12">
-
-                        <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <div class="btn-group dropend" role="group">
+                        <div class="row">
+                            <div class=" col-md-3">
+                            <div class="btn-group dropend col-md-6" role="group">
                             <button class="btn form-control btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">
-                                Export
+                            Export
                             </button>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseCSV()">CSV</a></li>
-                                <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLSX()">XLSX</a></li>
-                                <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
-                            </ul>
+                                    <ul class="dropdown-menu">
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseCSV()">CSV</a></li>
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLSX()">XLSX</a></li>
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
+                                    </ul>
+                        <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+                        <div class="nav-item dropdown active col-lg-12">
+                        <select class="form-control" name="" id="slc_product_category">
+                                        <option value="" selected="true" disabled>Filter by Category</option>
+                                        <option value="">Catgeory 1</option>
+                                        <option value="">Catgeory 2</option>
+                                        <option value="">Catgeory 3</option>
+                        </select>
+                        </div>
+                        </div>
+                        </div>
+                        <!-- </div>      -->
+                        </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="nav-item dropdown active">
-                            <select class="form-control" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
-                                <option value="" selected="true" disabled>Select Category</option>
-                                <option value="">Category 1</option>
-                                <option value="">Category 2</option>
-                                <option value="">Category 3</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>                    
-                        <div class="table-wrapper">
+                    
+                        <div class="table-wrapper inventory-box">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
