@@ -614,3 +614,61 @@ else if ($action == 'searchProduct') {
 }
 
 }
+
+else if ($action == 'getFilteredProductTable') {
+    // Check if a category filter is set
+    $categoryFilter = isset($_GET['category']) ? $_GET['category'] : null;
+
+    $result = $Product->getAll();
+    $resultExpired = $Product->getAllExpired();
+
+    $productExpiredQty = [];
+    foreach ($resultExpired as $productExpired) {
+        $productExpiredQty[$productExpired['barcode']] = $productExpired['total_quantity'];
+    }
+
+    $table_data = '';
+    $counter = 1;
+
+    foreach ($result as $product) {
+        // Filter by category if set
+        if ($categoryFilter && $product['category_name'] !== $categoryFilter) {
+            continue;
+        }
+
+        $status = ($product['status'] == 1) ? 'Active' : 'Deactivate';
+        $product_name = "'" . addslashes($product['product_name']) . "'";
+
+        $totalExpired = 0;
+        if (array_key_exists($product['barcode'], $productExpiredQty)) {
+            $totalExpired = $productExpiredQty[$product['barcode']];
+        }
+
+        $table_data .= '<tr>';
+        $table_data .= '<td>' . $counter . '</td>';
+        $table_data .= '<td>' . $product['product_name'] . '</td>';
+        $table_data .= '<td><span class="category">' . $product['category_name'] . '</span></td>';
+        $table_data .= '<td>' . $product['type'] . '</td>';
+        $table_data .= '<td>' . $product['barcode'] . '</td>';
+        $table_data .= '<td>' . $product['total_quantity'] . '</td>';
+        $table_data .= '<td>' . $product['max_stock'] . '</td>';
+        $table_data .= '<td>' . $product['min_stock'] . '</td>';
+        // $table_data .= '<td>' . $product['lot_num'] . '</td>';
+        $table_data .= '<td>' . $product['sale_price'] . '</td>';
+        $table_data .= '<td>' . $status . '</td>';
+        $table_data .= '<td>' . $totalExpired. '</td>';
+        $table_data .= '<td class="col-actions">';
+        $table_data .= '<div class="btn-group" role="group" aria-label="Basic mixed styles example">';
+        $table_data .= '<button type="button" onclick="Product.clickView('. $product['product_id'] .','. $product_name .')" class="btn btn-info btn-sm"><i class="bi bi-eye"></i> View </button>';
+        if($_SESSION['user']['role'] != 3) {
+            $table_data .= '<button type="button" onclick="Product.clickUpdate('. $product['product_id'] .','. $product_name .')" class="btn btn-warning btn-sm"><i class="bi bi-list-check"></i> Update </button>';
+        }
+        $table_data .= '</div>';
+        $table_data .= '</td>';
+        $table_data .= '</tr>';
+
+        $counter++;
+    }
+
+    echo json_encode($table_data);
+}

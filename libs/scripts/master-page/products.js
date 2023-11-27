@@ -331,5 +331,27 @@ const Product = (() => {
         $('#btn_save_product').html('Register Product');
     }
 
+
+    thisProduct.loadFilteredTableData = () => {
+        // Get the selected category from the dropdown
+        var selectedCategory = $('#slc_product_category').val();
+    
+        $.ajax({
+            type: "GET",
+            url: PRODUCT_CONTROLLER + '?action=getFilteredProductTable&category=' + selectedCategory,
+            dataType: "json",
+            success: function (response) {
+                $('.table').DataTable().destroy();
+                $('#tbody_product').html(response);
+
+                $('.table').DataTable();
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    
     return thisProduct;
 })();
