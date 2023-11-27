@@ -99,6 +99,23 @@ const Product = (() => {
         });
     }
 
+    //ProductsTable
+
+    thisProduct.loadSelectData = () => {
+        $.ajax({
+            type: "GET",
+            url: CATEGORY_CONTROLLER + '?action=getSelectDataCategory',
+            dataType: "json",
+            success: function (response) {
+
+                $('#slc_product_category').html(response);
+            },
+            error: function () {
+
+            }
+        });
+    }
+
     thisProduct.clickView = (id, product_name) => {
         $.ajax({
             type: "POST",

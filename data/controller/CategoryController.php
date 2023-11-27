@@ -46,6 +46,20 @@ else if ($action == 'getSelectData')
     echo json_encode($options);
 }
 
+else if ($action == 'getSelectDataCategory')
+{
+    $result = $Category->getAll();
+
+    $options = '<option value="" selected="true" disabled>Filter by Category</option>';
+
+    foreach ($result as $category) 
+    {
+        $options .= '<option value='. $category['id'] .'>' . $category['name'] . '</option>';
+    }
+
+    echo json_encode($options);
+}
+
 else if ($action == 'getById')
 {
     $category_id = $_POST['category_id'];
