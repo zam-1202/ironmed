@@ -15,7 +15,7 @@ if(!$_SESSION['user']) {
         <!-- <h1 class="section__title">Admin</h1> -->
         <div class="container-fluid section__body">
             <div class="row">
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-11 col-md-11 mx-auto">
                     <div class="user__table-wrapper">
                         <h2 class="form-wrapper">List of Products</h2>
                         <div class="col-lg-12 col-md-12">
@@ -44,7 +44,7 @@ if(!$_SESSION['user']) {
                         </div>
                     </div>
                     
-                        <div class="table-wrapper">
+                        <div class="table-wrapper inventory">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
