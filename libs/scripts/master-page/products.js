@@ -333,7 +333,6 @@ const Product = (() => {
 
 
     thisProduct.loadFilteredTableData = () => {
-        // Get the selected category from the dropdown
         var selectedCategory = $('#slc_product_category').val();
     
         $.ajax({
@@ -343,15 +342,15 @@ const Product = (() => {
             success: function (response) {
                 $('.table').DataTable().destroy();
                 $('#tbody_product').html(response);
-
+    
                 $('.table').DataTable();
             },
             error: function () {
-
+    
             }
         });
     }
-
+    
     
     return thisProduct;
 })();

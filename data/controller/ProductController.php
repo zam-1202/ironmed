@@ -616,10 +616,10 @@ else if ($action == 'searchProduct') {
 }
 
 else if ($action == 'getFilteredProductTable') {
-    // Check if a category filter is set
-    $categoryFilter = isset($_GET['category']) ? $_GET['category'] : null;
+    $selectedCategory = $_GET['category'];
+    $result = $Product->getFilteredByCategory($selectedCategory);
 
-    $result = $Product->getAll();
+    // $result = $Product->getAll();
     $resultExpired = $Product->getAllExpired();
 
     $productExpiredQty = [];
@@ -631,10 +631,6 @@ else if ($action == 'getFilteredProductTable') {
     $counter = 1;
 
     foreach ($result as $product) {
-        // Filter by category if set
-        if ($categoryFilter && $product['category_name'] !== $categoryFilter) {
-            continue;
-        }
 
         $status = ($product['status'] == 1) ? 'Active' : 'Deactivate';
         $product_name = "'" . addslashes($product['product_name']) . "'";
@@ -653,7 +649,6 @@ else if ($action == 'getFilteredProductTable') {
         $table_data .= '<td>' . $product['total_quantity'] . '</td>';
         $table_data .= '<td>' . $product['max_stock'] . '</td>';
         $table_data .= '<td>' . $product['min_stock'] . '</td>';
-        // $table_data .= '<td>' . $product['lot_num'] . '</td>';
         $table_data .= '<td>' . $product['sale_price'] . '</td>';
         $table_data .= '<td>' . $status . '</td>';
         $table_data .= '<td>' . $totalExpired. '</td>';
