@@ -713,6 +713,7 @@ const Admin = (() => {
 
 
     thisAdmin.resetFields = () => {
+        toUpdate = false;
         $('#txt_first_name').val("");
         $('#txt_last_name').val("");
         $('#txt_user_name').val("");

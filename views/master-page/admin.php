@@ -90,7 +90,8 @@ else if($_SESSION['user']['role'] === 3) {
                                 </select>
                             </div>
                             <div class="col-12">
-                                <button type="submit" id="btn_save" onclick="Admin.clickSaveButton()" class="btn form-control btn-primary">Register User</button>
+                                <!-- <button type="submit" id="btn_save" onclick="Admin.clickSaveButton()" class="btn form-control btn-primary">Register User</button> -->
+                                <button type="submit" id="btn_save" onclick="Admin.clickSaveButton()" class="btn form-control btn-primary">Create Account</button>
                             </div>
                             <div class="col-12">
                                 <button type="submit" id="btn_save" onclick="Admin.resetFields()" class="btn form-control btn-warning">Cancel</button>
