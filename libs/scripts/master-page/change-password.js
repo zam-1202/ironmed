@@ -91,17 +91,17 @@ const validateLastName = () => {
         btnUpdatePassword.disabled = false;
     }
 }
- 
 
 const validateEmail = () => {
     const email = $('#txt_email').val();
     const emailField = $('#txt_email');
-    const emailPattern = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+
+    const isValidEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 
     if (email.trim() === '') {
         emailField.removeClass('red-input green-input');
         return false;
-    } else if (!email.match(emailPattern)) {
+    } else if (!isValidEmail) {
         emailField.addClass('red-input').removeClass('green-input');
         return false;
     } else {

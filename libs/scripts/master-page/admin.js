@@ -102,7 +102,7 @@ const Admin = (() => {
     
         return hasUppercase && hasLowercase && hasSpecialChar && hasNumber && isLongEnough;
     }
-
+    
     thisAdmin.save = () => {
         const specialCharsRegex = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/;
         const numbersRegex = /\d/;
@@ -314,6 +314,7 @@ const Admin = (() => {
                                     $('#txt_user_name').removeClass('green-input');
                                     $('#txt_user_name').removeClass('red-input');
                                     $('#txt_email').removeClass('green-input');
+                                    $('#txt_email').removeClass('red-input');
                                     $('#txt_adminnewpassword').removeClass('green-input');
                                     $('#txt_adminconfirm_password').removeClass('green-input');
                                     $('#txt_adminnewpassword').removeClass('red-input');
@@ -634,6 +635,7 @@ const Admin = (() => {
                                     $('#txt_user_name').removeClass('green-input');
                                     $('#txt_user_name').removeClass('red-input');
                                     $('#txt_email').removeClass('green-input');
+                                    $('#txt_email').removeClass('red-input');
                                     $('#txt_adminnewpassword').removeClass('green-input');
                                     $('#txt_adminconfirm_password').removeClass('green-input');
                                     $('#txt_adminnewpassword').removeClass('red-input');
@@ -722,6 +724,7 @@ const Admin = (() => {
         $('#txt_user_name').removeClass('green-input');
         $('#txt_user_name').removeClass('red-input');
         $('#txt_email').removeClass('green-input');
+        $('#txt_email').removeClass('red-input');
         $('#txt_adminnewpassword').removeClass('green-input');
         $('#txt_adminconfirm_password').removeClass('green-input');
         $('#txt_adminnewpassword').removeClass('red-input');
