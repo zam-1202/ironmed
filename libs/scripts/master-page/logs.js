@@ -49,12 +49,10 @@ const Logs = (() => {
     
                             table.draw();
     
-                            // Remove the custom search function
                             $.fn.dataTable.ext.search.pop();
     
                             console.log('Search term in console: "' + searchTerm + '"');
     
-                            // Check if the user's search exactly matches a value in the DataTable
                             var exactMatch = table
                                 .rows({ search: 'applied' })
                                 .data()
