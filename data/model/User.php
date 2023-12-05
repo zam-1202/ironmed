@@ -300,22 +300,28 @@ class User
 
         return $result;
     }
-    
-    public function isUsernameTaken($username)
-    {
+
+public function isUsernameTaken($username, $excludeUserId = null)
+{
+    if ($excludeUserId !== null) {
+        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ? AND id != ?");
+        $stmt->bind_param("si", $username, $excludeUserId);
+    } else {
         $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
         $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0){
-            return true;
-        }
-        else {
-        return false;
     }
 
-}      
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        return true;  // Username is taken by another user
+    } else {
+        return false; // Username is available
+    }
+}
+
+
 
 public function changeForgottenPassword($email, $newPassword)
 {

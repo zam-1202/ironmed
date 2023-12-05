@@ -270,6 +270,7 @@ const Admin = (() => {
                     type: "POST",
                     url: USER_CONTROLLER + '?action=isUsernameTaken', // Add the action for checking username
                     data: {
+                        excludeUserId: user_id,
                         username: username
                     },
                     success: function (response) {
@@ -311,6 +312,7 @@ const Admin = (() => {
                                     $('#txt_first_name').removeClass('green-input');
                                     $('#txt_last_name').removeClass('green-input');
                                     $('#txt_user_name').removeClass('green-input');
+                                    $('#txt_user_name').removeClass('red-input');
                                     $('#txt_email').removeClass('green-input');
                                     $('#txt_adminnewpassword').removeClass('green-input');
                                     $('#txt_adminconfirm_password').removeClass('green-input');
@@ -451,7 +453,7 @@ const Admin = (() => {
         const status = $('#slc_status').val();
         const registerButton = $('#registerButton');
 
-        if (first_name === "" || /^\s+$/.test(first_name) || last_name === "" || /^\s+$/.test(last_name) || username === "" || email === "" || newpassword === "" || confirm_password === "" || role == null || status == null) {
+        if (first_name === "" || /^\s+$/.test(first_name) || last_name === "" || /^\s+$/.test(last_name) || username === "" || email === "" || role == null || status == null) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -582,29 +584,13 @@ const Admin = (() => {
                 });
                 // Disable the register button
                 registerButton.prop('disabled', true);
-            } else if (newpassword != confirm_password) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: 'Passwords did not match',
-                    showConfirmButton: true,
-                });
-                // Disable the register button
-                registerButton.prop('disabled', true);
-            } else if (!isValidAdminPasswordFormat(newpassword)) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'warning',
-                        title: 'Password format is incorrect',
-                        showConfirmButton: true,
-                    });
-                    registerButton.prop('disabled', true);
             } else {
                 // Check if the username is taken
                 $.ajax({
                     type: "POST",
                     url: USER_CONTROLLER + '?action=isUsernameTaken', // Add the action for checking username
                     data: {
+                        excludeUserId: user_id,
                         username: username
                     },
                     success: function (response) {
@@ -646,6 +632,7 @@ const Admin = (() => {
                                     $('#txt_first_name').removeClass('green-input');
                                     $('#txt_last_name').removeClass('green-input');
                                     $('#txt_user_name').removeClass('green-input');
+                                    $('#txt_user_name').removeClass('red-input');
                                     $('#txt_email').removeClass('green-input');
                                     $('#txt_adminnewpassword').removeClass('green-input');
                                     $('#txt_adminconfirm_password').removeClass('green-input');
@@ -733,6 +720,7 @@ const Admin = (() => {
         $('#txt_first_name').removeClass('green-input');
         $('#txt_last_name').removeClass('green-input');
         $('#txt_user_name').removeClass('green-input');
+        $('#txt_user_name').removeClass('red-input');
         $('#txt_email').removeClass('green-input');
         $('#txt_adminnewpassword').removeClass('green-input');
         $('#txt_adminconfirm_password').removeClass('green-input');
@@ -751,6 +739,7 @@ const Admin = (() => {
                 url: USER_CONTROLLER + '?action=isUsernameTaken',
                 data: {
                     username: username,
+                    excludeUserId: user_id
                 },
                 success: function (response) {
                     console.log("Received Response:", response);

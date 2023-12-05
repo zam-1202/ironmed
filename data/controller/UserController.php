@@ -191,16 +191,17 @@ else if($action == 'resetPassword')
     echo json_encode($result);
 }
 
-else if($action == 'isUsernameTaken'  ){
-    if (isset($_POST['username'])){
+else if ($action == 'isUsernameTaken') {
+    if (isset($_POST['username'], $_POST['excludeUserId'])) {
         $username = $_POST['username'];
-        $isTaken = $User->isUsernameTaken($username);
+        $excludeUserId = $_POST['excludeUserId'];
+        $isTaken = $User->isUsernameTaken($username, $excludeUserId);
         echo $isTaken ? 1 : 0;
-        }
-    else{
+    } else {
         echo -1;
     }
 }
+
 
 else if ($action == 'getSessionTimeoutSettings') {
     $user_id = $_SESSION['user']['id'];
