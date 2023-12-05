@@ -33,7 +33,7 @@ else if($_SESSION['user']['role'] === 3) {
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Status</th>
-                                        <th>Last Login</th>
+                                        <!-- <th>Last Login</th> -->
                                         <th>Actions</th>
                                     </tr>
                                 </thead>

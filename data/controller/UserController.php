@@ -35,11 +35,11 @@ if ($action == 'getTableData')
             $status = '<span class="badge bg-danger">Inactive</span>';
         }
 
-        $last_login = '';
-        if($user['last_login']) 
-        {
-            $last_login = date('F j, Y, g:i a', strtotime($user['last_login']));
-        }
+        // $last_login = '';
+        // if($user['last_login']) 
+        // {
+        //     $last_login = date('F j, Y, g:i a', strtotime($user['last_login']));
+        // }
 
         $table_data .= '<tr>';
         $table_data .= '<td>' . $counter . '</td>';
@@ -48,7 +48,7 @@ if ($action == 'getTableData')
         $table_data .= '<td>'  . $user['email'] . '</td>';
         $table_data .= '<td>'  . $role . '</td>';
         $table_data .= '<td>'  . $status . '</td>';
-        $table_data .= '<td>'  . $last_login . '</td>';
+        // $table_data .= '<td>'  . $last_login . '</td>';
         $table_data .= '<td class="col-actions">';
         $table_data .= '<div class="btn-group" role="group" aria-label="Basic mixed styles example">';
         $table_data .= '<button type="button" onclick="Admin.clickUpdate('. $user['id'] .')" class="btn btn-warning btn-sm"><i class="bi bi-list-check"></i> Update </button>';
