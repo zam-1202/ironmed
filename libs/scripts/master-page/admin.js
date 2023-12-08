@@ -740,6 +740,7 @@ const Admin = (() => {
         $('label[for="adminnewpassword"]').nextAll('span, p').show();
         $('label[for="adminconfirmPassword"]').next('span').show();
 
+        $('#slc_status option[value="0"]').prop('disabled', true);
         
         $('#txt_first_name').removeClass('green-input');
         $('#txt_last_name').removeClass('green-input');
