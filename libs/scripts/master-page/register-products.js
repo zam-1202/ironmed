@@ -105,8 +105,14 @@ const Product = (() => {
                 title: 'Please fillout all fields',
                 showConfirmButton: true,
             })   
-        }
-        else{
+        } else if (txt_product_barcode.trim() === '0' || /^0+$/.test(txt_product_barcode.trim())) {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Barcode has no value',
+            showConfirmButton: true,
+        });
+    } else{
             $.ajax({
                 type: "POST",
                 url: PRODUCT_CONTROLLER + "?action=registerProduct",
