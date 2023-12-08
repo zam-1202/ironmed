@@ -560,3 +560,9 @@ $(document).ready(function() {
 window.onload = function(){
     document.getElementById("bCode").focus();
 }
+
+document.getElementById('bCode').addEventListener('input', function () {
+    if (this.value.length > 13) {
+        this.value = this.value.slice(0, 13);
+    }
+});
