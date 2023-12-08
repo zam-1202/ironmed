@@ -110,7 +110,7 @@ const Category = (() => {
     }
 
     thisCategory.save = () => {
-        const regex = /^[a-zA-Z1-9&-'.' ]+$/;
+        const regex = /^[a-zA-Z&-'.' ]+$/;
         const category_name = $('#txt_category_name').val();
         let existingCategories = ['MILK & DIAPERS', 'SUPPLEMENTS', 'BRANDED TABLETS', 'GENERIC TABLETS',
         'OINTMENTS', 'GALLENICALS', 'BRANDED SYRUP', 'GENERIC SYRUP','milk & diapers', 'supplements', 'branded tablets', 'generic tablets',
@@ -177,7 +177,9 @@ const Category = (() => {
                         icon: 'success',
                         title: 'Category Registered Successfully',
                         showConfirmButton: true,
-                    })
+                    });
+
+                    $('#txt_category_name').removeClass('green-input');
                 },
                 error: function () {
     
@@ -355,7 +357,7 @@ const validateCategoryName = () => {
 
 
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
-    const regex = /^[a-zA-Z1-9&-'.' ]+$/;
+    const regex = /^[a-zA-Z&-'.' ]+$/;
     const categoryname = $('#txt_category_name').val().trim();
     const cname = document.getElementById('cname');
     const txtCategorynameName = $('#txt_category_name');
