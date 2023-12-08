@@ -102,6 +102,7 @@ const getInvoices =  () => {
                 <td>${count++}</td>
                 <td>${invoice.users_name}</td>             
                 <td>${invoice.date_transact}</td>
+                <td>${invoice.number}</td>
                 <td>${invoice.total_items}</td>
                 <td>${invoice.total_purchase}</td>
                 <td>
