@@ -51,9 +51,10 @@ if(!$_SESSION['user']) {
                         <th>#</th>
                         <th>Issued By</th>
                         <th>Transaction Date</th>
+                        <th>Invoice Number</th>
                         <th>Total Items</th>
                         <th>Total Purchase</th>
-                        <th>Open</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
