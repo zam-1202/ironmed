@@ -622,7 +622,11 @@ const Product = (() => {
 
         $('.form-control').prop("disabled", false);
 
-        $('#btn_save_product').html('Register Product');
+        $('#txt_product_name').prop( "disabled", true );
+        $('#slc_product_category').prop( "disabled", true );
+        $('#txt_location').prop( "disabled", true );
+
+        $('#btn_save_product').html('Add Stocks');
     }
 
     thisProduct.limitCharacterInput = (input, maxLength) => {
