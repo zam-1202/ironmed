@@ -65,12 +65,14 @@ else if($_SESSION['user']['role'] === 3) {
                                 <input type="text" class="form-control" id="txt_email" maxlength="50" onkeyup = validateEmail();><span id="message"></span>
                             </div>
                             <div class="col-md-12">
-                                <label for="adminnewpassword" class="form-label">Password</label><span class="required" style="color:red;"> *</span>
-                                <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
+                                <label for="adminnewpassword" class="form-label" id="txt_adminnewpasswordlabel">Password</label>
+                                <span class="required" id="passwordRequired" style="color:red; display: none;"> *</span>
+                                <p id="passwordRequirements" style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
                                 <input type="text" class="form-control" id="txt_adminnewpassword" maxlength="128" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="adminmess"></span>
                             </div>
                             <div class="col-md-12">
-                                <label for="adminconfirmPassword" class="form-label">Confirm Password</label><span class="required" style="color:red;"> *</span>
+                                <label for="adminconfirmPassword" class="form-label" id="txt_adminconfirm_passwordlabel">Confirm Password</label>
+                                <span class="required" id="confirmPasswordRequired" style="color:red; display: none;"> *</span>
                                 <input type="text" class="form-control" id="txt_adminconfirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="confirmPass"></span>
                             </div>
                             <div class="col-md-6">

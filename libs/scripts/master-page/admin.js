@@ -410,8 +410,15 @@ const Admin = (() => {
     
                 $('#txt_adminnewpassword').hide();
                 $('#txt_adminconfirm_password').hide();
-                $('label[for="adminnewpassword"], label[for="adminnewpassword"] + span[style="color:red;"], p[style="color:gray"]').hide();
-                $('label[for="adminconfirmPassword"], label[for="adminconfirmPassword"] + span[style="color:red;"]').hide();
+                $('#txt_adminnewpasswordlabel').hide();
+                $('#txt_adminconfirm_passwordlabel').hide();
+                $('#passwordRequirements').hide();
+                $('#passwordRequired').hide();
+                $('#confirmPasswordRequired').hide();
+
+                
+                // $('label[for="adminnewpassword"], label[for="adminnewpassword"] + span[style="color:red;"], p[style="color:gray"]').hide();
+                // $('label[for="adminconfirmPassword"], label[for="adminconfirmPassword"] + span[style="color:red;"]').hide();
 
 
                 toUpdate = true;
@@ -745,7 +752,6 @@ const Admin = (() => {
         $('#txt_adminnewpassword').removeClass('red-input');
         $('#txt_adminconfirm_password').removeClass('red-input');
         document.getElementById('confirmPass').innerHTML = "";
-
     }
 
     thisAdmin.validateUsername = () => {
