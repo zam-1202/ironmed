@@ -400,14 +400,20 @@ const Admin = (() => {
                 $('#txt_last_name').val(response.last_name);
                 $('#txt_user_name').val(response.username);
                 $('#txt_email').val(response.email);
-                $('#txt_adminnewpassword').prop("disabled", true);
-                $('#txt_adminconfirm_password').prop("disabled", true);
+                // $('#txt_adminnewpassword').prop("disabled", true);
+                // $('#txt_adminconfirm_password').prop("disabled", true);
                 $('#slc_role').val(response.role);
                 
                 // Enable the "Deactivate" option in the dropdown
                 $('#slc_status option[value="0"]').removeAttr('disabled');
                 $('#slc_status').val(response.status);
     
+                $('#txt_adminnewpassword').hide();
+                $('#txt_adminconfirm_password').hide();
+                $('label[for="adminnewpassword"], label[for="adminnewpassword"] + span[style="color:red;"], p[style="color:gray"]').hide();
+                $('label[for="adminconfirmPassword"], label[for="adminconfirmPassword"] + span[style="color:red;"]').hide();
+
+
                 toUpdate = true;
     
                 $('#btn_save').html("Update Account");
@@ -719,6 +725,15 @@ const Admin = (() => {
 
         $('#txt_adminnewpassword').val("");
         $('#txt_adminconfirm_password').val("");
+        $('#txt_adminnewpassword').show();
+        $('#txt_adminconfirm_password').show();
+
+        $('label[for="adminnewpassword"]').show();
+        $('label[for="adminconfirmPassword"]').show();
+        $('label[for="adminnewpassword"]').nextAll('span, p').show();
+        $('label[for="adminconfirmPassword"]').next('span').show();
+
+        
         $('#txt_first_name').removeClass('green-input');
         $('#txt_last_name').removeClass('green-input');
         $('#txt_user_name').removeClass('green-input');
