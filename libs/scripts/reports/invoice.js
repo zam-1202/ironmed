@@ -31,8 +31,10 @@ $(document).ready(() => {
     let currentDate = new Date().toJSON().slice(0, 10);
     inpSearchDaily.value = currentDate;
 
+    inpSearchDaily.max = currentDate;
+
     getInvoices();
-})
+});
 
 const invoiceTable = document.querySelector('.invoice__table');
 
@@ -296,7 +298,6 @@ btnSearchDaily.addEventListener('click', getInvoices);
 btnSearchMonthly.addEventListener('click', getInvoices);
 btnSearchRange.addEventListener('click', getInvoices);
 btnConfirmPassword.addEventListener('click', validateAdminPassword);
-
 
 
 
