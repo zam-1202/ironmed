@@ -110,7 +110,7 @@ const Category = (() => {
     }
 
     thisCategory.save = () => {
-        const regex = /^[a-zA-Z&-'.' ]+$/;
+        const regex = /^[a-zA-Z1-9&\-'\.\s–]+$/;
         const category_name = $('#txt_category_name').val();
         let existingCategories = ['MILK & DIAPERS', 'SUPPLEMENTS', 'BRANDED TABLETS', 'GENERIC TABLETS',
         'OINTMENTS', 'GALLENICALS', 'BRANDED SYRUP', 'GENERIC SYRUP','milk & diapers', 'supplements', 'branded tablets', 'generic tablets',
@@ -133,14 +133,6 @@ const Category = (() => {
               showConfirmButton: true,
             })
           } 
-        else if (/\d/.test(category_name)) {
-            Swal.fire({
-                position: 'center',
-                icon: 'warning',
-                title: 'Category name cannot contain numbers',
-                showConfirmButton: true,
-            });
-        }
         else if (!regex.test(category_name)) {
             Swal.fire({
                 position: 'center',
@@ -213,7 +205,7 @@ const Category = (() => {
     }
 
     thisCategory.update = () => {
-        const regex = /^[a-zA-Z1-9&-'.' ]+$/;
+        const regex = /^[a-zA-Z1-9&\-'\.\s–]+$/;
         const category_name = $('#txt_category_name').val();
                 
 
@@ -224,14 +216,6 @@ const Category = (() => {
                 title: 'Category field should have value',
                 showConfirmButton: true,
             })
-        }
-        else if (/\d/.test(category_name)) {
-            Swal.fire({
-                position: 'center',
-                icon: 'warning',
-                title: 'Category name cannot contain numbers',
-                showConfirmButton: true,
-            });
         }
         else if (!regex.test(category_name)) {
             Swal.fire({
@@ -359,7 +343,7 @@ const validateCategoryName = () => {
 
 
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
-    const regex = /^[a-zA-Z&-'.' ]+$/;
+    const regex = /^[a-zA-Z1-9&\-'\.\s–]+$/;
     const categoryname = $('#txt_category_name').val().trim();
     const cname = document.getElementById('cname');
     const txtCategorynameName = $('#txt_category_name');
