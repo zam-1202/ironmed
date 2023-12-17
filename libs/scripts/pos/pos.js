@@ -295,8 +295,8 @@ btnCheckout.addEventListener('click', (e)=>{
         <span class="pos__list__item__quantity"></span>
         <p class="pos__list__item__name">Payment</p>
         </div>
-        <input class="pos__body__payment" min="1" oninput="calculateChange() || validity.valid || (value='')" 
-        type="number" step="0.01" max="100000"></input>
+        <input class="pos__body__payment" min="1" onkeydown="restrictNonNumericInput(event);" oninput="calculateChange();" 
+        type="text" step="0.01" maxlength="6"></input>
     </li>`
 
     list+=`<li class="pos__list__item total">
@@ -477,30 +477,59 @@ btnConfirm.addEventListener('click',()=>{
 
 });
 
-
-function calculateChange () {
-    let payment = $('.pos__body__payment').val();
+function restrictNonNumericInput(event) {
     const posPayment = document.querySelector('.pos__body__payment');
-    
-    let change = payment - grandTotal;
 
-    if(payment >= grandTotal) {
-        inpPaymentError.classList.remove('show');
-        console.log(payment,grandTotal);
-        posPayment.classList.remove('error');
-        
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
+        return true;
     }
-    else{
+
+    if ((!isNaN(Number(event.key) && event.key !== '.')) || 
+        (event.key === '.' && !posPayment.value.includes('.') && posPayment.value !== '') && 
+        event.code !== 'Space') {
+        return true;
+    }
+
+    event.preventDefault();
+    return false;
+}
+
+
+function limitInputLength(element, maxLength) {
+    if (element.value.length > maxLength) {
+        element.value = element.value.slice(0, maxLength);
+    }
+}
+
+function calculateChange() {
+    const posPayment = document.querySelector('.pos__body__payment');
+    let payment = posPayment.value;
+
+    payment = payment.replace(/[^0-9.]/g, '');
+
+    let paymentValue = parseFloat(payment);
+
+    let change = paymentValue - grandTotal;
+
+    if (paymentValue >= grandTotal) {
+        inpPaymentError.classList.remove('show');
+        posPayment.classList.remove('error');
+    } else {
         inpPaymentError.classList.add('show');
-        if(posPayment.classList.contains('error') == false){
+        if (!posPayment.classList.contains('error')) {
             posPayment.classList.add('error');
         }
     }
 
-    if(payment == ""){
+    if (isNaN(paymentValue) || paymentValue === null) {
+        inpPaymentError.classList.remove('show');
+        posPayment.classList.remove('error');
+    }
+
+    if (payment === "") {
         change = 0;
     }
-    change = parseFloat(change).toFixed(2);
+    change = parseFloat(change).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     $('.pos__list__item__change').html(`₱ ${change}`);
 }
 
