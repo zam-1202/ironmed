@@ -215,10 +215,7 @@ const Category = (() => {
     thisCategory.update = () => {
         const regex = /^[a-zA-Z1-9&-'.' ]+$/;
         const category_name = $('#txt_category_name').val();
-        // let existingCategories = ['MILK & DIAPERS', 'SUPPLEMENTS', 'BRANDED TABLETS', 'GENERIC TABLETS',
-        // 'OINTMENTS', 'GALLENICALS', 'BRANDED SYRUP', 'GENERIC SYRUP','milk & diapers', 'supplements', 'branded tablets', 'generic tablets',
-        // 'ointments', 'gallenicals', 'branded syrup', 'generic syrup', 'Milk & Diapers', 'Supplements', 'Branded Tablets', 'Generic Tablets',
-        // 'Ointments', 'Gallenicals', 'Branded Syrup', 'Generic Syrup'];
+                
 
         if(category_name == "") {
             Swal.fire({
@@ -228,14 +225,6 @@ const Category = (() => {
                 showConfirmButton: true,
             })
         }
-        // else if (existingCategories.includes(category_name)) {
-        //     Swal.fire({
-        //       position: 'center',
-        //       icon: 'warning',
-        //       title: 'Category name already exists',
-        //       showConfirmButton: true,
-        //     })
-        //   } 
         else if (/\d/.test(category_name)) {
             Swal.fire({
                 position: 'center',
@@ -273,6 +262,18 @@ const Category = (() => {
                 },
                 success: function (response) 
                 {
+                if (response.message && response.message === 'No changes made') {
+                    $('#txt_category_name').val("")
+                    $('#btn_save_category').html('Register Category');
+                    thisCategory.loadTableData();
+                    thisCategory.loadSelectData();
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: 'No changes have been made',
+                        showConfirmButton: true,
+                    });
+                } else {
                     $('#txt_category_name').val("")
                     thisCategory.loadTableData();
                     thisCategory.loadSelectData();
@@ -285,7 +286,8 @@ const Category = (() => {
                         title: 'Category updated successfully',
                         showConfirmButton: true,
                     })
-                },
+                }
+            },
                 error: function () {
     
                 }

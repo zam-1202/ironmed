@@ -20,7 +20,6 @@ class Category
         $sql = "SELECT id, name from categories";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -29,7 +28,6 @@ class Category
         $sql = "SELECT id, name FROM categories WHERE id = $category_id";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_assoc();
     }
 

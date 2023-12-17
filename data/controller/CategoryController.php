@@ -85,15 +85,23 @@ else if ($action == 'update')
     $category_id = $_POST['category_id'];
     $category_name = $_POST['category_name'];
 
-    $request = [
-        'id' => $category_id,
-        'name' => $category_name,
-    ];
+    $originalCategoryData = $Category->getById($category_id);
+    $originalCategoryName = $originalCategoryData['name'];
 
-    $result = $Category->update($request);
+    if ($category_name === $originalCategoryName) {
+        echo json_encode(['message' => 'No changes made']);
+    } else {
+        $request = [
+            'id' => $category_id,
+            'name' => $category_name,
+        ];
 
-    echo json_encode($result);
+        $result = $Category->update($request);
+
+        echo json_encode($result);
+    }
 }
+
 
 else if ($action == 'delete')
 {
