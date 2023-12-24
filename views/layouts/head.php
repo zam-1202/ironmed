@@ -6,7 +6,7 @@ session_start();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IronMed</title>
-    <link rel="icon" type="image/x-icon" href="../../libs/images/IronMedLogo.ico">
+    <link rel="icon" type="image/x-icon" href="../../libs/images/IronMedLogoColored.ico">
 
     <!-- Plugins -->
     <link rel="stylesheet" href="../../libs/plugins/bootstrap/bootstrap-icons.css" />
