@@ -13,7 +13,7 @@ const Login = (() => {
         const username = $('#txt_username').val();
         const password = $('#txt_password').val();
 
-        const loginUrl = '../../data/controller/LoginController.php';
+        const loginUrl = '../data/controller/LoginController.php';
 
         $.ajax({
             type: "POST",
