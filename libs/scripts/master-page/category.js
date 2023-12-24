@@ -111,7 +111,8 @@ const Category = (() => {
 
     thisCategory.save = () => {
         const regex = /^[a-zA-Z0-9&\-'\.\s–]+$/;
-        const category_name = $('#txt_category_name').val().trim();
+        let category_name = $('#txt_category_name').val().trim();
+        category_name = category_name.replace(/\s+/g, ' ');
 
         if(category_name == "") {
             Swal.fire({
