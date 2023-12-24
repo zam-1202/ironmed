@@ -27,7 +27,7 @@ if (!$_SESSION['user']) {
                                 <span style="color:red"> *</span>
                                 <div style="position: relative;">
                                     <input type="password" class="form-control" id="txt_oldpassword" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateOldPassword()" autofill="on">
-                                    <button class="custom-search-button" type="button" id="txt_oldpasswordtoggle" onclick="togglePasswordVisibility('txt_oldpassword')">SHOW</button>
+                                    <button class="custom-search-button" type="button" id="txt_oldpassword-toggle" onclick="togglePasswordVisibility('txt_oldpassword')">SHOW</button>
                                 </div>
                                 <span id="oldp"></span>
                             </div>
