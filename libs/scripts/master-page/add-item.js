@@ -527,6 +527,7 @@ const Product = (() => {
                     $('#slc_type').prop( "disabled", false );
                     $('#txt_location').val(response.location);
                     $('#txt_location').prop( "disabled", false );
+                    $('#txt_location').removeClass('red-input');
                     
                     toUpdate = true;
 
@@ -542,16 +543,19 @@ const Product = (() => {
     }
 
     thisProduct.update = () => {
+        const regex = /^[a-zA-Z0-9-'.' ]+$/;
         const buying_price = $('#txt_buying_price').val();
         const selling_price = $('#txt_selling_price').val();
         const lot_num = $('#txt_lot_number').val();
         const quantity = $('#txt_quantity').val();
         const manufature_date = $('#txt_manufature_date').val();
         const expiraton_date = $('#txt_expiraton_date').val();
+        const location = $('#txt_location').val();
 
         if(buying_price == ""
         || lot_num == ""
         || selling_price == ""
+        || location == ""
         || quantity == "") {
             Swal.fire({
                 position: 'center',
@@ -560,7 +564,24 @@ const Product = (() => {
                 showConfirmButton: true,
             })
         }
-
+        else if (!regex.test(location)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Location Name',
+                text: 'Only letters, numbers, hyphen, and period are allowed.',
+                showConfirmButton: true,
+            });
+        }
+        else if (location.trim() === "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Empty Location Name',
+                text: 'Please fill out the location field.',
+                showConfirmButton: true,
+            });
+        }
         else if (buying_price >= selling_price){
             Swal.fire({
                 position: 'center',
@@ -570,6 +591,7 @@ const Product = (() => {
             })
         }
         else {
+            console.log("Location:", location);
             $.ajax({
                 type: "POST",
                 url: PRODUCT_CONTROLLER + '?action=updateProductDetails',
@@ -583,7 +605,7 @@ const Product = (() => {
                     quantity: quantity,
                     manufature_date: manufature_date,
                     expiraton_date: expiraton_date,
-                    
+                    location: location,
                 },
                 success: function () 
                 {
