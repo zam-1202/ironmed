@@ -3,7 +3,7 @@ let timeDisplay = document.querySelector(".pos__head__time");
 function refreshTime() {
     let date = new Date();
     let options = {
-        timeZone: "Asia/Manila",
+        timeZone: "Asia/Singapore",
         hour12: true,
         hour: '2-digit',
         minute: '2-digit',
@@ -13,5 +13,4 @@ function refreshTime() {
     timeDisplay.innerHTML = timeString;
 }
 
-// Append a random parameter to the script URL to prevent caching
-setInterval(refreshTime, 1000 + Math.floor(Math.random() * 100));
+setInterval(refreshTime, 1000);
