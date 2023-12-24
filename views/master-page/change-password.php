@@ -24,17 +24,31 @@ if (!$_SESSION['user']) {
                             <div class="col-md-12">
                                 <input type="hidden" id="old_password" value="<?php echo($_SESSION['user']['password']); ?>">
                                 <label for="oldpassword" class="form-label">Old Password</label>
-                                <input type="password" class="form-control" id="txt_oldpassword" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateOldPassword()" autofill="on"><span id="oldp"></span>
+                                <span style="color:red"> *</span>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="txt_oldpassword" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateOldPassword()" autofill="on">
+                                    <button class="custom-search-button" type="button" id="txt_oldpasswordtoggle" onclick="togglePasswordVisibility('txt_oldpassword')">SHOW</button>
+                                </div>
+                                <span id="oldp"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="newpassword" class="form-label">New Password</label>
-                                <!-- <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p> -->
+                                <span style="color:red"> *</span>
                                 <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
-                                <input type="password" class="form-control" id="txt_newpassword" maxlength="128" onkeyup = validateNewPass(); required/><span id="mess"></span>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="txt_newpassword" maxlength="128" onkeyup = validateNewPass(); required/>
+                                    <button class="custom-search-button" type="button" id="txt_newpassword-toggle" onclick="togglePasswordVisibility('txt_newpassword')">SHOW</button>
+                                </div>
+                                <span id="mess"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                <input type="password" class="form-control" id="txt_confirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateConfirmPassword()"><span id="confirmPass"></span>
+                                <span style="color:red"> *</span>
+                                    <div style="position: relative;">
+                                        <input type="password" class="form-control" id="txt_confirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateConfirmPassword()">
+                                        <button class="custom-search-button" type="button" id="txt_confirm_password-toggle" onclick="togglePasswordVisibility('txt_confirm_password')">SHOW</button>
+                                    </div>
+                                    <span id="confirmPass"></span>
                             </div>
                             <div class="col-12">
                                 <button type="submit" id="btn_save" name="btn_save" onclick="ChangePassword.confirm()" class="btn form-control btn-main">Update Password</button>

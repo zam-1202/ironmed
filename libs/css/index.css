@@ -1443,5 +1443,6 @@ a.previous.round {
   margin: 0;
   padding: 0 10px;
   z-index: 2;
-  transform: translateY(-50%)
+  transform: translateY(-50%);
+  background-color: transparent; /* Add this line to remove the background color */
 }
