@@ -65,16 +65,24 @@ else if($_SESSION['user']['role'] === 3) {
                                 <input type="text" class="form-control" id="txt_email" maxlength="50" onkeyup = validateEmail();><span id="message"></span>
                             </div>
                             <div class="col-md-12">
-                                <label for="adminnewpassword" class="form-label" id="txt_adminnewpasswordlabel">Password</label>
-                                <span class="required" id="passwordRequired" style="color:red; display: none;"> *</span>
-                                <p id="passwordRequirements" style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
-                                <input type="password" class="form-control" id="txt_adminnewpassword" maxlength="128" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="adminmess"></span>
+                                <label for="adminnewpassword" class="form-label">Password</label><span class="required" style="color:red;"> *</span>
+                                <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="txt_adminnewpassword" maxlength="128" onkeyup="ChangePassword.validateAdminConfirmPassword()">
+                                    <button class="custom-search-button" type="button" id="txt_adminnewpassword-toggle" onclick="togglePasswordVisibility('txt_adminnewpassword')">SHOW</button>
+                                </div>
+                                <span id="adminmess"></span>
                             </div>
+
                             <div class="col-md-12">
-                                <label for="adminconfirmPassword" class="form-label" id="txt_adminconfirm_passwordlabel">Confirm Password</label>
-                                <span class="required" id="confirmPasswordRequired" style="color:red; display: none;"> *</span>
-                                <input type="password" class="form-control" id="txt_adminconfirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="confirmPass"></span>
+                                <label for="adminconfirmPassword" class="form-label">Confirm Password</label><span class="required" style="color:red;"> *</span>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="txt_adminconfirm_password" maxlength="128" name="txt_oldpassword" onkeyup="ChangePassword.validateAdminConfirmPassword()">
+                                    <button class="custom-search-button" type="button" id="txt_adminconfirm_password-toggle" onclick="togglePasswordVisibility('txt_adminconfirm_password')">SHOW</button>
+                                </div>
+                                <span id="confirmPass"></span>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role</label><span class="required" style="color:red;"> *</span>
                                 <select id="slc_role" class="form-select">

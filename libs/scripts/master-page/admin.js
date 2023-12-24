@@ -752,6 +752,7 @@ const Admin = (() => {
         $('#txt_adminconfirm_password').removeClass('green-input');
         $('#txt_adminnewpassword').removeClass('red-input');
         $('#txt_adminconfirm_password').removeClass('red-input');
+        document.getElementById('adminmess').innerHTML = "";
         document.getElementById('confirmPass').innerHTML = "";
     }
 
@@ -789,3 +790,15 @@ const Admin = (() => {
 
     return thisAdmin;
 })();
+
+function togglePasswordVisibility(inputId) {
+    var toggleButton = document.getElementById(inputId + "-toggle");
+    var passwordInput = document.getElementById(inputId);
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.textContent = "HIDE";
+    } else {
+        passwordInput.type = "password";
+        toggleButton.textContent = "SHOW";
+    }
+}
