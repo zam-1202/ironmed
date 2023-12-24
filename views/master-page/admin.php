@@ -21,7 +21,7 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-8 col-md-12 ">
                     <div class="user__table-wrapper">
-                        <h2 class="section__sub-title">List of Accounts</h2>
+                        <h2 class="form-wrapper" id="txt_title">List of Accounts</h2>
 
                         <div class="table-wrapper">
                         <table id="userTable" class="table table-bordered">
