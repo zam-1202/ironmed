@@ -216,7 +216,8 @@ const Category = (() => {
 
     thisCategory.update = () => {
         const regex = /^[a-zA-Z0-9&\-'\.\s–]+$/;
-        const category_name = $('#txt_category_name').val();
+        let category_name = $('#txt_category_name').val().trim();
+        category_name = category_name.replace(/\s+/g, ' ');
                 
 
         if(category_name == "") {
@@ -259,6 +260,7 @@ const Category = (() => {
                 if (response.message && response.message === 'No changes made') {
                     $('#txt_category_name').val("")
                     $('#btn_save_category').html('Register Category');
+                    $('#txt_category_name').removeClass('green-input');
                     thisCategory.loadTableData();
                     thisCategory.loadSelectData();
                     Swal.fire({
@@ -273,7 +275,6 @@ const Category = (() => {
                     thisCategory.loadSelectData();
                     $('#btn_save_category').html('Register Category');
                     toUpdate = false;
-                    $('#txt_category_name').removeClass('green-input');
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
