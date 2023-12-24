@@ -71,6 +71,7 @@ if(!$_SESSION['user']) {
                         <thead>
                             <tr>
                                 <th></th>
+                                <th>Barcode</th>
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Type</th>
