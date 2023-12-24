@@ -13,4 +13,5 @@ function refreshTime() {
     timeDisplay.innerHTML = timeString;
 }
 
-setInterval(refreshTime, 1000);
+// Append a random parameter to the script URL to prevent caching
+setInterval(refreshTime, 1000 + Math.floor(Math.random() * 100));
