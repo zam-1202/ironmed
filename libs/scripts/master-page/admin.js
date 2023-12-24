@@ -417,6 +417,9 @@ const Admin = (() => {
                 $('#confirmPasswordRequired').hide();
 
                 
+                $('#txt_adminnewpassword-toggle').hide();
+                $('#txt_adminconfirm_password-toggle').hide();
+                
                 // $('label[for="adminnewpassword"], label[for="adminnewpassword"] + span[style="color:red;"], p[style="color:gray"]').hide();
                 // $('label[for="adminconfirmPassword"], label[for="adminconfirmPassword"] + span[style="color:red;"]').hide();
 
@@ -739,6 +742,9 @@ const Admin = (() => {
         $('label[for="adminconfirmPassword"]').show();
         $('label[for="adminnewpassword"]').nextAll('span, p').show();
         $('label[for="adminconfirmPassword"]').next('span').show();
+
+        $('#txt_adminnewpassword-toggle').show();
+        $('#txt_adminconfirm_password-toggle').show();
 
         $('#slc_status option[value="0"]').prop('disabled', true);
         
