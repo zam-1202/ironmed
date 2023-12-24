@@ -68,12 +68,12 @@ else if($_SESSION['user']['role'] === 3) {
                                 <label for="adminnewpassword" class="form-label" id="txt_adminnewpasswordlabel">Password</label>
                                 <span class="required" id="passwordRequired" style="color:red; display: none;"> *</span>
                                 <p id="passwordRequirements" style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
-                                <input type="text" class="form-control" id="txt_adminnewpassword" maxlength="128" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="adminmess"></span>
+                                <input type="password" class="form-control" id="txt_adminnewpassword" maxlength="128" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="adminmess"></span>
                             </div>
                             <div class="col-md-12">
                                 <label for="adminconfirmPassword" class="form-label" id="txt_adminconfirm_passwordlabel">Confirm Password</label>
                                 <span class="required" id="confirmPasswordRequired" style="color:red; display: none;"> *</span>
-                                <input type="text" class="form-control" id="txt_adminconfirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="confirmPass"></span>
+                                <input type="password" class="form-control" id="txt_adminconfirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateAdminConfirmPassword()"><span id="confirmPass"></span>
                             </div>
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role</label><span class="required" style="color:red;"> *</span>
