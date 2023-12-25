@@ -142,7 +142,7 @@ const Category = (() => {
         else {
             $.ajax({
                 type: "POST",
-                url: CATEGORY_CONTROLLER + '?action=checkCategoryExists',
+                url: CATEGORY_CONTROLLER + '?action=checkCategory',
                 dataType: "json",
                 data:{
                     category_name: category_name
@@ -188,6 +188,7 @@ const Category = (() => {
         }        
     }
 
+    let originalCategoryName;
     thisCategory.clickUpdate = (id) => {
         category_id = id;
 
@@ -200,6 +201,7 @@ const Category = (() => {
             },
             success: function (response) 
             {
+                originalCategoryName = response.name
                 $('#txt_category_name').val(response.name);
                 toUpdate = true;
 
@@ -218,17 +220,15 @@ const Category = (() => {
         const regex = /^[a-zA-Z0-9&\-'\.\s–]+$/;
         let category_name = $('#txt_category_name').val().trim();
         category_name = category_name.replace(/\s+/g, ' ');
-                
-
-        if(category_name == "") {
+    
+        if (category_name === "") {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Category field should have value',
+                title: 'Category field should have a value',
                 showConfirmButton: true,
-            })
-        }
-        else if (!regex.test(category_name)) {
+            });
+        } else if (!regex.test(category_name)) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -236,62 +236,93 @@ const Category = (() => {
                 text: 'Only letters, numbers, hyphen, ampersand, and period are allowed.',
                 showConfirmButton: true,
             });
-        }
-        else if (category_name.trim() === "") {
-            Swal.fire({
-                position: 'center',
-                icon: 'warning',
-                title: 'Empty Category Name',
-                text: 'Please fill out the category field.',
-                showConfirmButton: true,
-            });
-        }
-        else{
+        }    else if (category_name.trim() === "") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Empty Category Name',
+                    text: 'Please fill out the category field.',
+                    showConfirmButton: true,
+                });
+        } else {
             $.ajax({
                 type: "POST",
-                url: CATEGORY_CONTROLLER + '?action=update',
+                url: CATEGORY_CONTROLLER + '?action=checkCategoryExists',
                 dataType: "json",
-                data:{
-                    category_id: category_id,
+                data: {
                     category_name: category_name
                 },
-                success: function (response) 
-                {
-                if (response.message && response.message === 'No changes made') {
-                    $('#txt_category_name').val("")
-                    $('#btn_save_category').html('Register Category');
-                    $('#txt_category_name').removeClass('green-input');
-                    thisCategory.loadTableData();
-                    thisCategory.loadSelectData();
+                success: function (result) {
+                    if (result.exists && category_name !== originalCategoryName) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: 'Category name already exists',
+                            showConfirmButton: true,
+                        });
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            url: CATEGORY_CONTROLLER + '?action=update',
+                            dataType: "json",
+                            data: {
+                                category_id: category_id,
+                                category_name: category_name
+                            },
+                            success: function (response) {
+                                if (response.message && response.message === 'No changes made') {
+                                    $('#txt_category_name').val("");
+                                    $('#btn_save_category').html('Register Category');
+                                    $('#txt_category_name').removeClass('green-input');
+                                    $('#txt_category_name').removeClass('red-input');
+                                    thisCategory.loadTableData();
+                                    thisCategory.loadSelectData();
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'info',
+                                        title: 'No changes have been made',
+                                        showConfirmButton: true,
+                                    });
+                                } else {
+                                    $('#txt_category_name').val("");
+                                    thisCategory.loadTableData();
+                                    thisCategory.loadSelectData();
+                                    $('#btn_save_category').html('Register Category');
+                                    toUpdate = false;
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Category updated successfully',
+                                        showConfirmButton: true,
+                                    });
+                                }
+                            },
+                            error: function () {
+                                // Handle error
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'Error updating category',
+                                    showConfirmButton: true,
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    // Handle error
                     Swal.fire({
                         position: 'center',
-                        icon: 'info',
-                        title: 'No changes have been made',
+                        icon: 'error',
+                        title: 'Error checking category existence',
                         showConfirmButton: true,
                     });
-                } else {
-                    $('#txt_category_name').val("")
-                    thisCategory.loadTableData();
-                    thisCategory.loadSelectData();
-                    $('#btn_save_category').html('Register Category');
-                    toUpdate = false;
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Category updated successfully',
-                        showConfirmButton: true,
-                    })
-                }
-            },
-                error: function () {
-    
                 }
             });
-
         }
- 
     }
 
+    
     thisCategory.clickCancel = () => {
         $('#txt_category_name').val("")
         toUpdate = false;
