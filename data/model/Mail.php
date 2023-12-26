@@ -15,20 +15,23 @@ class Mail
     {
         // Check if the email exists in the users table
         if ($this->isEmailExists($email)) {
-            $sql = "UPDATE users SET otp = ? WHERE email = ?";
-        
+            $currentTimestamp = time();  // Get the current timestamp
+            $expirationTimestamp = $currentTimestamp + 30;  // Set expiration to 30 seconds
+    
+            $sql = "UPDATE users SET otp = ?, otp_timestamp = ? WHERE email = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("is", $otp, $email);
-        
+            $stmt->bind_param("iis", $otp, $expirationTimestamp, $email);
+    
             $result = $stmt->execute(); // Use the result directly as a boolean
             $stmt->close(); // Close the prepared statement
     
             return $result;
         } else {
             $this->error = 'EmailNotExists'; // Set an error if the email does not exist
-            return false; 
+            return false;
         }
     }
+    
     
     private function isEmailExists($email)
     {
@@ -48,28 +51,38 @@ class Mail
     {
         error_log("Verifying OTP for email: $email, entered OTP: $enteredOTP");
     
-        $sql = "SELECT otp FROM users WHERE email = ?";
+        $sql = "SELECT otp, otp_timestamp FROM users WHERE email = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $stmt->bind_result($storedOTP);
+        $stmt->bind_result($storedOTP, $otpTimestamp);
         $stmt->fetch();
         $stmt->close();
     
-        // Debug statement
+        // Debug statements
         error_log("Stored OTP: $storedOTP");
+        error_log("OTP Timestamp: $otpTimestamp");
     
-        // Verify OTP
+        // Verify OTP and check expiration
+        $currentTimestamp = time();
+        $expirationTime = 30; //time is in seconds
+    
         if (trim($storedOTP) == trim($enteredOTP)) {
-            // Clear the stored email from the session after successful verification
-            unset($_SESSION['verification_email']);
-            session_write_close(); // Optional: close the session
+            if ($otpTimestamp >= $currentTimestamp && $otpTimestamp <= ($currentTimestamp + $expirationTime)) {
+                unset($_SESSION['verification_email']);
+                session_write_close();
     
-            return true; // OTP matches
+                return true;
+            } elseif ($otpTimestamp < $currentTimestamp) {
+                $this->error = 'OTPExpired';
+            } else {
+                $this->error = 'InvalidOTP';
+            }
         } else {
             $this->error = 'InvalidOTP';
-            return false; // OTP does not match
         }
+    
+        return false;
     }
     
     public function getError()

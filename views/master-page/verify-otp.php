@@ -14,7 +14,7 @@
                 <img src="../../libs/images/IronMedLogo.png" alt="">
             </div>
             <form class="login__form" action="">
-                <input type="text" id="txt_otp" placeholder="One-Time Password" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'">
+                <input type="text" id="txt_otp" maxlength = "6" placeholder="One-Time Password" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'">
                 <button class="btn form-control btn-primary" id="verifyOTPButton" type="button">Verify OTP</button>
             </form>
         </div>
