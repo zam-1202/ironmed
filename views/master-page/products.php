@@ -31,16 +31,29 @@ if(!$_SESSION['user']) {
                                         <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
                                     </ul>
                             <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-                            <div class="nav-item dropdown active col-10">
+                            <div class="col-md-10">
+                            <div class="input-group">
+                            <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
                                 <select class="form-control" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
                                                 <option value="" selected="true" disabled>Filter by Category</option>
-                                                <option value="">Catgeory 1</option>
-                                                <option value="">Catgeory 2</option>
-                                                <option value="">Catgeory 3</option>
+                                                <option value="">Category 1</option>
+                                                <option value="">Category 2</option>
+                                                <option value="">Category 3</option>
                                 </select>
                             </div>
-                        </div>
-                        </div>
+                            </div>
+
+                            <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+                            <div class="col-md-10">
+                            <div class="input-group">
+                             <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
+                                 <select name="" id="slc_type" class="form-control" onchange="Product.loadFilteredTableDataByType()">
+                                    <option value="" selected="true">Select Type</option>
+                                    <option value="branded">Branded</option>
+                                    <option value="generic">Generic</option>
+                                </select>
+                         </div>
+                         </div>
                         <!-- </div>      -->
                         </div>
                         </div>
