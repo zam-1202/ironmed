@@ -16,7 +16,7 @@ class Mail
         // Check if the email exists in the users table
         if ($this->isEmailExists($email)) {
             $currentTimestamp = time();  // Get the current timestamp
-            $expirationTimestamp = $currentTimestamp + 30;  // Set expiration to 30 seconds
+            $expirationTimestamp = $currentTimestamp + 600;  // Set expiration to 30 seconds
     
             $sql = "UPDATE users SET otp = ?, otp_timestamp = ? WHERE email = ?";
             $stmt = $this->conn->prepare($sql);
@@ -65,7 +65,7 @@ class Mail
     
         // Verify OTP and check expiration
         $currentTimestamp = time();
-        $expirationTime = 30; //time is in seconds
+        $expirationTime = 600; //time is in seconds
     
         if (trim($storedOTP) == trim($enteredOTP)) {
             if ($otpTimestamp >= $currentTimestamp && $otpTimestamp <= ($currentTimestamp + $expirationTime)) {
