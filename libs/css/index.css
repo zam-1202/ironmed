@@ -1428,3 +1428,21 @@ a.previous.round {
 .export-option {
   cursor: pointer;
 }
+
+::-ms-reveal {
+  display: none;
+}
+
+.custom-search-button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  color: #2dafa9;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0 10px;
+  z-index: 2;
+  transform: translateY(-50%);
+  background-color: transparent; /* Add this line to remove the background color */
+}

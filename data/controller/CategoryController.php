@@ -180,3 +180,19 @@ else if($action == 'getCategoryPerMonthReport')
     
     echo json_encode($chartData);
 }
+
+else if ($action == 'checkCategory') {
+    $category_name = $_POST['category_name'];
+
+    $result = $Category->checkCategory($category_name);
+
+    echo json_encode($result);
+}
+
+else if ($action == 'checkCategoryExists') {
+    $category_name = $_POST['category_name'];
+
+    $result = $Category->checkCategoryExists($category_name);
+
+    echo json_encode($result);
+}

@@ -623,3 +623,15 @@ const ChangePassword = (() => {
 
     return thisChangePassword;
 })();
+
+function togglePasswordVisibility(inputId) {
+    var toggleButton = document.getElementById(inputId + "-toggle");
+    var passwordInput = document.getElementById(inputId);
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.textContent = "HIDE";
+    } else {
+        passwordInput.type = "password";
+        toggleButton.textContent = "SHOW";
+    }
+}

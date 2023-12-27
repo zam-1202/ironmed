@@ -118,4 +118,31 @@ class Category
         $this->conn->close();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function checkCategory($category_name)
+    {
+        $sql = "SELECT COUNT(*) AS count FROM categories WHERE name = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $category_name);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        return $count > 0;
+    }
+
+    public function checkCategoryExists($category_name)
+    {
+        $sql = "SELECT name, COUNT(*) AS count FROM categories WHERE name = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $category_name);
+        $stmt->execute();
+        $stmt->bind_result($existing_name, $count);
+        $stmt->fetch();
+        $stmt->close();
+    
+        return array("exists" => $count > 0, "existing_name" => $existing_name);
+    }
+    
 }
