@@ -752,3 +752,19 @@ const validateLocationName = () => {
         lname.innerHTML = "";
     }
 }
+
+// Disable manual typing for manufacturing date
+$('#txt_manufature_date').on('keydown paste', function (e) {
+    e.preventDefault();
+});
+$('#txt_manufature_date').on('focus', function () {
+    $(this).blur();
+});
+
+// Disable manual typing for expiration date
+$('#txt_expiraton_date').on('keydown paste', function (e) {
+    e.preventDefault();
+});
+$('#txt_expiraton_date').on('focus', function () {
+    $(this).blur();
+});
