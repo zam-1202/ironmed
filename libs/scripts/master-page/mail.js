@@ -3,6 +3,9 @@ $(document).ready(function () {
 
     sendOTPButton.on('click', function (event) {
         event.preventDefault();
+
+        sendOTPButton.prop('disabled', true);
+
         sendOTP();
     });
 });
@@ -10,7 +13,20 @@ $(document).ready(function () {
 const sendOTP = () => {
     const email = $('#txt_email').val();
     sessionStorage.setItem('verification_email', email);
-    // Send an OTP to the provided email
+
+    if (email.trim() === '') {
+
+        enableSendOTPButton();
+
+        Swal.fire({
+            title: 'Email Required',
+            text: 'Please provide your email address.',
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+        });
+    } else {
     $.ajax({
         url: MAIL_CONTROLLER + '?action=sendOTP',
         method: 'POST',
@@ -33,6 +49,7 @@ const sendOTP = () => {
                 });
             } else {
                 if (response.error === 'EmailNotExists') {
+                    enableSendOTPButton();
                     Swal.fire({
                         title: 'Email Not Found',
                         text: 'The provided email does not exist in database. Please check your email and try again.',
@@ -42,6 +59,7 @@ const sendOTP = () => {
                         confirmButtonText: 'OK'
                     });
                 } else if (response.error === 'FailedToSendOTP') {
+                    enableSendOTPButton();
                     Swal.fire({
                         title: 'Failed to send OTP',
                         text: 'Please try again.',
@@ -53,18 +71,24 @@ const sendOTP = () => {
                 }
             }
         },
-        error: function () {
-            Swal.fire({
-                title: 'Error',
-                text: 'An error occurred during the request.',
-                icon: 'error',
-                showCancelButton: false,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
-};
+            error: function () {
+                enableSendOTPButton();
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred during the request.',
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+}
+
+const enableSendOTPButton = () => {
+    $('#sendOTPButton').prop('disabled', false);
+}
 
 $(document).ready(function () {
     const verifyOTPButton = $('#verifyOTPButton');
@@ -81,7 +105,6 @@ const verifyOTP = () => {
     const email = sessionStorage.getItem('verification_email');
     console.log('Data:', { email: email, enteredOTP: enteredOTP });
 
-    
     $.ajax({
         url: MAIL_CONTROLLER + '?action=verifyOTP',
         method: 'POST',
@@ -103,6 +126,20 @@ const verifyOTP = () => {
                     }
                 });
             } else {
+                if (response.error === 'OTPExpired') {
+                    Swal.fire({
+                        title: 'OTP is Expired',
+                        text: 'Generate a new one.',
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = 'forget-password.php';
+                            }
+                        });
+                } else if (response.error === 'InvalidOTP') {
                     Swal.fire({
                         title: 'Invalid OTP',
                         text: 'Please check your email and try again.',
@@ -111,6 +148,16 @@ const verifyOTP = () => {
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'OK'
                     });
+                } else {
+                    Swal.fire({
+                        title: 'Unexpected Error',
+                        text: 'An unexpected error occurred.',
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    });
+                }
             }
         },
         error: function () {

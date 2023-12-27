@@ -372,6 +372,7 @@ btnCart.addEventListener('click', (e) => {
                         <td>
                             <button class="btn-remove" onclick="confirmVoidCart(${product.barcode})">&#10008;</button>
                         </td>
+                        <td>${product.barcode}</td>
                         <td>${product.product_name}</td>
                         <td>${product.category_name}</td>
                         <td class="p-type">${product.type}</td>

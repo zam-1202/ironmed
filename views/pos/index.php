@@ -20,6 +20,7 @@ if(!$_SESSION['user']) {
         <section class="pos">
             <div class="pos__head">
                 <div class="pos__head__date">
+                <?php date_default_timezone_set("Asia/Singapore");?>
                     <span><?php echo date('l, Y-m-d'); ?></span>
                     <p class="pos__head__time"><?php echo date('h:i:s A'); ?></p>
                 </div>
@@ -70,6 +71,7 @@ if(!$_SESSION['user']) {
                         <thead>
                             <tr>
                                 <th></th>
+                                <th>Barcode</th>
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Type</th>

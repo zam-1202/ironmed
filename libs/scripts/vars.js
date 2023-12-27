@@ -3,7 +3,7 @@ const HOST_CONTROLLER = window.location.protocol + "//" + window.location.host +
 
 // const HOST = window.location.protocol + "//" + window.location.host + '/inventory-pos/data/controller/';
 
-const HOST_2 = window.location.protocol + '//' + window.location.host + SYSNAME;
+const HOST_2 = window.location.protocol + '//' + window.location.host;
 
 // controllers
 const PATH_TO_CONTROLLER = 'data/controller';

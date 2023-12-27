@@ -28,12 +28,12 @@ if ($action == 'sendOTP') {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPSecure = 'tls';
         $mail->SMTPAuth = true;
-        $mail->Username = 'samuelnorte90@gmail.com';
-        $mail->Password = 'hyrpxeqyophfssqz';
+        $mail->Username = 'pharmacyironmed@gmail.com';
+        $mail->Password = 'zoicolijzeolrgxc';
         $mail->Port = 587; 
 
         // Email parameters
-        $mail->setFrom('ironmed@gmail.com', 'IronMed');
+        $mail->setFrom('pharmacyironmed@gmail.com', 'IronMed');
         $mail->addAddress($email);
 
         // $mail->addCC('kpace1226@gmail.com', 'Kenneth Pace');
@@ -43,7 +43,6 @@ if ($action == 'sendOTP') {
         // Email content
         $mail->isHTML(true);
         $mail->Subject = 'IronMed One-Time Password (OTP)';
-        // $mail->Body = 'Your OTP is: ' . $otp;
         ob_start();
         include('../../views/master-page/OTP-email.php');
         $mail->Body = ob_get_clean();
