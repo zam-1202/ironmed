@@ -13,21 +13,20 @@ class Mail
 
     public function save($email, $otp)
     {
-        // Check if the email exists in the users table
         if ($this->isEmailExists($email)) {
-            $currentTimestamp = time();  // Get the current timestamp
-            $expirationTimestamp = $currentTimestamp + 600;  // Set expiration to 30 seconds
+            $currentTimestamp = time(); 
+            $expirationTimestamp = $currentTimestamp + 600;  // 10 minutes
     
             $sql = "UPDATE users SET otp = ?, otp_timestamp = ? WHERE email = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("iis", $otp, $expirationTimestamp, $email);
+            $stmt->bind_param("sis", $otp, $expirationTimestamp, $email);
     
-            $result = $stmt->execute(); // Use the result directly as a boolean
-            $stmt->close(); // Close the prepared statement
+            $result = $stmt->execute();
+            $stmt->close();
     
             return $result;
         } else {
-            $this->error = 'EmailNotExists'; // Set an error if the email does not exist
+            $this->error = 'EmailNotExists';
             return false;
         }
     }
@@ -65,13 +64,14 @@ class Mail
     
         // Verify OTP and check expiration
         $currentTimestamp = time();
-        $expirationTime = 600; //time is in seconds
-    
-        if (trim($storedOTP) == trim($enteredOTP)) {
+        $expirationTime = 600;
+
+        if (trim($enteredOTP) === '') {
+            $this->error = 'BlankOTP';
+        } elseif (trim($storedOTP) === trim($enteredOTP)) {
             if ($otpTimestamp >= $currentTimestamp && $otpTimestamp <= ($currentTimestamp + $expirationTime)) {
                 unset($_SESSION['verification_email']);
                 session_write_close();
-    
                 return true;
             } elseif ($otpTimestamp < $currentTimestamp) {
                 $this->error = 'OTPExpired';
@@ -84,7 +84,7 @@ class Mail
     
         return false;
     }
-    
+
     public function getError()
     {
         return $this->error;
