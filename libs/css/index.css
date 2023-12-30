@@ -1446,3 +1446,41 @@ a.previous.round {
   transform: translateY(-50%);
   background-color: transparent; /* Add this line to remove the background color */
 }
+
+#remaining-time-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#remaining-time {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+#expired-message {
+  color: #d11515;
+  display: none;
+}
+
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+  opacity: 0;
+}
+
+.fade-out {
+  opacity: 1;
+}
+
+.fade-out.hide {
+  opacity: 0;
+}
