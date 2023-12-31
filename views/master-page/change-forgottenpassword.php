@@ -38,6 +38,10 @@
                         <div class="col-12">
                             <button type="submit" id="btn_save" name="btn_save" onclick="ChangePassword.confirmforgetpassword()" class="btn form-control btn-main">Update Password</button>
                         </div>
+
+                        <div class="col-12">
+                                    <button  onclick="ChangePassword.resetFields()" class="btn form-control btn-warning">Cancel</button>
+                        </div>
                     </form>
                 </div>
     </div>

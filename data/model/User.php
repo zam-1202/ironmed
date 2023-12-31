@@ -301,42 +301,50 @@ class User
         return $result;
     }
 
-public function isUsernameTaken($username, $excludeUserId = null)
-{
-    if ($excludeUserId !== null) {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ? AND id != ?");
-        $stmt->bind_param("si", $username, $excludeUserId);
-    } else {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
-        $stmt->bind_param("s", $username);
+    public function isUsernameTaken($username, $excludeUserId = null)
+    {
+        if ($excludeUserId !== null) {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ? AND id != ?");
+            $stmt->bind_param("si", $username, $excludeUserId);
+        } else {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
+            $stmt->bind_param("s", $username);
+        }
+
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            return true;  // Username is taken by another user
+        } else {
+            return false; // Username is available
+        }
     }
 
-    $stmt->execute();
-    $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
-        return true;  // Username is taken by another user
-    } else {
-        return false; // Username is available
+
+    public function changeForgottenPassword($email, $newPassword)
+    {
+        // Check if the email exists in the users table
+
+            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+            $sql = "UPDATE users SET password = ? WHERE email = ?";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ss", $hashedPassword, $email);
+            
+            $result = $stmt->execute(); // Use the result directly as a boolean
+            $stmt->close(); // Close the prepared statement
+
+            return $result;
     }
-}
 
-
-
-public function changeForgottenPassword($email, $newPassword)
-{
-    // Check if the email exists in the users table
-
-        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-
-        $sql = "UPDATE users SET password = ? WHERE email = ?";
-        
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $hashedPassword, $email);
-        
-        $result = $stmt->execute(); // Use the result directly as a boolean
-        $stmt->close(); // Close the prepared statement
-
-        return $result;
-}
+    public function getEmailExistsStatement($email)
+    {
+        $stmt = $this->conn->prepare("SELECT id, password FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        return $stmt;
+    }
+    
 }

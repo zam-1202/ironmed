@@ -221,6 +221,7 @@ else if ($action == "changeForgottenPassword") {
             $result = $User->changeForgottenPassword($email, $newPassword);
 
             if ($result) {
+                session_destroy();
                 echo json_encode(['success' => true, 'message' => 'Password changed successfully']);
             } else {
                 echo json_encode(['success' => false, 'error' => 'FailedToChangePassword']);
@@ -230,5 +231,26 @@ else if ($action == "changeForgottenPassword") {
         }
     } else {
         echo json_encode(['success' => false, 'error' => 'EmailOrPasswordNotSet']);
+    }
+}
+
+else if ($action == 'isOldPasswordUsed') {
+    $email = $_POST['email'];
+    $newPassword = $_POST['newPassword'];
+
+    $stmt = $User->getEmailExistsStatement($email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($userId, $hashedPassword);
+        $stmt->fetch();
+
+        $isOldPasswordUsed = password_verify($newPassword, $hashedPassword);
+        echo json_encode(['isOldPasswordUsed' => $isOldPasswordUsed]);
+
+        $stmt->close();
+    } else {
+        echo json_encode(['isOldPasswordUsed' => false]);
     }
 }

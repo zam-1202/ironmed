@@ -74,6 +74,8 @@ const sendOTP = () => {
                     text: 'Please check your email for the one-time password.',
                     icon: 'success',
                     showCancelButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'
                 }).then((result) => {
