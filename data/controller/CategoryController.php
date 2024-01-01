@@ -50,7 +50,7 @@ else if ($action == 'getSelectDataCategory')
 {
     $result = $Category->getAll();
 
-    $options = '<option value="" selected="true" disabled>Filter by Category</option>';
+    $options = '<option value="" selected="true">Filter by Category</option>';
 
     foreach ($result as $category) 
     {

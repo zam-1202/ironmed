@@ -619,6 +619,12 @@ else if ($action == 'getFilteredProductTable') {
     $selectedCategory = $_GET['category'];
     $result = $Product->getFilteredByCategory($selectedCategory);
 
+    if (empty($selectedCategory)) {
+        $result = $Product->getAll(); // or handle the default behavior as needed
+    } else {
+        $result = $Product->getFilteredByCategory($selectedCategory);
+    }
+
     // $result = $Product->getAll();
     $resultExpired = $Product->getAllExpired();
 

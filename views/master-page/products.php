@@ -33,7 +33,7 @@ if(!$_SESSION['user']) {
                             <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
                             <div class="nav-item dropdown active col-10">
                                 <select class="form-control" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
-                                                <option value="" selected="true" disabled>Filter by Category</option>
+                                                <option value="" selected="true">Filter by Category</option>
                                                 <option value="">Catgeory 1</option>
                                                 <option value="">Catgeory 2</option>
                                                 <option value="">Catgeory 3</option>
