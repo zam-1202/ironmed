@@ -243,7 +243,7 @@ class User
 
 
         if ($status == 0) {
-            return "Account is deactivated";
+            return "Account has been locked";
         } else if (password_verify($password, $db_password)) {
             $stmt->free_result();
 
