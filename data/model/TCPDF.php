@@ -1,5 +1,5 @@
 <?php
-require_once('C:/xampp/htdocs/ironmed/vendor/tcpdf/tcpdf.php'); // Replace with the correct absolute path
+include_once('../../vendor/tcpdf/tcpdf.php');
 include_once('ActionLog.php');
 ob_start();
 
