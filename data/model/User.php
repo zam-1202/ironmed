@@ -243,7 +243,7 @@ class User
 
 
         if ($status == 0) {
-            return "Account is deactivated";
+            return "Account is locked";
         } else if (password_verify($password, $db_password)) {
             $stmt->free_result();
 
@@ -270,7 +270,7 @@ class User
             }
             if ($login_attempt == 3) {
                 $this->update_status($id, 0);
-                return "Your Account has been lock due to many attempts. Please contact System admin.";
+                return "Your Account has been locked due to many attempts. Please contact System admin.";
             }
             return "Invalid Username or Password";
         }
