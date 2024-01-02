@@ -358,7 +358,7 @@ else if ($action == 'getSelectData')
 {
     $result = $Category->getAll();
 
-    $options = '<option value="" selected="true" disabled>Select Category</option>';
+    $options = '<option value="" selected="true">Select Category</option>';
 
     foreach ($result as $category) 
     {

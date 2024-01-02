@@ -17,6 +17,8 @@ var tableConfig = {
     },
 };
 
+
+
 var unsavedChanges = false;
 
 var initialFieldValues = {};
@@ -25,16 +27,27 @@ $(':input').each(function () {
     initialFieldValues[this.id] = $(this).val();
 });
 
-$(document).on('input', ':input', function () {
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
+
     var currentFieldValue = $(this).val();
     var initialFieldValue = initialFieldValues[this.id];
 
-    if (currentFieldValue !== initialFieldValue) {
-        unsavedChanges = true;
-    } else {
-        unsavedChanges = false;
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+
+            // Log the field ID and its current value
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
     }
 });
+
+
 
 function showLeaveConfirmation() {
     return Swal.fire({
@@ -53,7 +66,6 @@ function resetUnsavedChanges() {
     unsavedChanges = false;
 }
 
-// Add click event listener for links
 $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
     if ($(this).closest('.paginate_button').length === 0) {
         if (unsavedChanges) {
@@ -66,6 +78,7 @@ $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
                 return;
             }
 
+            e.preventDefault();
             showLeaveConfirmation().then((result) => {
                 if (result.isConfirmed) {
                     resetUnsavedChanges();
@@ -100,7 +113,6 @@ const Product = (() => {
                         body.highlight(table.search());
                         var searchTerm = this.value.toLowerCase();
 
-
                         var regex = searchTerm.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
                         $.fn.dataTable.ext.search.push(function (settings, searchData, index, rowData, counter) {
                             for (var i = 0; i < searchData.length; i++) {
@@ -125,8 +137,8 @@ const Product = (() => {
                             .toArray()
                             .some(row => row.some(value => value.toLowerCase() === searchTerm.toLowerCase()));
 
-                        console.log('Exact match in DataTable:', exactMatch);
-                        console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
+                        // console.log('Exact match in DataTable:', exactMatch);
+                        // console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
                     });
 
                 });
@@ -142,22 +154,50 @@ const Product = (() => {
         if (unsavedChanges) {
             showLeaveConfirmation().then((result) => {
                 if (result.isConfirmed) {
+                    console.log('User confirmed. Resetting fields.');
+                    resetFormFields();
+                }
+            });
+        } else {
+            console.log('All fields are empty. Resetting fields without confirmation.');
+            resetFormFields();
+        }
+    };
+    
+
+    thisProduct.resetFields = () => {
+        console.log('Current value of unsavedChanges:', unsavedChanges);
+        if (unsavedChanges) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
                     $('#txt_product_name').val("");
                     $('#txt_product_barcode').val("");
                     $('#slc_product_category').val("");
-                    $('#slc_status').val("");
+                    // $('#slc_status').val("");
                     $('#slc_type').val("");
-                    resetUnsavedChanges();
+                    unsavedChanges = false;
                 }
             });
         } else {
             $('#txt_product_name').val("");
             $('#txt_product_barcode').val("");
             $('#slc_product_category').val("");
-            $('#slc_status').val("");
+            // $('#slc_status').val("");
             $('#slc_type').val("");
+            unsavedChanges = false;
         }
     };
+    
+        
+            thisProduct.resetFormFields = () => {
+            console.log('Resetting form fields.');
+            $('#txt_product_name').val("");
+            $('#txt_product_barcode').val("");
+            $('#slc_product_category').val("");
+            // $('#slc_status').val("");
+            $('#slc_type').val("");
+            unsavedChanges = false;
+        }
 
 
 
@@ -209,8 +249,8 @@ const Product = (() => {
                             title: 'Product Succesfully Registered!',
                             showConfirmButton: true,
                         })
-                        // thisProduct.resetFields();
                         thisProduct.loadTableData();
+                        thisProduct.resetFormFields();
                     }
                 },
                 error: function(e) {
@@ -218,7 +258,6 @@ const Product = (() => {
                 }
             })
         }     
-    resetUnsavedChanges();
     };
 
     return thisProduct;
@@ -270,7 +309,6 @@ const Category = (() => {
         else {
             thisCategory.update()
         }
-        resetUnsavedChanges();
     }
 
     thisCategory.save = () => {
