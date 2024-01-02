@@ -46,7 +46,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
                                         <select class="form-control" name="" id="slc_product_category">
-                                            <option value="" selected="true" disabled>Select Category</option>
+                                            <option value="" selected="true">Select Category</option>
                                             <option value="">Category 1</option>
                                             <option value="">Category 2</option>
                                             <option value="">Category 3</option>
@@ -58,8 +58,8 @@ else if($_SESSION['user']['role'] === 3) {
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-file-check"></i></span>
                                         <select name="" id="slc_status" class="form-control">
-                                            <option value="" disabled>Select Status</option>
-                                            <option value="1" selected="true" >Active</option>
+                                            <option value="" disabled selected>Select Status</option>
+                                            <option value="1" selected="true">Active</option>
                                             <option value="0" disabled>Inactive</option>
                                         </select>
                                     </div>
