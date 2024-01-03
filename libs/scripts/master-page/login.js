@@ -84,4 +84,14 @@ const togglePassword = document.querySelector('#togglePassword');
      localStorage.removeItem('logoutMessage');
  }
 
-            
+    function togglePasswordVisibility(inputId) {
+        var toggleButton = document.getElementById(inputId + "-toggle");
+        var passwordInput = document.getElementById(inputId);
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleButton.textContent = "HIDE";
+        } else {
+            passwordInput.type = "password";
+            toggleButton.textContent = "SHOW";
+        }
+    }           
