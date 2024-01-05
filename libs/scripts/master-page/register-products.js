@@ -85,6 +85,12 @@ $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
                 return;
             }
 
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
             e.preventDefault();
             showLeaveConfirmation().then((result) => {
                 if (result.isConfirmed) {
@@ -95,6 +101,7 @@ $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
         }
     }
 });
+
 
 const Product = (() => {
     const thisProduct = {};
