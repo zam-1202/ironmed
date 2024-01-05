@@ -66,6 +66,13 @@ function resetUnsavedChanges() {
     unsavedChanges = false;
 }
 
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
+};
+
+
 $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
     if ($(this).closest('.paginate_button').length === 0) {
         if (unsavedChanges) {
