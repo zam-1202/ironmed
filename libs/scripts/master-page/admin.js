@@ -8,6 +8,7 @@ $(document).ready(function () {
 });
 
 var unsavedChanges = false;
+var hasValues = false;
 
 var initialFieldValues = {};
 
@@ -468,6 +469,7 @@ const Admin = (() => {
     thisAdmin.clickUpdate = (id) => {
         user_id = id;
         unsavedChanges = true;
+        hasValues = true;
         $.ajax({
             type: "POST",
             url: USER_CONTROLLER + '?action=getById',
@@ -809,14 +811,6 @@ const Admin = (() => {
 
     thisAdmin.resetFields = () => {
         console.log('Current value of unsavedChanges:', unsavedChanges);
-        var hasValues = false;
-
-        $(':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])').each(function () {
-            if ($(this).val().trim() !== "") {
-                hasValues = true;
-                return false; // Exit the loop early if a non-empty field is found
-            }
-        });
 
         if (unsavedChanges || hasValues) {
             showLeaveConfirmation().then((result) => {
@@ -867,8 +861,8 @@ const Admin = (() => {
                     $('#txt_adminconfirm_password').removeClass('red-input');
                     document.getElementById('adminmess').innerHTML = "";
                     document.getElementById('confirmPass').innerHTML = "";
-                    resetFormFields();
-
+                    unsavedChanges = false;
+                    hasValues = false
                 }
             });
         } else {
@@ -918,7 +912,8 @@ const Admin = (() => {
             $('#txt_adminconfirm_password').removeClass('red-input');
             document.getElementById('adminmess').innerHTML = "";
             document.getElementById('confirmPass').innerHTML = "";
-    
+            unsavedChanges = false;
+            hasValues = false
         }
     };
 
