@@ -8,17 +8,6 @@ $(document).ready(function() {
     })
 });
 
-var tableConfig = {
-    paging: true,
-    searching: true,
-    ordering: true,
-    search: {
-        regex: true,
-    },
-};
-
-
-
 var unsavedChanges = false;
 
 var initialFieldValues = {};
@@ -105,6 +94,15 @@ $(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
 
 const Product = (() => {
     const thisProduct = {};
+
+    var tableConfig = {
+        paging: true,
+        searching: true,
+        ordering: true,
+        search: {
+            regex: true,
+        },
+    };
 
     thisProduct.loadTableData = () => {
         $.ajax({
