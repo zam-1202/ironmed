@@ -62,7 +62,7 @@ else if($_SESSION['user']['role'] === 3) {
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label">Email</label><span class="required" style="color:red;"> *</span>
-                                <input type="text" class="form-control" id="txt_email" maxlength="50" onkeyup = validateEmail();><span id="message"></span>
+                                <input type="text" class="form-control" id="txt_email" maxlength="50" onkeyup = validateEmail();><span id="emailmessage"></span>
                             </div>
 
                             <div class="col-md-12">
@@ -98,7 +98,7 @@ else if($_SESSION['user']['role'] === 3) {
                                 <label for="status" class="form-label">Status</label><span class="required" style="color:red;"> *</span>
                                 <select id="slc_status" class="form-select">
                                     <option value="" disabled selected>Select</option>
-                                    <option value="1">Active</option>
+                                    <option value="1" selected="true">Active</option>
                                     <option value="0" disabled>Deactivate</option>
                                 </select>
                             </div>
@@ -107,7 +107,7 @@ else if($_SESSION['user']['role'] === 3) {
                                 <button type="submit" id="btn_save" onclick="Admin.clickSaveButton()" class="btn form-control btn-primary">Create Account</button>
                             </div>
                             <div class="col-12">
-                                <button type="submit" id="btn_save" onclick="Admin.resetFields()" class="btn form-control btn-warning">Cancel</button>
+                                <button type="submit" id="btn_cancel" onclick="Admin.resetFields()" class="btn form-control btn-warning">Cancel</button>
                             </div>
                         </form>
                     </div>

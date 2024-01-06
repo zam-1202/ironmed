@@ -116,8 +116,32 @@ else if ($action == 'save_session')
     echo json_encode($result);
 }
 
-else if ($action == 'update')
-{
+// else if ($action == 'update')
+// {
+//     $user_id = $_POST['user_id'];
+//     $first_name = $_POST['first_name'];
+//     $last_name = $_POST['last_name'];
+//     $username = $_POST['username'];
+//     $email = $_POST['email'];
+//     $role = $_POST['role'];
+//     $status = $_POST['status'];
+
+//     $request = [
+//         'user_id' => $user_id,
+//         'first_name' => $first_name,
+//         'last_name' => $last_name,
+//         'username' => $username,
+//         'email' => $email,
+//         'role' => $role,
+//         'status' => $status
+//     ];
+
+//     $result = $User->update($request);
+
+//     echo json_encode($result);
+// }
+
+else if ($action == 'update') {
     $user_id = $_POST['user_id'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
@@ -126,20 +150,55 @@ else if ($action == 'update')
     $role = $_POST['role'];
     $status = $_POST['status'];
 
-    $request = [
-        'user_id' => $user_id,
-        'first_name' => $first_name,
-        'last_name' => $last_name,
-        'username' => $username,
-        'email' => $email,
-        'role' => $role,
-        'status' => $status
-    ];
+    $originalUserData = $User->getById($user_id);
+    $originalFirstName = $originalUserData['first_name'];
+    $originalLastName = $originalUserData['last_name'];
+    $originalUsername = $originalUserData['username'];
+    $originalEmail = $originalUserData['email'];
+    $originalRole = $originalUserData['role'];
+    $originalStatus = $originalUserData['status'];
 
-    $result = $User->update($request);
+    if (
+        $first_name === $originalFirstName &&
+        $last_name === $originalLastName &&
+        $username === $originalUsername &&
+        $email === $originalEmail &&
+        $role === $originalRole &&
+        $status === $originalStatus
+    ) {
+        echo json_encode(['message' => 'No changes made']);
+    } else {
+        $request = [
+            'user_id' => $user_id,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'username' => $username,
+            'email' => $email,
+            'role' => $role,
+            'status' => $status
+        ];
+
+        $result = $User->update($request);
+
+        echo json_encode($result);
+    }
+}
+
+else if ($action == 'checkUser') {
+    $user_id = $_POST['user_id'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $role = $_POST['role'];
+    $status = $_POST['status'];
+
+    $result = $User->checkUser($user_id, $first_name, $last_name, $username, $email, $role, $status);
 
     echo json_encode($result);
 }
+
+
 
 else if ($action == 'delete')
 {
