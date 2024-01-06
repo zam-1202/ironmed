@@ -21,7 +21,6 @@ class User
         $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds from users where role != 1";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -30,7 +29,6 @@ class User
         $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds FROM users WHERE id = $user_id";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_assoc();
     }
 

@@ -7,6 +7,87 @@ $(document).ready(function () {
     })
 });
 
+var unsavedChanges = false;
+
+var initialFieldValues = {};
+
+$(':input').each(function () {
+    initialFieldValues[this.id] = $(this).val();
+});
+
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
+
+    var currentFieldValue = $(this).val();
+    var initialFieldValue = initialFieldValues[this.id];
+
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+
+            // Log the field ID and its current value
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
+    }
+});
+
+
+
+function showLeaveConfirmation() {
+    return Swal.fire({
+        title: 'There are unsaved changes',
+        text: 'Do you really want to discard changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    });
+}
+
+function resetUnsavedChanges() {
+    unsavedChanges = false;
+}
+
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
+};
+
+$(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
+    if ($(this).closest('.paginate_button').length === 0) {
+        if (unsavedChanges) {
+            var nonEmptyInputs = $(':input').filter(function () {
+                return this.value.trim() !== '';
+            });
+
+            if (nonEmptyInputs.length === 0) {
+                resetUnsavedChanges();
+                return;
+            }
+
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
+            e.preventDefault();
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    resetUnsavedChanges();
+                    window.location.href = e.target.href;
+                }
+            });
+        }
+    }
+});
 
 const Admin = (() => {
     const thisAdmin = {};
@@ -322,7 +403,7 @@ const Admin = (() => {
                                     document.getElementById('confirmPass').innerHTML = "";
 
 
-                                    thisAdmin.resetFields();
+                                    thisAdmin.resetFormFields();
                                     thisAdmin.loadTableData();
                                 },
                                 error: function () {
@@ -384,10 +465,9 @@ const Admin = (() => {
             });
           }
     
-
     thisAdmin.clickUpdate = (id) => {
         user_id = id;
-    
+        unsavedChanges = true;
         $.ajax({
             type: "POST",
             url: USER_CONTROLLER + '?action=getById',
@@ -396,15 +476,19 @@ const Admin = (() => {
                 user_id: user_id
             },
             success: function (response) {
+                originalFirstName = response.name;
                 $('#txt_first_name').val(response.first_name);
+                originalLastName = response.name;
                 $('#txt_last_name').val(response.last_name);
+                originalUsername = response.name;
                 $('#txt_user_name').val(response.username);
+                originalEmail = response.name;
                 $('#txt_email').val(response.email);
-                // $('#txt_adminnewpassword').prop("disabled", true);
-                // $('#txt_adminconfirm_password').prop("disabled", true);
+                originalRole = response.name;
                 $('#slc_role').val(response.role);
                 
                 // Enable the "Deactivate" option in the dropdown
+                originalStatus = response.name;
                 $('#slc_status option[value="0"]').removeAttr('disabled');
                 $('#slc_status').val(response.status);
     
@@ -415,14 +499,9 @@ const Admin = (() => {
                 $('#passwordRequirements').hide();
                 $('#passwordRequired').hide();
                 $('#confirmPasswordRequired').hide();
-
                 
                 $('#txt_adminnewpassword-toggle').hide();
                 $('#txt_adminconfirm_password-toggle').hide();
-                
-                // $('label[for="adminnewpassword"], label[for="adminnewpassword"] + span[style="color:red;"], p[style="color:gray"]').hide();
-                // $('label[for="adminconfirmPassword"], label[for="adminconfirmPassword"] + span[style="color:red;"]').hide();
-
 
                 toUpdate = true;
     
@@ -440,7 +519,7 @@ const Admin = (() => {
                 document.getElementById('mesi').innerHTML = "";
                 $('#txt_user_name').removeClass('green-input');
                 $('#txt_user_name').removeClass('red-input');
-                document.getElementById('message').innerHTML = "";
+                document.getElementById('emailmessage').innerHTML = "";
                 $('#txt_email').removeClass('green-input');
                 $('#txt_email').removeClass('red-input');
                 document.getElementById('message').innerHTML = "";
@@ -460,15 +539,16 @@ const Admin = (() => {
     thisAdmin.update = () => {
         const specialCharsRegex = /[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/;
         const numbersRegex = /\d/;
-        const first_name = $('#txt_first_name').val().trim();
-        const last_name = $('#txt_last_name').val().trim();
-        const username = $('#txt_user_name').val();
-        const email = $('#txt_email').val();
-        const newpassword = $('#txt_adminnewpassword').val();
-        const confirm_password = $('#txt_adminconfirm_password').val();
-        const role = $('#slc_role').val();
-        const status = $('#slc_status').val();
-        const registerButton = $('#registerButton');
+        let first_name = $('#txt_first_name').val().trim();
+        let last_name = $('#txt_last_name').val().trim();
+        let username = $('#txt_user_name').val();
+        let email = $('#txt_email').val();
+        let newpassword = $('#txt_adminnewpassword').val();
+        let confirm_password = $('#txt_adminconfirm_password').val();
+        let role = $('#slc_role').val();
+        let status = $('#slc_status').val();
+        let registerButton = $('#registerButton');
+
 
         if (first_name === "" || /^\s+$/.test(first_name) || last_name === "" || /^\s+$/.test(last_name) || username === "" || email === "" || role == null || status == null) {
             Swal.fire({
@@ -620,8 +700,6 @@ const Admin = (() => {
                                 showConfirmButton: true,
                             });
                         } else {
-                            // Username is available, proceed with registration
-                            // Enable the register button
                             registerButton.prop('disabled', false);
                             $.ajax({
                                 type: "POST",
@@ -637,12 +715,24 @@ const Admin = (() => {
                                     status: status,
                                 },
                                 success: function (response) {
-                                    Swal.fire({
-                                        position: 'center',
-                                        icon: 'success',
-                                        title: 'Account updated successfully',
-                                        showConfirmButton: true,
-                                    })
+                                    if (response.message && response.message === 'No changes made') {
+                                        thisAdmin.loadTableData();
+                                        thisAdmin.resetFormFields();
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'info',
+                                            title: 'No changes have been made',
+                                            showConfirmButton: true,
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'success',
+                                            title: 'Account updated successfully',
+                                            showConfirmButton: true,
+                                        });
+                                
+                                    unsavedChanges = true;
 
                                     $('#txt_adminnewpassword').val("");
                                     $('#txt_adminconfirm_password').val("");
@@ -658,8 +748,9 @@ const Admin = (() => {
                                     $('#txt_adminconfirm_password').removeClass('red-input');
                                     document.getElementById('confirmPass').innerHTML = "";
 
-                                    thisAdmin.resetFields();
+                                    thisAdmin.resetFormFields();
                                     thisAdmin.loadTableData();
+                                    }
                                 },
                                 error: function () {
                                 }
@@ -707,7 +798,7 @@ const Admin = (() => {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                thisAdmin.resetFields();
+                thisAdmin.resetFormFields();
                 thisAdmin.loadTableData();
             },
             error: function () {
@@ -716,8 +807,123 @@ const Admin = (() => {
         }); 
     }
 
-
     thisAdmin.resetFields = () => {
+        console.log('Current value of unsavedChanges:', unsavedChanges);
+        var hasValues = false;
+
+        $(':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])').each(function () {
+            if ($(this).val().trim() !== "") {
+                hasValues = true;
+                return false; // Exit the loop early if a non-empty field is found
+            }
+        });
+
+        if (unsavedChanges || hasValues) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    toUpdate = false;
+                    $('#txt_first_name').val("");
+                    $('#txt_last_name').val("");
+                    $('#txt_user_name').val("");
+                    $('#txt_email').val("");
+                    $('#txt_adminnewpassword').val("");
+                    $('#txt_adminconfirm_password').val("");
+                    $('#slc_role').val("");
+                    $('#slc_status').val("");
+            
+                    $('.form-control').prop("disabled", false);
+            
+                    $('#btn_save').html("Create Account");
+                    $('#lbl_title').html("Create Account");
+            
+                    $('#txt_adminnewpassword').val("");
+                    $('#txt_adminconfirm_password').val("");
+                    $('#txt_adminnewpassword').show();
+                    $('#txt_adminconfirm_password').show();
+            
+                    $('label[for="adminnewpassword"]').show();
+                    $('label[for="adminconfirmPassword"]').show();
+                    $('label[for="adminnewpassword"]').nextAll('span, p').show();
+                    $('label[for="adminconfirmPassword"]').next('span').show();
+            
+                    $('#txt_adminnewpassword-toggle').show();
+                    $('#txt_adminconfirm_password-toggle').show();
+            
+                    $('#slc_status option[value="0"]').prop('disabled', true);
+                    
+                    $('#txt_first_name').removeClass('green-input');
+                    $('#txt_first_name').removeClass('red-input');
+                    document.getElementById('mes').innerHTML = "";
+                    $('#txt_last_name').removeClass('green-input');
+                    $('#txt_last_name').removeClass('red-input');
+                    document.getElementById('mesi').innerHTML = "";
+                    $('#txt_user_name').removeClass('green-input');
+                    $('#txt_user_name').removeClass('red-input');
+                    $('#txt_email').removeClass('green-input');
+                    $('#txt_email').removeClass('red-input');
+                    $('#txt_adminnewpassword').removeClass('green-input');
+                    $('#txt_adminconfirm_password').removeClass('green-input');
+                    $('#txt_adminnewpassword').removeClass('red-input');
+                    $('#txt_adminconfirm_password').removeClass('red-input');
+                    document.getElementById('adminmess').innerHTML = "";
+                    document.getElementById('confirmPass').innerHTML = "";
+                    resetFormFields();
+
+                }
+            });
+        } else {
+            toUpdate = false;
+            $('#txt_first_name').val("");
+            $('#txt_last_name').val("");
+            $('#txt_user_name').val("");
+            $('#txt_email').val("");
+            $('#txt_adminnewpassword').val("");
+            $('#txt_adminconfirm_password').val("");
+            $('#slc_role').val("");
+            $('#slc_status').val("");
+    
+            $('.form-control').prop("disabled", false);
+    
+            $('#btn_save').html("Create Account");
+            $('#lbl_title').html("Create Account");
+    
+            $('#txt_adminnewpassword').val("");
+            $('#txt_adminconfirm_password').val("");
+            $('#txt_adminnewpassword').show();
+            $('#txt_adminconfirm_password').show();
+    
+            $('label[for="adminnewpassword"]').show();
+            $('label[for="adminconfirmPassword"]').show();
+            $('label[for="adminnewpassword"]').nextAll('span, p').show();
+            $('label[for="adminconfirmPassword"]').next('span').show();
+    
+            $('#txt_adminnewpassword-toggle').show();
+            $('#txt_adminconfirm_password-toggle').show();
+    
+            $('#slc_status option[value="0"]').prop('disabled', true);
+            
+            $('#txt_first_name').removeClass('green-input');
+            $('#txt_first_name').removeClass('red-input');
+            document.getElementById('mes').innerHTML = "";
+            $('#txt_last_name').removeClass('green-input');
+            $('#txt_last_name').removeClass('red-input');
+            document.getElementById('mesi').innerHTML = "";
+            $('#txt_user_name').removeClass('green-input');
+            $('#txt_user_name').removeClass('red-input');
+            $('#txt_email').removeClass('green-input');
+            $('#txt_email').removeClass('red-input');
+            $('#txt_adminnewpassword').removeClass('green-input');
+            $('#txt_adminconfirm_password').removeClass('green-input');
+            $('#txt_adminnewpassword').removeClass('red-input');
+            $('#txt_adminconfirm_password').removeClass('red-input');
+            document.getElementById('adminmess').innerHTML = "";
+            document.getElementById('confirmPass').innerHTML = "";
+    
+        }
+    };
+
+
+    thisAdmin.resetFormFields = () => {
         toUpdate = false;
         $('#txt_first_name').val("");
         $('#txt_last_name').val("");
@@ -726,7 +932,7 @@ const Admin = (() => {
         $('#txt_adminnewpassword').val("");
         $('#txt_adminconfirm_password').val("");
         $('#slc_role').val("");
-        $('#slc_status').val("");
+        // $('#slc_status').val("");
 
         $('.form-control').prop("disabled", false);
 
@@ -749,7 +955,11 @@ const Admin = (() => {
         $('#slc_status option[value="0"]').prop('disabled', true);
         
         $('#txt_first_name').removeClass('green-input');
+        $('#txt_first_name').removeClass('red-input');
+        document.getElementById('mes').innerHTML = "";
         $('#txt_last_name').removeClass('green-input');
+        $('#txt_last_name').removeClass('red-input');
+        document.getElementById('mesi').innerHTML = "";
         $('#txt_user_name').removeClass('green-input');
         $('#txt_user_name').removeClass('red-input');
         $('#txt_email').removeClass('green-input');
@@ -760,6 +970,8 @@ const Admin = (() => {
         $('#txt_adminconfirm_password').removeClass('red-input');
         document.getElementById('adminmess').innerHTML = "";
         document.getElementById('confirmPass').innerHTML = "";
+
+        unsavedChanges = false;
     }
 
     thisAdmin.validateUsername = () => {
