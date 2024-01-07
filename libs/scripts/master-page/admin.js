@@ -17,8 +17,7 @@ $(':input').each(function () {
 });
 
 
-$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
-
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"]):not([name="userTable_length"]):not([aria-controls="userTable"])', function () {
     var currentFieldValue = $(this).val();
     var initialFieldValue = initialFieldValues[this.id];
 
@@ -152,8 +151,8 @@ const Admin = (() => {
                             .toArray()
                             .some(row => row.some(value => value.toLowerCase() === searchTerm.toLowerCase()));
 
-                        console.log('Exact match in DataTable:', exactMatch);
-                        console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
+                        // console.log('Exact match in DataTable:', exactMatch);
+                        // console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
                     });
 
                 });
