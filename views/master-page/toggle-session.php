@@ -57,7 +57,7 @@ if (!$_SESSION['user']) {
                                 </div>
 
                                 <div class="col-md-2 align-self-end">
-                                    <button type="submit" id="btn_save_session" onclick="Admin.clickSaveSessionButton()" class="btn form-control btn-main">Save</button>
+                                    <button type="submit" id="btn_save_session" onclick="clickSaveSessionButton()" class="btn form-control btn-main">Save</button>
                                 </div>
                         </form>
 
@@ -87,7 +87,7 @@ if (!$_SESSION['user']) {
 </body>
 <script src="../../libs/scripts/master-page/change-password.js"></script>
 <script src="../../libs/scripts/pos/session_timer.js"></script>
-<script src="../../libs/scripts/master-page/admin.js"></script>
+<!-- <script src="../../libs/scripts/master-page/admin.js"></script> -->
 
 
 </html>
