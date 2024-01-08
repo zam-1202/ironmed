@@ -27,19 +27,19 @@ if(!$_SESSION['user']) {
                 <div class="invoice__filters__right">
                     <div class="invoice__filters__group invoice__filters__daily ">
                         <label for="" class="invoice__filters__daily__label">Date</label>
-                        <input type="date" class="invoice__filters__daily__input">
+                        <input type="date" class="invoice__filters__daily__input" id="txt_invoice_date">
                         <button class="invoice__filters__daily__button">Search</button>
                     </div>
                     <div class="invoice__filters__group invoice__filters__monthly hidden">
                         <label for="" class="invoice__filters__monthly__label">Month/Year</label>
-                        <input type="month" class="invoice__filters__monthly__input">
+                        <input type="month" class="invoice__filters__monthly__input" id="txt_invoice_month">
                         <button class="invoice__filters__monthly__button">Search</button>
                     </div>
                     <div class="invoice__filters__group invoice__filters__range hidden">
                         <label for="" class="invoice__filters__range__label">Start Date</label>
-                        <input type="date" class="invoice__filters__monthly__input__start">
+                        <input type="date" class="invoice__filters__monthly__input__start" id="txt_invoice_startdate">
                         <label for="" class="invoice__filters__range__label">End Date</label>
-                        <input type="date" class="invoice__filters__monthly__input__end">
+                        <input type="date" class="invoice__filters__monthly__input__end" id="txt_invoice_enddate">
                         <button class="invoice__filters__range__button">Search</button>
                     </div>
                 </div>
