@@ -299,5 +299,42 @@ btnSearchMonthly.addEventListener('click', getInvoices);
 btnSearchRange.addEventListener('click', getInvoices);
 btnConfirmPassword.addEventListener('click', validateAdminPassword);
 
+ // Disable manual typing for the invoice date
+ $('#txt_invoice_date').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#txt_invoice_date').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the invoice month
+ $('#txt_invoice_month').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#txt_invoice_month').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the invoice range
+ $('#txt_invoice_startdate').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#txt_invoice_startdate').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the invoice range
+ $('#txt_invoice_enddate').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#txt_invoice_enddate').on('focus', function () {
+    $(this).blur();
+  });
+
+
 
 
