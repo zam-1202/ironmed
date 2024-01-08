@@ -158,7 +158,7 @@ label {
 }
 
 .login__form {
-  padding: 1rem 5rem;
+  padding: 1rem 3rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -195,6 +195,22 @@ label {
   -webkit-box-shadow: 0 0 10px #719ECE;
           box-shadow: 0 0 10px #719ECE;
   color: #fff;
+}
+
+.login__form .custom-search-button {
+  position: absolute;
+  right: 3px;
+  top: 55%;
+  color: #2dafa9;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0 10px;
+  z-index: 2;
+  transform: translateY(-50%);
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 16px;
 }
 
 .login .image-wrapper {
@@ -1444,5 +1460,43 @@ a.previous.round {
   padding: 0 10px;
   z-index: 2;
   transform: translateY(-50%);
-  background-color: transparent; /* Add this line to remove the background color */
+  background-color: transparent;
+}
+
+#remaining-time-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#remaining-time {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+#expired-message {
+  color: #d11515;
+  display: none;
+}
+
+.fade-transition {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+  opacity: 0;
+}
+
+.fade-out {
+  opacity: 1;
+}
+
+.fade-out.hide {
+  opacity: 0;
 }

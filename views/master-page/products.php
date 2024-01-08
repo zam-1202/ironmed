@@ -36,9 +36,9 @@ if(!$_SESSION['user']) {
                             <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
                                 <select class="form-control" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
                                                 <option value="" selected="true" disabled>Filter by Category</option>
-                                                <option value="">Category 1</option>
-                                                <option value="">Category 2</option>
-                                                <option value="">Category 3</option>
+                                                <option value="">Catgeory 1</option>
+                                                <option value="">Catgeory 2</option>
+                                                <option value="">Catgeory 3</option>
                                 </select>
                             </div>
                             </div>

@@ -3,19 +3,106 @@ $(document).ready(function() {
 
     Product.loadTableData();
   
+    $('.btn').click(function (event){
+        event.preventDefault()
+    })
 });
 
-var tableConfig = {
-    paging: true,
-    searching: true,
-    ordering: true,
-    search: {
-        regex: true,
-    },
+var unsavedChanges = false;
+
+var initialFieldValues = {};
+
+$(':input').each(function () {
+    initialFieldValues[this.id] = $(this).val();
+});
+
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
+
+    var currentFieldValue = $(this).val();
+    var initialFieldValue = initialFieldValues[this.id];
+
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+
+            // Log the field ID and its current value
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
+    }
+});
+
+
+
+function showLeaveConfirmation() {
+    return Swal.fire({
+        title: 'There are unsaved changes',
+        text: 'Do you really want to discard changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    });
+}
+
+function resetUnsavedChanges() {
+    unsavedChanges = false;
+}
+
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
 };
+
+
+$(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
+    if ($(this).closest('.paginate_button').length === 0) {
+        if (unsavedChanges) {
+            var nonEmptyInputs = $(':input').filter(function () {
+                return this.value.trim() !== '';
+            });
+
+            if (nonEmptyInputs.length === 0) {
+                resetUnsavedChanges();
+                return;
+            }
+
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
+            e.preventDefault();
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    resetUnsavedChanges();
+                    window.location.href = e.target.href;
+                }
+            });
+        }
+    }
+});
+
 
 const Product = (() => {
     const thisProduct = {};
+
+    var tableConfig = {
+        paging: true,
+        searching: true,
+        ordering: true,
+        search: {
+            regex: true,
+        },
+    };
 
     thisProduct.loadTableData = () => {
         $.ajax({
@@ -37,7 +124,6 @@ const Product = (() => {
                         body.unhighlight();
                         body.highlight(table.search());
                         var searchTerm = this.value.toLowerCase();
-
 
                         var regex = searchTerm.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
                         $.fn.dataTable.ext.search.push(function (settings, searchData, index, rowData, counter) {
@@ -63,8 +149,8 @@ const Product = (() => {
                             .toArray()
                             .some(row => row.some(value => value.toLowerCase() === searchTerm.toLowerCase()));
 
-                        console.log('Exact match in DataTable:', exactMatch);
-                        console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
+                        // console.log('Exact match in DataTable:', exactMatch);
+                        // console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
                     });
 
                 });
@@ -77,13 +163,55 @@ const Product = (() => {
     }
 
     thisProduct.resetFields = () => {
-        $('#txt_product_name').val("");
-        $('#txt_product_barcode').val("");
-        $('#slc_product_category').val("");
-        $('#slc_status').val("");
-        $('#slc_type').val("");
-    
+        if (unsavedChanges) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    console.log('User confirmed. Resetting fields.');
+                    resetFormFields();
+                }
+            });
+        } else {
+            console.log('All fields are empty. Resetting fields without confirmation.');
+            resetFormFields();
+        }
     };
+    
+
+    thisProduct.resetFields = () => {
+        console.log('Current value of unsavedChanges:', unsavedChanges);
+        if (unsavedChanges) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    $('#txt_product_name').val("");
+                    $('#txt_product_barcode').val("");
+                    $('#slc_product_category').val("");
+                    // $('#slc_status').val("");
+                    $('#slc_type').val("");
+                    unsavedChanges = false;
+                }
+            });
+        } else {
+            $('#txt_product_name').val("");
+            $('#txt_product_barcode').val("");
+            $('#slc_product_category').val("");
+            // $('#slc_status').val("");
+            $('#slc_type').val("");
+            unsavedChanges = false;
+        }
+    };
+    
+        
+            thisProduct.resetFormFields = () => {
+            console.log('Resetting form fields.');
+            $('#txt_product_name').val("");
+            $('#txt_product_barcode').val("");
+            $('#slc_product_category').val("");
+            // $('#slc_status').val("");
+            $('#slc_type').val("");
+            unsavedChanges = false;
+        }
+
+
 
     thisProduct.register = () => {
         var txt_product_barcode = $("#txt_product_barcode").val();
@@ -133,8 +261,8 @@ const Product = (() => {
                             title: 'Product Succesfully Registered!',
                             showConfirmButton: true,
                         })
-                        thisProduct.resetFields();
                         thisProduct.loadTableData();
+                        thisProduct.resetFormFields();
                     }
                 },
                 error: function(e) {
@@ -142,7 +270,6 @@ const Product = (() => {
                 }
             })
         }     
-
     };
 
     return thisProduct;
@@ -281,63 +408,6 @@ const Category = (() => {
                     title: 'Category updated successfully',
                     showConfirmButton: true,
                 })
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-    thisCategory.clickCancel = () => {
-        $('#txt_category_name').val("")
-        toUpdate = false;
-        $('#btn_save_category').html('Register Category');
-    }
-
-    thisCategory.clickCancel = () => {
-        $('#txt_category_name').val("")
-        toUpdate = false;
-        $('#btn_save_category').html('Register Category');
-    }
-
-    thisCategory.clickDelete = (id) => {
-        category_id = id
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You will not be able to revert this action",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                thisCategory.delete();
-            }
-        })
-    }
-
-    thisCategory.delete = () => {
-        $.ajax({
-            type: "POST",
-            url: CATEGORY_CONTROLLER + '?action=delete',
-            dataType: "json",
-            data:{
-                category_id: category_id
-            },
-            success: function (response) 
-            {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Category Deleted Successfully ',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                thisCategory.loadTableData();
-                thisCategory.loadSelectData();
             },
             error: function () {
 

@@ -549,8 +549,16 @@ const ChangePassword = (() => {
             const newPassword = $('#txt_newforgetpassword').val();
             const confirm_password = $('#txt_confirmforgetPassword').val();
             const email = sessionStorage.getItem('verification_email');
-                
-            if(confirm_password == ""|| newPassword=="") {
+
+            if (!email) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error',
+                    text: "Failed to make the request to the server.",
+                    showConfirmButton: true,
+                });
+            } else if(confirm_password == ""|| newPassword=="") {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
@@ -558,17 +566,32 @@ const ChangePassword = (() => {
                     showConfirmButton: true,
                 })
     
-            }
-            else if(newPassword != confirm_password) {
+            } else if(newPassword != confirm_password) {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
                     title: 'Password Did not match',
                     showConfirmButton: true,
-                })
-    
-            }
-            else {
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: USER_CONTROLLER + '?action=isOldPasswordUsed',
+                    dataType: "json",
+                    data: {
+                        email: email,
+                        newPassword: newPassword,
+                    },
+                    success: function (response) {
+                        console.log("isOldPasswordUsed response:", response);
+                        if (response.isOldPasswordUsed) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'warning',
+                                title: 'Old and new password cannot be the same',
+                                showConfirmButton: true,
+                            });
+            } else {
                 $.ajax({
                     type: "POST",
                     url: USER_CONTROLLER + '?action=changeForgottenPassword',
@@ -581,6 +604,7 @@ const ChangePassword = (() => {
                     success: function (response) 
                     {
                         passcheck = 0;
+                        sessionStorage.removeItem('verification_email');
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -613,9 +637,34 @@ const ChangePassword = (() => {
                     }
                 });
             }
+        },
+                error: function () {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Failed to make the request to the server.",
+                        icon: "error"
+                });
+                }
+            });
         }
+    }
     
-    
+    thisChangePassword.resetFields = () => {
+
+        $('#txt_newforgetpassword').val("");
+        $('#txt_confirmforgetPassword').val("");
+        $('#old_password').removeClass('green-input');
+        $('#old_password').removeClass('red-input');
+        $('#txt_newforgetpassword').removeClass('green-input');
+        $('#txt_confirmforgetPassword').removeClass('green-input');
+        $('#txt_newforgetpassword').removeClass('red-input');
+        $('#txt_confirmforgetPassword').removeClass('red-input');
+        document.getElementById('forgetpass').innerHTML = "";
+        document.getElementById('confirmforgetpass').innerHTML = "";
+        const email = sessionStorage.getItem('verification_email');
+        console.log('Email in session:', email);
+
+    }
 
     
         // __________________________________ END

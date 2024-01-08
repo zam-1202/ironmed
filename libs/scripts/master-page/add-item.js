@@ -9,6 +9,88 @@ $(document).ready(function () {
     })
 });
 
+var unsavedChanges = false;
+var hasValues = false;
+
+var initialFieldValues = {};
+
+$(':input').each(function () {
+    initialFieldValues[this.id] = $(this).val();
+});
+
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
+
+    var currentFieldValue = $(this).val();
+    var initialFieldValue = initialFieldValues[this.id];
+
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+
+            // Log the field ID and its current value
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
+    }
+});
+
+
+
+function showLeaveConfirmation() {
+    return Swal.fire({
+        title: 'There are unsaved changes',
+        text: 'Do you really want to discard changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    });
+}
+
+function resetUnsavedChanges() {
+    unsavedChanges = false;
+}
+
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
+};
+
+$(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
+    if ($(this).closest('.paginate_button').length === 0) {
+        if (unsavedChanges) {
+            var nonEmptyInputs = $(':input').filter(function () {
+                return this.value.trim() !== '';
+            });
+
+            if (nonEmptyInputs.length === 0) {
+                resetUnsavedChanges();
+                return;
+            }
+
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
+            e.preventDefault();
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    resetUnsavedChanges();
+                    window.location.href = e.target.href;
+                }
+            });
+        }
+    }
+});
 
 const Category = (() => {
     const thisCategory = {};
@@ -465,7 +547,7 @@ const Product = (() => {
                 success: function (response) 
                 {
                     thisProduct.loadTableData();
-                    thisProduct.resetFields();
+                    thisProduct.resetFormFields();
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -481,6 +563,9 @@ const Product = (() => {
     }
 
     thisProduct.clickUpdate = (id, product_table_id) => {
+        unsavedChanges = true;
+        hasValues = true;
+        
         product_details_id = id;
         product_id = product_table_id;
         if(id == 0) {
@@ -490,6 +575,14 @@ const Product = (() => {
                 dataType: "json",
                 data:{product_id : product_id},
                 success: function(response) {
+                    console.log('Response:', response); 
+                    // $originallot_num = response.name;
+                    // $originalbuying_price = response.name;
+                    // $originalselling_price = response.name;
+                    // $originalmanufature_date = response.name;
+                    // $originalexpiraton_date = response.name;
+                    // $originalquantity = response.name;
+                    // $originallocation = response.name;
                     $('#txt_product_barcode').val(response[0]['barcode']);
                     $('#txt_product_name').val(response[0]['name']);
                     $('#slc_product_category').val(response[0]['category_id']);
@@ -505,6 +598,13 @@ const Product = (() => {
                 },
                 success: function (response) 
                 {
+                    $originalLotNum = response.name;
+                    $originalBuyingPrice = response.name;
+                    $originalSellingPrice = response.name;
+                    $originalManufactureDate = response.name;
+                    $originalExpirationDate = response.name;
+                    $originalQuantity = response.name;
+                    $originalLocation = response.name;
                     $('#txt_product_barcode').val(response.barcode);
                     $('#txt_product_barcode').prop( "disabled", true );
                     $('#txt_product_name').val(response.product_name);
@@ -599,27 +699,63 @@ const Product = (() => {
                 data:{
                     product_id: product_id,
                     product_details_id: product_details_id,
+                    selling_price: selling_price,
                     buying_price: buying_price,
                     lot_num: lot_num,
-                    selling_price: selling_price,
                     quantity: quantity,
                     manufature_date: manufature_date,
                     expiraton_date: expiraton_date,
                     location: location,
                 },
-                success: function () 
-                {
+                success: function (response){ 
+                    if (response.message && response.message === 'No changes made') {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'info',
+                            title: 'No changes have been made',
+                            showConfirmButton: true,
+                        });
+                    } else {
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
                         title: 'Stock Added successfully',
                         showConfirmButton: true,
                     })
+
+                    $('#txt_product_barcode').val("");
+                    $('#txt_product_name').val("");
+                    $('#slc_product_category').val("");
+                    $('#txt_lot_number').val("");
+                    $('#txt_buying_price').val("");
+                    $('#txt_selling_price').val("");
+                    $('#txt_manufature_date').val("");
+                    $('#txt_expiraton_date').val("");
+                    $('#slc_status').val("");
+                    $('#txt_quantity').val("");
+                    $('#slc_type').val("");
+                    $('#txt_location').val("");
+
+                    $('.form-control').prop("disabled", false);
+
+                    $('#txt_product_name').prop( "disabled", true );
+                    $('#slc_product_category').prop( "disabled", true );
+                    console.log("Location field enabled");
+                    $('#txt_location').prop( "disabled", false );
+                    $('#txt_location').removeClass('red-input');
+
+                    $('#btn_save_product').html('Add Stocks');
                     thisProduct.loadTableData();
-                    thisProduct.resetFields()
+                    
+                    }
                 },
                 error: function () {
-    
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Fuck, it is not working!',
+                        showConfirmButton: true,
+                    })
                 }
             });
         }
@@ -627,8 +763,70 @@ const Product = (() => {
     }
 
     thisProduct.resetFields = () => {
+        console.log('Current value of unsavedChanges:', unsavedChanges);
         toUpdate = false;
 
+                    if (unsavedChanges || hasValues) {
+                        showLeaveConfirmation().then((result) => {
+                            if (result.isConfirmed) {
+                                toUpdate = false;
+
+
+                    $('#txt_product_barcode').val("");
+                    $('#txt_product_name').val("");
+                    $('#slc_product_category').val("");
+                    $('#txt_lot_number').val("");
+                    $('#txt_buying_price').val("");
+                    $('#txt_selling_price').val("");
+                    $('#txt_manufature_date').val("");
+                    $('#txt_expiraton_date').val("");
+                    $('#slc_status').val("");
+                    $('#txt_quantity').val("");
+                    $('#slc_type').val("");
+                    $('#txt_location').val("");
+
+                    $('.form-control').prop("disabled", false);
+
+                    $('#txt_product_name').prop( "disabled", true );
+                    $('#slc_product_category').prop( "disabled", true );
+                    // $('#txt_location').prop( "disabled", true );
+                    $('#txt_location').removeClass('red-input');
+
+                    $('#btn_save_product').html('Add Stocks');
+                    unsavedChanges = false;
+                    hasValues = false
+                            }
+                        });
+                } else {
+                toUpdate = false;
+                $('#txt_product_barcode').val("");
+                $('#txt_product_name').val("");
+                $('#slc_product_category').val("");
+                $('#txt_lot_number').val("");
+                $('#txt_buying_price').val("");
+                $('#txt_selling_price').val("");
+                $('#txt_manufature_date').val("");
+                $('#txt_expiraton_date').val("");
+                $('#slc_status').val("");
+                $('#txt_quantity').val("");
+                $('#slc_type').val("");
+                $('#txt_location').val("");
+
+                $('.form-control').prop("disabled", false);
+
+                $('#txt_product_name').prop( "disabled", true );
+                $('#slc_product_category').prop( "disabled", true );
+                // $('#txt_location').prop( "disabled", true );
+                $('#txt_location').removeClass('red-input');
+
+                $('#btn_save_product').html('Add Stocks');
+                unsavedChanges = false;
+                hasValues = false
+                }
+            };
+
+        thisProduct.resetFormFields = () => {
+        toUpdate = false;
         $('#txt_product_barcode').val("");
         $('#txt_product_name').val("");
         $('#slc_product_category').val("");
@@ -646,10 +844,13 @@ const Product = (() => {
 
         $('#txt_product_name').prop( "disabled", true );
         $('#slc_product_category').prop( "disabled", true );
-        $('#txt_location').prop( "disabled", true );
+        // $('#txt_location').prop( "disabled", true );
+        $('#txt_location').removeClass('red-input');
 
         $('#btn_save_product').html('Add Stocks');
+        unsavedChanges = false;
     }
+
 
     thisProduct.limitCharacterInput = (input, maxLength) => {
         if (input.value.length > maxLength) {
@@ -752,19 +953,3 @@ const validateLocationName = () => {
         lname.innerHTML = "";
     }
 }
-
-// Disable manual typing for manufacturing date
-$('#txt_manufature_date').on('keydown paste', function (e) {
-    e.preventDefault();
-});
-$('#txt_manufature_date').on('focus', function () {
-    $(this).blur();
-});
-
-// Disable manual typing for expiration date
-$('#txt_expiraton_date').on('keydown paste', function (e) {
-    e.preventDefault();
-});
-$('#txt_expiraton_date').on('focus', function () {
-    $(this).blur();
-});

@@ -4,14 +4,14 @@ include_once('../../config/database.php');
 include_once('../model/Category.php');
 include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
-// include_once('../model/TCPDF.php');
+include_once('../model/TCPDF.php');
 include_once('../model/XLSX.php');
 
 $action = $_GET['action'];
 $Category = new Category($conn);
 $Product = new Product($conn);
 $ProductDetails = new ProductDetails($conn);
-// $TCPDF = new PDF($conn);
+$TCPDF = new PDF($conn);
 // $XLSX = new EXCEL($conn);
 
 if(isset($_GET['barcode'])){
@@ -358,7 +358,7 @@ else if ($action == 'getSelectData')
 {
     $result = $Category->getAll();
 
-    $options = '<option value="" selected="true" disabled>Select Category</option>';
+    $options = '<option value="" selected="true">Select Category</option>';
 
     foreach ($result as $category) 
     {
@@ -618,6 +618,12 @@ else if ($action == 'searchProduct') {
 else if ($action == 'getFilteredProductTable') {
     $selectedCategory = $_GET['category'];
     $result = $Product->getFilteredByCategory($selectedCategory);
+
+    if (empty($selectedCategory)) {
+        $result = $Product->getAll(); // or handle the default behavior as needed
+    } else {
+        $result = $Product->getFilteredByCategory($selectedCategory);
+    }
 
     // $result = $Product->getAll();
     $resultExpired = $Product->getAllExpired();

@@ -21,7 +21,6 @@ class User
         $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds from users where role != 1";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -30,7 +29,6 @@ class User
         $sql = "SELECT id, first_name, last_name, username, email, password, role, status, last_login, hours, minutes, seconds FROM users WHERE id = $user_id";
         $result = $this->conn->query($sql);
 
-        $this->conn->close();
         return $result->fetch_assoc();
     }
 
@@ -243,7 +241,7 @@ class User
 
 
         if ($status == 0) {
-            return "Account is deactivated";
+            return "Account is locked";
         } else if (password_verify($password, $db_password)) {
             $stmt->free_result();
 
@@ -270,7 +268,7 @@ class User
             }
             if ($login_attempt == 3) {
                 $this->update_status($id, 0);
-                return "Your Account has been lock due to many attempts. Please contact System admin.";
+                return "Your Account has been locked due to many attempts. Please contact System admin.";
             }
             return "Invalid Username or Password";
         }
@@ -301,42 +299,50 @@ class User
         return $result;
     }
 
-public function isUsernameTaken($username, $excludeUserId = null)
-{
-    if ($excludeUserId !== null) {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ? AND id != ?");
-        $stmt->bind_param("si", $username, $excludeUserId);
-    } else {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
-        $stmt->bind_param("s", $username);
+    public function isUsernameTaken($username, $excludeUserId = null)
+    {
+        if ($excludeUserId !== null) {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ? AND id != ?");
+            $stmt->bind_param("si", $username, $excludeUserId);
+        } else {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE username LIKE ?");
+            $stmt->bind_param("s", $username);
+        }
+
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            return true;  // Username is taken by another user
+        } else {
+            return false; // Username is available
+        }
     }
 
-    $stmt->execute();
-    $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
-        return true;  // Username is taken by another user
-    } else {
-        return false; // Username is available
+
+    public function changeForgottenPassword($email, $newPassword)
+    {
+        // Check if the email exists in the users table
+
+            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+            $sql = "UPDATE users SET password = ? WHERE email = ?";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ss", $hashedPassword, $email);
+            
+            $result = $stmt->execute(); // Use the result directly as a boolean
+            $stmt->close(); // Close the prepared statement
+
+            return $result;
     }
-}
 
-
-
-public function changeForgottenPassword($email, $newPassword)
-{
-    // Check if the email exists in the users table
-
-        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-
-        $sql = "UPDATE users SET password = ? WHERE email = ?";
-        
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $hashedPassword, $email);
-        
-        $result = $stmt->execute(); // Use the result directly as a boolean
-        $stmt->close(); // Close the prepared statement
-
-        return $result;
-}
+    public function getEmailExistsStatement($email)
+    {
+        $stmt = $this->conn->prepare("SELECT id, password FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        return $stmt;
+    }
+    
 }
