@@ -8,6 +8,87 @@ $(document).ready(function () {
     })
 });
 
+var unsavedChanges = false;
+var hasValues = false;
+
+var initialFieldValues = {};
+
+$(':input').each(function () {
+    initialFieldValues[this.id] = $(this).val();
+});
+
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"]):not([name="userTable_length"]):not([aria-controls="userTable"])', function () {
+    var currentFieldValue = $(this).val();
+    var initialFieldValue = initialFieldValues[this.id];
+
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+
+            // Log the field ID and its current value
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
+    }
+});
+
+
+
+function showLeaveConfirmation() {
+    return Swal.fire({
+        title: 'There are unsaved changes',
+        text: 'Do you really want to discard changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    });
+}
+
+function resetUnsavedChanges() {
+    unsavedChanges = false;
+}
+
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
+};
+
+$(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
+    if ($(this).closest('.paginate_button').length === 0) {
+        if (unsavedChanges) {
+            var nonEmptyInputs = $(':input').filter(function () {
+                return this.value.trim() !== '';
+            });
+
+            if (nonEmptyInputs.length === 0) {
+                resetUnsavedChanges();
+                return;
+            }
+
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
+            e.preventDefault();
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    resetUnsavedChanges();
+                    window.location.href = e.target.href;
+                }
+            });
+        }
+    }
+});
 
 const Category = (() => {
     const thisCategory = {};
@@ -175,6 +256,7 @@ const Category = (() => {
                                 });
     
                                 $('#txt_category_name').removeClass('green-input');
+                                thisCategory.clickCancelFields();
                             },
                             error: function () {
     
@@ -191,6 +273,8 @@ const Category = (() => {
     let originalCategoryName;
     thisCategory.clickUpdate = (id) => {
         category_id = id;
+        unsavedChanges = true;
+        hasValues = true;
 
         $.ajax({
             type: "POST",
@@ -288,6 +372,8 @@ const Category = (() => {
                                     thisCategory.loadTableData();
                                     thisCategory.loadSelectData();
                                     $('#btn_save_category').html('Register Category');
+                                    $('#txt_category_name').removeClass('green-input');
+                                    $('#txt_category_name').removeClass('red-input');
                                     toUpdate = false;
                                     Swal.fire({
                                         position: 'center',
@@ -324,56 +410,36 @@ const Category = (() => {
 
     
     thisCategory.clickCancel = () => {
-        $('#txt_category_name').val("")
+    console.log('Current value of unsavedChanges:', unsavedChanges);
+    if (unsavedChanges || hasValues) {
+        showLeaveConfirmation().then((result) => {
+            if (result.isConfirmed) {
+                toUpdate = false;
+                $('#txt_category_name').val("")
+                $('#btn_save_category').html('Register Category');
+                validateCategoryName();
+                unsavedChanges = false;
+                hasValues = false
+            }
+        });
+    } else {
         toUpdate = false;
+        $('#txt_category_name').val("")
         $('#btn_save_category').html('Register Category');
         validateCategoryName();
+        unsavedChanges = false;
+        hasValues = false
+    }
+};
+
+    thisCategory.clickCancelFields = () => {
+        toUpdate = false;
+        $('#txt_category_name').val("")
+        $('#btn_save_category').html('Register Category');
+        validateCategoryName();
+        unsavedChanges = false;
     }
 
-    // thisCategory.clickDelete = (id) => {
-    //     category_id = id
-
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "You will not be able to revert this action",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes!',
-    //         cancelButtonText: 'No'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             thisCategory.delete();
-    //         }
-    //     })
-    // }
-
-    // thisCategory.delete = () => {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: CATEGORY_CONTROLLER + '?action=delete',
-    //         dataType: "json",
-    //         data:{
-    //             category_id: category_id
-    //         },
-    //         success: function (response) 
-    //         {
-    //             Swal.fire({
-    //                 position: 'center',
-    //                 icon: 'success',
-    //                 title: 'Category Deleted Successfully ',
-    //                 showConfirmButton: false,
-    //                 timer: 1500
-    //             })
-    //             thisCategory.loadTableData();
-    //             thisCategory.loadSelectData();
-    //         },
-    //         error: function () {
-
-    //         }
-    //     });
-    // }
 
     return thisCategory;
 })()
