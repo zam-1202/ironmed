@@ -367,6 +367,25 @@ const Product = (() => {
             }
         });
     }
+
+    thisProduct.loadFilteredTableDataByType = () => {
+        var selectedType = $('#slc_type').val();
+    
+        $.ajax({
+            type: "GET",
+            url: PRODUCT_CONTROLLER + '?action=getFilteredProductTableByType&type=' + selectedType,
+            dataType: "json",
+            success: function (response) {
+                $('.table').DataTable().destroy();
+                $('#tbody_product').html(response);
+    
+                $('.table').DataTable();
+            },
+            error: function () {
+                // Handle error if needed
+            }
+        });
+    }
     
     
     return thisProduct;

@@ -953,7 +953,6 @@ const validateLocationName = () => {
         lname.innerHTML = "";
     }
 }
-
 // Disable manual typing for manufacturing date
 $('#txt_manufature_date').on('keydown paste', function (e) {
     e.preventDefault();

@@ -349,6 +349,17 @@ class Product
     $result = $stmt->get_result();
 
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+    public function getFilteredByType($type)
+{
+    $sql = $this->commonSql . " WHERE expired_status = 0 AND type = ? " . $this->groupBySql; // Assuming 'type' is a column in your database table
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("s", $type); // Assuming 'type' is a string; adjust the type accordingly if it's a different data type
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
     }
 
 }
