@@ -422,74 +422,148 @@ const Admin = (() => {
     
     thisAdmin.clickUpdate = (id) => {
         user_id = id;
-        unsavedChanges = true;
-        hasValues = true;
-        $.ajax({
-            type: "POST",
-            url: USER_CONTROLLER + '?action=getById',
-            dataType: "json",
-            data: {
-                user_id: user_id
-            },
-            success: function (response) {
-                originalFirstName = response.name;
-                $('#txt_first_name').val(response.first_name);
-                originalLastName = response.name;
-                $('#txt_last_name').val(response.last_name);
-                originalUsername = response.name;
-                $('#txt_user_name').val(response.username);
-                originalEmail = response.name;
-                $('#txt_email').val(response.email);
-                originalRole = response.name;
-                $('#slc_role').val(response.role);
+        if (unsavedChanges) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: USER_CONTROLLER + '?action=getById',
+                        dataType: "json",
+                        data: {
+                            user_id: user_id
+                        },
+                        success: function (response) {
+                            unsavedChanges = true;
+                            hasValues = true;
+                            // thisAdmin.resetFormFields();
+                            originalFirstName = response.name;
+                            $('#txt_first_name').val(response.first_name);
+                            originalLastName = response.name;
+                            $('#txt_last_name').val(response.last_name);
+                            originalUsername = response.name;
+                            $('#txt_user_name').val(response.username);
+                            originalEmail = response.name;
+                            $('#txt_email').val(response.email);
+                            originalRole = response.name;
+                            $('#slc_role').val(response.role);
+                            
+                            // Enable the "Deactivate" option in the dropdown
+                            originalStatus = response.name;
+                            $('#slc_status option[value="0"]').removeAttr('disabled');
+                            $('#slc_status').val(response.status);
                 
-                // Enable the "Deactivate" option in the dropdown
-                originalStatus = response.name;
-                $('#slc_status option[value="0"]').removeAttr('disabled');
-                $('#slc_status').val(response.status);
-    
-                $('#txt_adminnewpassword').hide();
-                $('#txt_adminconfirm_password').hide();
-                $('#txt_adminnewpasswordlabel').hide();
-                $('#txt_adminconfirm_passwordlabel').hide();
-                $('#passwordRequirements').hide();
-                $('#passwordRequired').hide();
-                $('#confirmPasswordRequired').hide();
+                            $('#txt_adminnewpassword').hide();
+                            $('#txt_adminconfirm_password').hide();
+                            $('#txt_adminnewpasswordlabel').hide();
+                            $('#txt_adminconfirm_passwordlabel').hide();
+                            $('#passwordRequirements').hide();
+                            $('#passwordRequired').hide();
+                            $('#confirmPasswordRequired').hide();
+                            
+                            $('#txt_adminnewpassword-toggle').hide();
+                            $('#txt_adminconfirm_password-toggle').hide();
+        
+                            toUpdate = true;
                 
-                $('#txt_adminnewpassword-toggle').hide();
-                $('#txt_adminconfirm_password-toggle').hide();
+                            $('#btn_save').html("Update Account");
+                            $('#lbl_title').html("Update Account");
+        
+                            // Reset the classes and message
+                            document.getElementById('confirmPass').innerHTML = "";
+                            document.getElementById('adminmess').innerHTML = "";
+                            $('#txt_first_name').removeClass('green-input');
+                            $('#txt_first_name').removeClass('red-input');
+                            document.getElementById('mes').innerHTML = "";
+                            $('#txt_last_name').removeClass('green-input');
+                            $('#txt_last_name').removeClass('red-input');
+                            document.getElementById('mesi').innerHTML = "";
+                            $('#txt_user_name').removeClass('green-input');
+                            $('#txt_user_name').removeClass('red-input');
+                            document.getElementById('emailmessage').innerHTML = "";
+                            $('#txt_email').removeClass('green-input');
+                            $('#txt_email').removeClass('red-input');
+                            document.getElementById('message').innerHTML = "";
+                            $('#txt_adminnewpassword').removeClass('green-input');
+                            $('#txt_adminnewpassword').removeClass('red-input');
+                            $('#txt_adminconfirm_password').removeClass('green-input');
+                            $('#txt_adminconfirm_password').removeClass('red-input');
+                            $('#txt_adminnewpassword').val("");
+                            $('#txt_adminconfirm_password').val("");
+                }
+            });
+        }
+    });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: USER_CONTROLLER + '?action=getById',
+                dataType: "json",
+                data: {
+                    user_id: user_id
+                },
+                success: function (response) {
+                    unsavedChanges = true;
+                    hasValues = true;
+                    // thisAdmin.resetFormFields();
+                    originalFirstName = response.name;
+                    $('#txt_first_name').val(response.first_name);
+                    originalLastName = response.name;
+                    $('#txt_last_name').val(response.last_name);
+                    originalUsername = response.name;
+                    $('#txt_user_name').val(response.username);
+                    originalEmail = response.name;
+                    $('#txt_email').val(response.email);
+                    originalRole = response.name;
+                    $('#slc_role').val(response.role);
+                    
+                    // Enable the "Deactivate" option in the dropdown
+                    originalStatus = response.name;
+                    $('#slc_status option[value="0"]').removeAttr('disabled');
+                    $('#slc_status').val(response.status);
+        
+                    $('#txt_adminnewpassword').hide();
+                    $('#txt_adminconfirm_password').hide();
+                    $('#txt_adminnewpasswordlabel').hide();
+                    $('#txt_adminconfirm_passwordlabel').hide();
+                    $('#passwordRequirements').hide();
+                    $('#passwordRequired').hide();
+                    $('#confirmPasswordRequired').hide();
+                    
+                    $('#txt_adminnewpassword-toggle').hide();
+                    $('#txt_adminconfirm_password-toggle').hide();
 
-                toUpdate = true;
-    
-                $('#btn_save').html("Update Account");
-                $('#lbl_title').html("Update Account");
+                    toUpdate = true;
+        
+                    $('#btn_save').html("Update Account");
+                    $('#lbl_title').html("Update Account");
 
-                // Reset the classes and message
-                document.getElementById('confirmPass').innerHTML = "";
-                document.getElementById('adminmess').innerHTML = "";
-                $('#txt_first_name').removeClass('green-input');
-                $('#txt_first_name').removeClass('red-input');
-                document.getElementById('mes').innerHTML = "";
-                $('#txt_last_name').removeClass('green-input');
-                $('#txt_last_name').removeClass('red-input');
-                document.getElementById('mesi').innerHTML = "";
-                $('#txt_user_name').removeClass('green-input');
-                $('#txt_user_name').removeClass('red-input');
-                document.getElementById('emailmessage').innerHTML = "";
-                $('#txt_email').removeClass('green-input');
-                $('#txt_email').removeClass('red-input');
-                document.getElementById('message').innerHTML = "";
-                $('#txt_adminnewpassword').removeClass('green-input');
-                $('#txt_adminnewpassword').removeClass('red-input');
-                $('#txt_adminconfirm_password').removeClass('green-input');
-                $('#txt_adminconfirm_password').removeClass('red-input');
-                $('#txt_adminnewpassword').val("");
-                $('#txt_adminconfirm_password').val("");
-            },
-            error: function () {
-    
-            }
-        });
+                    // Reset the classes and message
+                    document.getElementById('confirmPass').innerHTML = "";
+                    document.getElementById('adminmess').innerHTML = "";
+                    $('#txt_first_name').removeClass('green-input');
+                    $('#txt_first_name').removeClass('red-input');
+                    document.getElementById('mes').innerHTML = "";
+                    $('#txt_last_name').removeClass('green-input');
+                    $('#txt_last_name').removeClass('red-input');
+                    document.getElementById('mesi').innerHTML = "";
+                    $('#txt_user_name').removeClass('green-input');
+                    $('#txt_user_name').removeClass('red-input');
+                    document.getElementById('emailmessage').innerHTML = "";
+                    $('#txt_email').removeClass('green-input');
+                    $('#txt_email').removeClass('red-input');
+                    document.getElementById('message').innerHTML = "";
+                    $('#txt_adminnewpassword').removeClass('green-input');
+                    $('#txt_adminnewpassword').removeClass('red-input');
+                    $('#txt_adminconfirm_password').removeClass('green-input');
+                    $('#txt_adminconfirm_password').removeClass('red-input');
+                    $('#txt_adminnewpassword').val("");
+                    $('#txt_adminconfirm_password').val("");
+                },
+                
+                error: function () {
+                }
+            });
+        }
     }
     
     thisAdmin.update = () => {
