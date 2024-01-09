@@ -674,6 +674,8 @@ const Admin = (() => {
                                     if (response.message && response.message === 'No changes made') {
                                         thisAdmin.loadTableData();
                                         thisAdmin.resetFormFields();
+                                        unsavedChanges = false;
+                                        hasValues = false
                                         Swal.fire({
                                             position: 'center',
                                             icon: 'info',
@@ -681,6 +683,8 @@ const Admin = (() => {
                                             showConfirmButton: true,
                                         });
                                     } else {
+                                        unsavedChanges = false;
+                                        hasValues = false
                                         Swal.fire({
                                             position: 'center',
                                             icon: 'success',
