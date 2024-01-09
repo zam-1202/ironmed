@@ -600,12 +600,45 @@ const Product = (() => {
                             dataType: "json",
                             data: { product_details_id: product_details_id },
                             success: function (response) {
+                                $originalLotNum = response.name;
+                                $originalBuyingPrice = response.name;
+                                $originalSellingPrice = response.name;
+                                $originalManufactureDate = response.name;
+                                $originalExpirationDate = response.name;
+                                $originalQuantity = response.name;
+                                $originalLocation = response.name;
+                                $('#txt_product_barcode').val(response.barcode);
+                                $('#txt_product_barcode').prop( "disabled", true );
+                                $('#txt_product_name').val(response.product_name);
+                                $('#txt_product_name').prop( "disabled", true );
+                                $('#slc_product_category').val(response.category_id);
+                                $('#slc_product_category').prop( "disabled", true );
+                                $('#txt_lot_number').val(response.lot_num);
+                                $('#txt_lot_number').prop( "disabled", false );
+                                $('#txt_buying_price').val(response.buy_price);
+                                $('#txt_selling_price').val(response.sale_price);
+                                $('#txt_selling_price').prop( "disabled", true );
+                                $('#txt_manufature_date').val(response.manufacture_date);
+                                $('#txt_manufature_date').prop( "disabled", false );
+                                $('#txt_expiraton_date').val(response.expiration_date);
+                                $('#txt_expiraton_date').prop( "disabled", false );
+                                $('#slc_status').val(response.status);
+                                $('#slc_status').prop( "disabled", true );
+                                $('#txt_quantity').val(response.quantity);
+                                $('#slc_type').val(response.type);
+                                $('#slc_type').prop( "disabled", false );
+                                $('#txt_location').val(response.location);
+                                $('#txt_location').prop( "disabled", false );
+                                $('#txt_location').removeClass('red-input');
+                                
                                 toUpdate = true;
+                                
+            
                                 $('#btn_save_product').html('Add Stocks');
                                 $('#txt_title').html('Add Stocks');
                                 unsavedChanges = true;
                                 hasValues = true;
-                                thisProduct.resetFormFields();
+            
                             },
                             error: function () {
                             }
