@@ -57,6 +57,10 @@ function resetUnsavedChanges() {
     unsavedChanges = false;
 }
 
+function UnsavedChangesTrue() {
+    unsavedChanges = true;
+}
+
 window.onbeforeunload = function() {
     if (unsavedChanges) {
         return "There are unsaved changes";
@@ -563,8 +567,6 @@ const Product = (() => {
     }
 
     thisProduct.clickUpdate = (id, product_table_id) => {
-        unsavedChanges = true;
-        hasValues = true;
         
         product_details_id = id;
         product_id = product_table_id;
@@ -588,6 +590,28 @@ const Product = (() => {
                     $('#slc_product_category').val(response[0]['category_id']);
                 }
             })
+        } else {
+            if (unsavedChanges) {
+                showLeaveConfirmation().then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: PRODUCT_CONTROLLER + '?action=getById',
+                            dataType: "json",
+                            data: { product_details_id: product_details_id },
+                            success: function (response) {
+                                toUpdate = true;
+                                $('#btn_save_product').html('Add Stocks');
+                                $('#txt_title').html('Add Stocks');
+                                unsavedChanges = true;
+                                hasValues = true;
+                                thisProduct.resetFormFields();
+                            },
+                            error: function () {
+                            }
+                        });
+                    }
+                });
         } else {
             $.ajax({
                 type: "POST",
@@ -630,17 +654,21 @@ const Product = (() => {
                     $('#txt_location').removeClass('red-input');
                     
                     toUpdate = true;
+                    
 
                     $('#btn_save_product').html('Add Stocks');
                     $('#txt_title').html('Add Stocks');
+                    unsavedChanges = true;
+                    hasValues = true;
 
                 },
                 error: function () {
 
                 }
-            });  
-        }        
+            });
+        }
     }
+};
 
     thisProduct.update = () => {
         const regex = /^[a-zA-Z0-9-'.' ]+$/;
@@ -709,6 +737,8 @@ const Product = (() => {
                 },
                 success: function (response){ 
                     if (response.message && response.message === 'No changes made') {
+                        unsavedChanges = false;
+                        hasValues = false
                         Swal.fire({
                             position: 'center',
                             icon: 'info',
@@ -716,6 +746,8 @@ const Product = (() => {
                             showConfirmButton: true,
                         });
                     } else {
+                        unsavedChanges = false;
+                        hasValues = false
                     Swal.fire({
                         position: 'center',
                         icon: 'success',

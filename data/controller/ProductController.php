@@ -37,7 +37,7 @@ if ($action == 'getTableDataRegister')
         $table_data .= '<td>' . $product['batch'] . '</td>';
         $table_data .= '<td class="col-actions">';
         $table_data .= '<div class="btn-group" role="group" aria-label="Basic mixed styles example">';
-        $table_data .= '<button type="button" onclick="Product.clickUpdate('. $product['product_details_id'] .','. $product['product_id'] .')" class="btn btn-warning btn-sm"><i class="bi bi-list-check"></i> Add Stocks </button>';
+        $table_data .= '<button type="button" onclick="Product.clickUpdate('. $product['product_details_id'] .','. $product['product_id'] .')" class="btn btn-warning btn-sm"><i class="bi bi-list-check"></i> Update </button>';
         // $table_data .= '<button type="button" onclick="Product.clickDelete('. $product['product_details_id'] .')" class="btn btn-danger btn-sm"> <i class="bi bi-trash"></i> Delete</button>';
         $table_data .= '</div>';
         $table_data .= '</td>';
