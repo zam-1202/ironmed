@@ -361,6 +361,8 @@ const Category = (() => {
                                     $('#txt_category_name').removeClass('red-input');
                                     thisCategory.loadTableData();
                                     thisCategory.loadSelectData();
+                                    unsavedChanges = false;
+                                    hasValues = false
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'info',
@@ -375,6 +377,8 @@ const Category = (() => {
                                     $('#txt_category_name').removeClass('green-input');
                                     $('#txt_category_name').removeClass('red-input');
                                     toUpdate = false;
+                                    unsavedChanges = false;
+                                    hasValues = false
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'success',
@@ -384,7 +388,8 @@ const Category = (() => {
                                 }
                             },
                             error: function () {
-                                // Handle error
+                                unsavedChanges = false;
+                                hasValues = false
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'error',
@@ -438,6 +443,7 @@ const Category = (() => {
         $('#btn_save_category').html('Register Category');
         validateCategoryName();
         unsavedChanges = false;
+        hasValues = false
     }
 
 
