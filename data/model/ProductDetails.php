@@ -196,14 +196,14 @@ class ProductDetails
         $manufature_date = $request['manufature_date'];
         $expiraton_date = $request['expiraton_date'];
         $quantity = $request['quantity'];
-        // $location = $request['location'];
+        $location = $request['location'];
 
         $sql = "UPDATE product_details 
-        SET buy_price= ?, lot_num= ?, manufacture_date= ?, expiration_date= ?, quantity= ?
+        SET buy_price= ?, lot_num= ?, manufacture_date= ?, expiration_date= ?, quantity= ?, location= ?
         WHERE id= ?";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("dsssii",$buying_price, $lot_num, $manufature_date, $expiraton_date, $quantity, $product_details_id);
+        $stmt->bind_param("dsssisi",$buying_price, $lot_num, $manufature_date, $expiraton_date, $quantity, $location, $product_details_id);
 
 
         $result = '';
