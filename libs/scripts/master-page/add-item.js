@@ -588,6 +588,7 @@ const Product = (() => {
                     $('#txt_product_barcode').val(response[0]['barcode']);
                     $('#txt_product_name').val(response[0]['name']);
                     $('#slc_product_category').val(response[0]['category_id']);
+                    $('#slc_type').val(response[0]['type']);
                 }
             })
         } else {
@@ -712,6 +713,7 @@ const Product = (() => {
         const manufature_date = $('#txt_manufature_date').val();
         const expiraton_date = $('#txt_expiraton_date').val();
         const location = $('#txt_location').val();
+        const type = $('#slc_type').val();
 
         if(buying_price == ""
         || lot_num == ""
@@ -767,6 +769,7 @@ const Product = (() => {
                     manufature_date: manufature_date,
                     expiraton_date: expiraton_date,
                     location: location,
+                    type: type,
                 },
                 success: function (response){ 
                     if (response.message && response.message === 'No changes made') {
@@ -818,7 +821,7 @@ const Product = (() => {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Fuck, it is not working!',
+                        title: 'Error!',
                         showConfirmButton: true,
                     })
                 }
