@@ -222,7 +222,7 @@ const Product = (() => {
         var txt_location = $("#txt_location").val();
 
         if(txt_product_barcode == "" 
-        || txt_product_name == ""
+        || txt_product_name.trim() === ""
         || slc_product_category == ""
         || slc_type == null
         || slc_status == null
