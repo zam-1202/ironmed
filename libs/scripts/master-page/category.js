@@ -273,32 +273,57 @@ const Category = (() => {
     let originalCategoryName;
     thisCategory.clickUpdate = (id) => {
         category_id = id;
-        unsavedChanges = true;
-        hasValues = true;
 
-        $.ajax({
-            type: "POST",
-            url: CATEGORY_CONTROLLER + '?action=getById',
-            dataType: "json",
-            data:{
-                category_id: category_id
-            },
-            success: function (response) 
-            {
-                originalCategoryName = response.name
-                $('#txt_category_name').val(response.name);
-                toUpdate = true;
+        if (unsavedChanges) {
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                    type: "POST",
+                    url: CATEGORY_CONTROLLER + '?action=getById',
+                    dataType: "json",
+                    data:{
+                        category_id: category_id
+                    },
+                    success: function (response) 
+                    {
+                        originalCategoryName = response.name
+                        $('#txt_category_name').val(response.name);
+                        toUpdate = true;
 
-                $('#btn_save_category').html('Update Category');
-                $('#txt_category').html('Update Category');
-                $('#txt_category_name').removeClass('green-input');
-                $('#txt_category_name').removeClass('red-input');
-            },
-            error: function () {
-
+                        $('#btn_save_category').html('Update Category');
+                        $('#txt_category').html('Update Category');
+                        $('#txt_category_name').removeClass('green-input');
+                        $('#txt_category_name').removeClass('red-input');
+                    }
+                });
             }
         });
-    }
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: CATEGORY_CONTROLLER + '?action=getById',
+                    dataType: "json",
+                    data:{
+                        category_id: category_id
+                    },
+                    success: function (response) {
+                        unsavedChanges = true;
+                        hasValues = true;
+                        originalCategoryName = response.name
+                        $('#txt_category_name').val(response.name);
+                        toUpdate = true;
+
+                        $('#btn_save_category').html('Update Category');
+                        $('#txt_category').html('Update Category');
+                        $('#txt_category_name').removeClass('green-input');
+                        $('#txt_category_name').removeClass('red-input');
+                    },
+                    
+                    error: function () {
+                    }
+                });
+            }
+        }
 
     thisCategory.update = () => {
         const regex = /^[a-zA-Z0-9&\-'\.\s–]+$/;
