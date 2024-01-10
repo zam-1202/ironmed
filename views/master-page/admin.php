@@ -46,7 +46,7 @@ else if($_SESSION['user']['role'] === 3) {
 
                 <div class="col-lg-4">
                     <div class="user__form-wrapper">
-                        <h2 class="section__sub-title" id="lbl_title">Create Accounts</h2>
+                        <h2 class="section__sub-title" id="lbl_title">Create Account</h2>
                         <form class="row g-3">
                             <div class="col-md-12">
                                 <label for="username" class="form-label">First Name</label><span class="required" style="color:red;"> *</span>
