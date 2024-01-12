@@ -215,7 +215,7 @@ const Product = (() => {
 
     thisProduct.register = () => {
         var txt_product_barcode = $("#txt_product_barcode").val();
-        var txt_product_name = $("#txt_product_name").val();
+        var txt_product_name = $("#txt_product_name").val().trim();
         var slc_product_category = $("#slc_product_category").val();
         var slc_status = $("#slc_status").val();
         var slc_type = $("#slc_type").val();
