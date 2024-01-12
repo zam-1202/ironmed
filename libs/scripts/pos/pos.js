@@ -366,21 +366,21 @@ btnCart.addEventListener('click', (e) => {
                         }
                         
                         
+                        const typeValue = product.type ? product.type : '-';
                         const amount = product.sale_price * availableQuantity;
                         const rowClass = `rowClass row${product.barcode}`;
                         row += `<tr class="${rowClass}">
-                        <td>
-                            <button class="btn-remove" onclick="confirmVoidCart(${product.barcode})">&#10008;</button>
-                        </td>
-                        <td>${product.barcode}</td>
-                        <td>${product.product_name}</td>
-                        <td>${product.category_name}</td>
-                        <td class="p-type">${product.type}</td>
-                        <td>${product.expiration_date}</td>
-                        <td class="p-price">${product.sale_price}</td>
-                        <td class="p-quantity">${availableQuantity}</td>
-                        <td class="p-amount">${amount.toFixed(2)}</td>
-                       
+                            <td>
+                                <button class="btn-remove" onclick="confirmVoidCart(${product.barcode})">&#10008;</button>
+                            </td>
+                            <td>${product.barcode}</td>
+                            <td>${product.product_name}</td>
+                            <td>${product.category_name}</td>
+                            <td class="p-type">${typeValue}</td> <!-- Display hyphen if type is empty -->
+                            <td>${product.expiration_date}</td>
+                            <td class="p-price">${product.sale_price}</td>
+                            <td class="p-quantity">${availableQuantity}</td>
+                            <td class="p-amount">${amount.toFixed(2)}</td>
                         </tr>`;
                     } else {
                         break;

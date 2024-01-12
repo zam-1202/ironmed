@@ -235,3 +235,39 @@ const Sales = (() => {
 
     return thisSales;
 })();;
+
+// Disable manual typing for the sales date
+$('#date_daily').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#date_daily').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the sales month
+ $('#date_monthly').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#date_monthly').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the sales date range
+ $('#date_start').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#date_start').on('focus', function () {
+    $(this).blur();
+  });
+
+  // Disable manual typing for the sales date range
+ $('#date_end').on('keydown paste', function (e) {
+    e.preventDefault();
+  });
+
+  $('#date_end').on('focus', function () {
+    $(this).blur();
+  });
