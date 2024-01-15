@@ -729,9 +729,20 @@ canvas {
   display: none;
 }
 
-.pos__insufficient__error.show {
-  display: block;
+.hidden-footer {
+  display: none;
 }
+
+.pos__grand__total{
+  font-size: 17px;
+  color: #05a2af;
+  font-weight: 700;
+}
+
+#grandTotalTable {
+  display: none;
+}
+
 
 .invoice__filters {
   padding: 0 5px;
