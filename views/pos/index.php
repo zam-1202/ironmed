@@ -83,9 +83,14 @@ if(!$_SESSION['user']) {
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
-                    </table>
+                        <tfoot>
+                                    <tr>
+                                    <td id="grandTotalName" class="pos__grand__total" colspan="7"></td>
+                                        <td id="grandTotalName" class="pos__grand__total" >Grand Total</td>
+                                        <td id="grandTotalCell" class="pos__grand__total" step="0.01">₱ 0.00</td>
+                                    </tr>
+                        </tfoot>
                 </div>
             </div>
 

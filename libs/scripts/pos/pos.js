@@ -22,12 +22,22 @@ const posTable = document.querySelector('pos__table');
 const posQuantity = document.querySelector('.pos__form__quantity');
 const btnConfirmPassword = document.querySelector('.admin__password__button');
 const inpAdminPassword = document.querySelector('.admin__password__input');
+const posGrandTotal = document.querySelector('.pos__grand__total');
 
 let barcode;
 let productCart = [];
 let grandTotal = 0;
 let container = 0;
 let transaction = 0;
+
+var tableConfig = {
+    retrieve: true,
+    paging: false,
+    searching: false,
+    ordering: true,
+    info: false
+};
+
 
 const printReceipt = (invoiceId) => {
     // window.location.href = ('http://localhost/pos/views/pos/receipt.php?invoice_id=${invoiceId}');
@@ -109,7 +119,7 @@ const removeItem = (barcode) => {
     });
 
     const rowClass = `.row${barcode}`;
-    const table = $('.table').DataTable();
+    const table = $('.table').DataTable(tableConfig);
     const rows = table
         .rows( rowClass )
         .remove()
@@ -117,6 +127,8 @@ const removeItem = (barcode) => {
         container --
         transaction --
         checkCart();
+        updateFooterVisibility();
+        updateGrandTotal();
 }
 
 const validateAdminPassword = () => {
@@ -203,6 +215,8 @@ const calculateDiscount = (amount, discountType) => {
 
 const checkDiscount = () => {
     const rows = document.querySelectorAll('tbody tr.rowClass');
+    let grandTotalValue = 0;
+    
     if(rows.length > 0){
         rows.forEach((row)=>{
             const price = row.querySelector('.p-price');
@@ -214,19 +228,25 @@ const checkDiscount = () => {
             posCustomer.classList.remove('show');
             posCustomerNumber.classList.remove('show');
             if(inpDiscount.checked){
-                console.log('wew');
+                console.log('Discount is checked');
                 posCustomer.classList.add('show');
                 posCustomerNumber.classList.add('show');
                 amountValue = calculateDiscount(amountValue, type.innerHTML);
             }
             amount.innerHTML = amountValue;
+            grandTotalValue += parseFloat(amountValue);
         })
     }
     else{
         posCustomer.classList.toggle('show');
         posCustomerNumber.classList.toggle('show');
     }
-}
+
+    const grandTotalCell = document.getElementById('grandTotalCell');
+    if (grandTotalCell) {
+        grandTotalCell.innerHTML = `₱ ${grandTotalValue.toFixed(2)}`;
+    }
+};
 
 inpDiscount.addEventListener('change', checkDiscount);
 posQuantity.addEventListener('click', ()=>{
@@ -264,12 +284,21 @@ inpBarcode.addEventListener('blur', (e)=>{
 btnCheckout.addEventListener('click', (e)=>{
     e.preventDefault();
     grandTotal = 0;
+    subtotal = 0;
+    discountAmount = 0;
+    totalQuantity = 0;
+
     console.log(productCart);
     let list = productCart.map(item =>{
         let totalItemPrice = parseInt(item.quantity) * parseFloat(item.price).toFixed(2);
 
-        if(inpDiscount.checked){
-            totalItemPrice =  calculateDiscount(totalItemPrice, item.type);
+        subtotal += totalItemPrice;
+        totalQuantity += parseInt(item.quantity);
+
+        if (inpDiscount.checked) {
+            const discountedPrice = calculateDiscount(totalItemPrice, item.type);
+            discountAmount += totalItemPrice - discountedPrice;
+            totalItemPrice = discountedPrice;
         }
         grandTotal += totalItemPrice;
         
@@ -279,9 +308,36 @@ btnCheckout.addEventListener('click', (e)=>{
             <span class="pos__list__item__quantity">${item.quantity}</span>
             <p class="pos__list__item__name"> ${item.name}</p>
             </div>
-            <span class="pos__list__item__price">₱ ${totalItemPrice.toFixed(2)}</span>
+            <span class="pos__list__item__price">₱ ${totalQuantity.toFixed(2)}</span>
         </li>`;
     }).join('');
+
+    list += `<li class="pos__list__item total">
+        <div class="pos__list__item__details">
+            <span class="pos__list__item__quantity">${totalQuantity}</span>
+            <p class="pos__list__item__name">Total Items Purchased</p>
+        </div>
+        <span class="pos__list__item__price" step="0.01"> </span>
+    </li>`;
+
+    list+=`<li class="pos__list__item total">
+        <div class="pos__list__item__details">
+        <span class="pos__list__item__quantity"></span>
+        <p class="pos__list__item__name dark">Sub Total</p>
+        </div>
+        <span class="pos__list__item__price" step="0.01">₱ ${subtotal.toFixed(2)}</span>
+    </li>`
+
+    if (inpDiscount.checked){
+        list += `<li class="pos__list__item total">
+        <div class="pos__list__item__details">
+            <span class="pos__list__item__quantity"></span>
+            <p class="pos__list__item__name dark">Discount</p>
+        </div>
+        <span class="pos__list__item__price" step="0.01">₱ ${discountAmount.toFixed(2)}</span>
+    </li>`;
+    }
+
     list+=`<li class="pos__list__item total">
         <div class="pos__list__item__details">
         <span class="pos__list__item__quantity"></span>
@@ -312,8 +368,42 @@ btnCheckout.addEventListener('click', (e)=>{
     $('#myModal').modal('show');
 });
 
+$('#grandTotalName').parent().addClass('hidden-footer');
+let dataTable = $('.table').DataTable(tableConfig);
+
+function updateFooterVisibility() {
+    const footerContainer = $('#grandTotalName').parent();
+
+    if (productCart.length > 0) {
+        footerContainer.removeClass('hidden-footer');
+    } else {
+        footerContainer.addClass('hidden-footer');
+    }
+}
+
+
+const updateGrandTotal = () => {
+    grandTotal = 0;
+
+    productCart.forEach(item => {
+        const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
+        if (inpDiscount.checked) {
+            const discountedPrice = calculateDiscount(totalItemPrice, item.type);
+            grandTotal += discountedPrice;
+        } else {
+            grandTotal += totalItemPrice;
+        }
+    });
+    
+    const grandTotalCell = document.getElementById('grandTotalCell');
+    if (grandTotalCell) {
+        grandTotalCell.innerHTML = `₱ ${grandTotal.toFixed(2)}`;
+    }
+};
+
 btnCart.addEventListener('click', (e) => {
     e.preventDefault();
+    
     let requiredQuantity = parseInt(posQuantity.value) || 1;
     $.ajax({
         type: 'GET',
@@ -321,11 +411,9 @@ btnCart.addEventListener('click', (e) => {
         dataType: 'json',
         cache: false,
         success: data => {
-
             let totalAvailableQuantity = data.reduce((accumulator, product) => {
                 return accumulator + parseInt(product.quantity);
             }, 0);
-
 
             if (data.length > 0 && totalAvailableQuantity >= requiredQuantity) {
                 const exist = productCart.some(el => el.barcode === data[0].barcode);
@@ -346,12 +434,21 @@ btnCart.addEventListener('click', (e) => {
                         type:data[0].type
                     }
                     productCart.push(item);
-                }
+    
+                    grandTotal = 0;
 
-                
-                
+                    productCart.forEach(item => {
+                        const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
+                        if (inpDiscount.checked) {
+                            const discountedPrice = calculateDiscount(totalItemPrice, item.type);
+                            grandTotal += discountedPrice;
+                        } else {
+                            grandTotal += totalItemPrice;
+                        }
+                    });
 
                 let row = '';
+
                 for (const product of data) {
                     totalAvailableQuantity += product.quantity;
                     if (requiredQuantity > 0) {
@@ -386,16 +483,15 @@ btnCart.addEventListener('click', (e) => {
                         break;
                     }
                 }
-
                 $('.table').DataTable().destroy();
                 $('#pos__table tbody').append(row);
-                $('.table').DataTable();
+                $('.table').DataTable(tableConfig);
                 container ++
                 checkCart()
                 transaction ++
                 checkDiscount()
                 posForm.reset();
-
+                }
             } else if (data.length > 0 && totalAvailableQuantity < requiredQuantity) {
                 posQuantity.classList.add('error');
                 Swal.fire(
@@ -409,11 +505,11 @@ btnCart.addEventListener('click', (e) => {
                     title: 'Out of Stock',
                     text: 'It seems like the product that you\'re looking for is out of stock',
                     // footer: '<a class="kaboom" href="http://localhost/pos/views/master-page/products.php">You might check the list of available products here</a>'
-                })
+                });
             }
+            updateFooterVisibility();
         }
-    })
-
+    });
 });
 
 inpCustomer.addEventListener('click',()=>{
