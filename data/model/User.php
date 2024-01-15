@@ -65,14 +65,13 @@ class User
 
     public function save_session($user_id, $request)
     {
-        $hours = $request['hours'];
         $minutes = $request['minutes'];
         $seconds = $request['seconds'];
     
-        $sql = "UPDATE users SET hours = ?, minutes = ?, seconds = ? WHERE id = ?";
+        $sql = "UPDATE users SET minutes = ?, seconds = ? WHERE id = ?";
         
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iiii", $hours, $minutes, $seconds, $user_id);
+        $stmt->bind_param("iii", $minutes, $seconds, $user_id);
         
         $result = '';
         if ($stmt->execute() === TRUE) {
@@ -89,15 +88,15 @@ class User
     
     public function getSessionTimeoutSettings($user_id)
     {
-        $sql = "SELECT hours, minutes, seconds FROM users WHERE id = ?";
+        $sql = "SELECT minutes, seconds FROM users WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
-        $stmt->bind_result($hours, $minutes, $seconds);
+        $stmt->bind_result($minutes, $seconds);
         $stmt->fetch();
         $stmt->close();
     
-        return ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds];
+        return ['minutes' => $minutes, 'seconds' => $seconds];
     }
     
 
