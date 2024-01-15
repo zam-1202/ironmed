@@ -18,27 +18,30 @@ if (!$_SESSION['user']) {
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="user__form-wrapper">
-                        <h2 class="form-wrapper" id="txt_title">Session Timeout</h2>
+                        <h2 class="form-wrapper" id="txt_title" style="color: #24958f;">Session Timeout Configuration</h2>
 
                         <p style="text-align: justify; font-size: 14px;">
-                        Welcome to the Session Timeout Configuration page! Here, you can customize the duration of inactivity
+                        Welcome! Here, you can customize the duration of inactivity
                         that triggers an automatic logout from your account for security purposes. This is a security
                         measure to protect your information in case you forget to log out or if you leave your computer unattended.
+                        <span style="color: #24958f;"> Before enabling the switch button, ensure that you have entered a time
+                        and successfully saved the configuration.</span>
                         </p>
                         
                         <div class="product__table-wrapper">
 
-
                             <div class="mb-5"></div>
 
+                    <form class="row g-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
+                            <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
+                        </div>
+                    </form>
+
+                    <div class="mb-5"></div>
+
                         <form class="row g-3">
-                                <div class="col-md-3">
-                                    <label for="hours" class="form-label">Hours</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
-                                        <input type="number" min="1" class="form-control" id="hours_value">
-                                    </div>
-                                </div>
 
                                 <div class="col-md-3">
                                     <label for="minutes" class="form-label">Minutes</label>
@@ -61,19 +64,6 @@ if (!$_SESSION['user']) {
                                 </div>
                         </form>
 
-                        <div class="mb-5"></div>
-
-                        <p style="text-align: justify; font-size: 13px; font-style: italic;">
-                        Before <span style="color: #24958f;">enabling</span> the switch button, ensure that you have entered a time <br>
-                        and successfully saved the configuration.
-                        </p>
-
-                    <form class="row g-2">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="enableSessionTimeout" name="enableSessionTimeout">
-                            <label class="form-check-label" for="enableSessionTimeout">Enable session timeout</label>
-                        </div>
-                    </form>
 
                     </div>
                 </div>
