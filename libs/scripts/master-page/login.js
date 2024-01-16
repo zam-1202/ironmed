@@ -19,42 +19,55 @@ const Login = (() => {
             type: "POST",
             url: LOGIN_CONTROLLER + '?action=verify_login',
             dataType: "json",
-            data:{
+            data: {
                 username: username,
                 password: password,
             },
-            success: function (response) 
-            {
-                if(response == "Validated") {
+            success: function (response) {
+                if (response === "Validated") {
                     window.location.href = "home.php";
-                } 
-                else if(username == "" || password == ""){
+                } else if (response === "threeAttempts") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Locked due to many attempts',
+                        text: 'Contact System admin or use the "Forgot Password".',
+                    });
+                } else if (response === "locked") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Account is locked',
+                    });
+                } else if (response === "invalid") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Username or Password',
+                    });
+                } else if (username === "" || password === "") {
                     Swal.fire({
                         position: 'center',
                         icon: 'warning',
-                        title: 'Please fill outs all fields',
+                        title: 'Please fill out all fields',
                         showConfirmButton: true,
-                    })
-                }
-                else {
+                    });
+                } else {
                     Swal.fire({
                         position: 'center',
                         icon: 'warning',
                         title: response,
                         showConfirmButton: false,
                         timer: 5000
-                    })
+                    });
                 }
-                
             },
             error: function () {
-
+                // Handle error if needed
             }
-        }); 
+        });
     }
 
     return thisLogin;
 })();
+
 
 
  const logoutMessage = localStorage.getItem('logoutMessage');

@@ -109,9 +109,15 @@ class User
         $email = $request['email'];
         $role = $request['role'];
         $status = $request['status'];
-
-        $sql = "UPDATE users SET first_name=?, last_name=?, username=?, email=?, role=?, status=? WHERE id=?";
-
+    
+        $sql = "UPDATE users SET first_name=?, last_name=?, username=?, email=?, role=?, status=?";
+    
+        if ($status == 1) {
+            $sql .= ", login_attempt=0";
+        }
+    
+        $sql .= " WHERE id=?";
+    
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sssssii", $first_name, $last_name, $username, $email, $role, $status, $user_id);
 
@@ -122,11 +128,12 @@ class User
         } else {
             $result = "Error updating record: " . $this->conn->error;
         }
-
+    
         $this->conn->close();
-
+    
         return $result;
     }
+    
 
     public function update_password($request)
     {
@@ -240,7 +247,7 @@ class User
 
 
         if ($status == 0) {
-            return "Account is locked";
+            return "locked";
         } else if (password_verify($password, $db_password)) {
             $stmt->free_result();
 
@@ -267,7 +274,7 @@ class User
             }
             if ($login_attempt == 3) {
                 $this->update_status($id, 0);
-                return "Your Account has been locked due to many attempts. Please contact System admin.";
+                return "threeAttempts";
             }
             return "Invalid Username or Password";
         }
@@ -322,17 +329,16 @@ class User
 
     public function changeForgottenPassword($email, $newPassword)
     {
-        // Check if the email exists in the users table
 
             $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
-            $sql = "UPDATE users SET password = ? WHERE email = ?";
+            $sql = "UPDATE users SET password = ?, status = 1, login_attempt = 0 WHERE email = ?";
             
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("ss", $hashedPassword, $email);
             
-            $result = $stmt->execute(); // Use the result directly as a boolean
-            $stmt->close(); // Close the prepared statement
+            $result = $stmt->execute();
+            $stmt->close();
 
             return $result;
     }
