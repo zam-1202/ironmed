@@ -2,6 +2,9 @@
 
 include_once('../../config/database.php');
 include_once('../model/User.php');
+include_once('../model/Mail.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 $action = $_GET['action'];
 $User = new User($conn);
@@ -231,22 +234,78 @@ else if ($action == 'changePassword')
     echo json_encode($result);
 }
 
-else if($action == 'resetPassword') 
-{
-    $password = DEFAULT_PASSWORD;
+// else if($action == 'resetPassword') 
+// {
+//     $password = DEFAULT_PASSWORD;
+//     $user_id = $_POST['user_id'];
+
+//     $request = [
+//         'user_id' => $user_id,
+//         'password' => $password
+//     ];
+
+//     $User->update_status($user_id, 1);
+//     $User->update_login_attempt($user_id, 0);
+//     $result = $User->update_password($request);
+
+//     echo json_encode($result);
+// }
+
+else if ($action == 'resetPassword') {
     $user_id = $_POST['user_id'];
 
+    // Generate a random password
+    $password = $User->generateRandomPassword(10);
+
+    // Update the user's password
     $request = [
         'user_id' => $user_id,
         'password' => $password
     ];
-
     $User->update_status($user_id, 1);
     $User->update_login_attempt($user_id, 0);
     $result = $User->update_password($request);
 
-    echo json_encode($result);
+    // If password update is successful, send email with the new password
+    if ($result === "Updated Successfully") {
+        // Retrieve the user's email from the database
+        $userEmail = $User->getUserEmail($user_id);
+
+        if ($userEmail) {
+            $mail = new PHPMailer;
+
+            // SMTP server settings 
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPSecure = 'tls';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'pharmacyironmed@gmail.com';
+            $mail->Password = 'zoicolijzeolrgxc';
+            $mail->Port = 587; 
+    
+            // Email parameters
+            $mail->setFrom('pharmacyironmed@gmail.com', 'IronMed');
+            $mail->addAddress($userEmail);  // Corrected line
+            $mail->isHTML(true);
+            $mail->Subject = 'IronMed Temporary Password';
+            ob_start();
+            include('../../views/master-page/temporary-password.php');
+            $mail->Body = ob_get_clean();
+    
+            // Send the email
+            if ($mail->send()) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'FailedToSendEmail']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'error' => 'UserEmailNotFound']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'error' => $result]);
+    }
 }
+
 
 else if ($action == 'isUsernameTaken') {
     if (isset($_POST['username'], $_POST['excludeUserId'])) {

@@ -795,51 +795,54 @@ const Admin = (() => {
             }
         };
 
-    thisAdmin.clickResetPassword = (id) => {
-        user_id = id;
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Update to Default Password!',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                thisAdmin.resetPassword();
-            }
-        })
-    }
-
-    thisAdmin.resetPassword = () => {
-
-        $.ajax({
-            type: "POST",
-            url: USER_CONTROLLER + '?action=resetPassword',
-            dataType: "json",
-            data:{
-                user_id: user_id
-            },
-            success: function (response) 
-            {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Password Reset Successfully ',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                thisAdmin.resetFormFields();
-                thisAdmin.loadTableData();
-            },
-            error: function () {
-
-            }
-        }); 
-    }
+        thisAdmin.clickResetPassword = (id) => {
+            user_id = id;
+        
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Update to Default Password!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    thisAdmin.resetPassword();
+                }
+            })
+        }
+        
+        thisAdmin.resetPassword = () => {
+        
+            $.ajax({
+                type: "POST",
+                url: USER_CONTROLLER + '?action=resetPassword',
+                dataType: "json",
+                data:{
+                    user_id: user_id
+                },
+                success: function (response) 
+                {
+                    console.log('Generated Password:', response.password); // Add this line to print the password in the console
+        
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Password Reset Successfully ',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    thisAdmin.resetFormFields();
+                    thisAdmin.loadTableData();
+                },
+                error: function () {
+        
+                }
+            }); 
+        }
+        
 
     thisAdmin.resetFields = () => {
         console.log('Current value of unsavedChanges:', unsavedChanges);
