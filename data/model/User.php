@@ -155,7 +155,7 @@ class User
             $result = "Error updating record: " . $this->conn->error;
         }
 
-        $this->conn->close();
+        // $this->conn->close();
 
         return $result;
     }
@@ -349,5 +349,36 @@ class User
         $stmt->bind_param("s", $email);
         return $stmt;
     }
+    
+    public function generateRandomPassword($length = 10) {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+';
+        $password = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        return $password;
+    }
+
+    public function getUserEmail($user_id)
+    {
+        $sql = "SELECT email FROM users WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+    
+        if ($stmt) {
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $stmt->bind_result($email);
+            $stmt->fetch();
+            $stmt->close();
+    
+            return $email;
+        } else {
+            // Handle the case where the statement preparation fails
+            return false;
+        }
+    }
+    
     
 }
