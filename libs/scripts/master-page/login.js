@@ -37,6 +37,12 @@ const Login = (() => {
                         icon: 'warning',
                         title: 'Account is locked',
                     });
+                } else if (response === "temporary") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Temporary password has expired',
+                        text: 'Contact System admin or use the "Forgot Password"".',
+                    });
                 } else if (response === "invalid") {
                     Swal.fire({
                         icon: 'warning',
@@ -47,6 +53,13 @@ const Login = (() => {
                         position: 'center',
                         icon: 'warning',
                         title: 'Please fill out all fields',
+                        showConfirmButton: true,
+                    });
+                } else if (password === "") {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'Please fill out all password',
                         showConfirmButton: true,
                     });
                 } else {

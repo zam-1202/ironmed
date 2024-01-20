@@ -805,7 +805,7 @@ const Admin = (() => {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Update to Default Password!',
+                confirmButtonText: 'Yes',
                 cancelButtonText: 'No'
             }).then((result) => {
                 if (result.isConfirmed) {

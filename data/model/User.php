@@ -139,14 +139,16 @@ class User
     {
         $password = $request['password'];
         $user_id = $request['user_id'];
-
+        $temp_password = 0;
+    
         $password = password_hash($password, PASSWORD_BCRYPT);
-
-        $sql = "UPDATE users SET password=? WHERE id=?";
-
+        $expirationTimestamp = null;
+    
+        $sql = "UPDATE users SET password=?, temp_password=?, expiration_timestamp=? WHERE id=?";
+    
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("si", $password, $user_id);
-
+        $stmt->bind_param("siii", $password, $temp_password, $expirationTimestamp, $user_id);
+    
         $result = '';
         if ($stmt->execute() === TRUE) {
             $result = "Updated Successfully";
@@ -154,11 +156,12 @@ class User
         } else {
             $result = "Error updating record: " . $this->conn->error;
         }
-
-        // $this->conn->close();
-
+    
+        $stmt->close();
+    
         return $result;
     }
+    
 
     public function udpate_login_details($user_id)
     {
@@ -223,34 +226,57 @@ class User
     {
         $username = $request['username'];
         $password = $request['password'];
-
-        $sql = "SELECT id, password, first_name, last_name, email, role, login_attempt, status, hours, minutes, seconds FROM users where username = ?";
-
+    
+        $sql = "SELECT id, password, temp_password, expiration_timestamp, first_name, last_name, email, role, login_attempt, status, hours, minutes, seconds FROM users where username = ?";
+    
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $username);
         $stmt->execute();
-
-
+    
         $id = 0;
         $db_password = "";
+        $temp_password = 0;
+        $expiration_timestamp = null;
         $first_name = "";
         $last_name = "";
         $email = "";
         $role = "";
-        $login_attempt = "";
-        $status = "";
+        $login_attempt = 0;
+        $status = 1;
         $hours = "";
         $minutes = "";
         $seconds = "";
-        $stmt->bind_result($id, $db_password, $first_name, $last_name, $email, $role, $login_attempt, $status, $hours, $minutes, $seconds);
+    
+        $stmt->bind_result($id, $db_password, $temp_password, $expiration_timestamp, $first_name, $last_name, $email, $role, $login_attempt, $status, $hours, $minutes, $seconds);
         $stmt->fetch();
-
-
+    
         if ($status == 0) {
             return "locked";
-        } else if (password_verify($password, $db_password)) {
+        } elseif ($temp_password == 1 && $expiration_timestamp !== null && $role != 1 && password_verify($password, $db_password)) {
+            $currentTimestamp = new DateTime('now', new DateTimeZone('Asia/Singapore'));
+            $currentTimestamp = $currentTimestamp->format('Y-m-d H:i:s');
+            $expirationDateTime = new DateTime($expiration_timestamp);
+    
+            if ($currentTimestamp > $expirationDateTime->format('Y-m-d H:i:s')) {
+                $stmt->free_result();
+                $login_attempt++;
+    
+                if ($role != 1) {
+                    $this->update_login_attempt($id, $login_attempt);
+                }
+    
+                if ($login_attempt == 3) {
+                    $this->update_status($id, 0);
+                    return "threeAttempts";
+                }
+    
+                return "temporary";
+            }
+        }
+    
+        if (password_verify($password, $db_password)) {
             $stmt->free_result();
-
+    
             $_SESSION['user'] = [
                 'id' => $id,
                 'fullname' => $first_name . ' ' . $last_name,
@@ -259,27 +285,29 @@ class User
                 'email' => $email,
                 'password' => $password,
             ];
+    
             $this->update_login_attempt($id, 0);
             $this->udpate_login_details($id);
-
+    
             $this->ActionLog->saveLogs('login');
             return "Validated";
         } else {
             $stmt->free_result();
-
-            $login_attempt ++;
-
-            if ($role != 1){
-            $this->update_login_attempt($id, $login_attempt);
+            $login_attempt++;
+    
+            if ($role != 1) {
+                $this->update_login_attempt($id, $login_attempt);
             }
+    
             if ($login_attempt == 3) {
                 $this->update_status($id, 0);
                 return "threeAttempts";
             }
+    
             return "Invalid Username or Password";
         }
     }
-
+        
     public function validateAdminPassword($password)
     {
         $sql = "SELECT username,password from users where role != 3 and status = 1";
@@ -330,17 +358,19 @@ class User
     public function changeForgottenPassword($email, $newPassword)
     {
 
-            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        $temp_password = 0;
+        $expirationTimestamp = null;
 
-            $sql = "UPDATE users SET password = ?, status = 1, login_attempt = 0 WHERE email = ?";
+        $sql = "UPDATE users SET password = ?, temp_password=?, expiration_timestamp=?, status = 1, login_attempt = 0 WHERE email = ?";
             
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("ss", $hashedPassword, $email);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("siis", $hashedPassword, $temp_password, $expirationTimestamp, $email);
             
-            $result = $stmt->execute();
-            $stmt->close();
+        $result = $stmt->execute();
+        $stmt->close();
 
-            return $result;
+        return $result;
     }
 
     public function getEmailExistsStatement($email)
@@ -349,6 +379,60 @@ class User
         $stmt->bind_param("s", $email);
         return $stmt;
     }
+
+    public function update_Generatepassword($request)
+    {
+        $password = $request['password'];
+        $user_id = $request['user_id'];
+        $temp_password = 1;
+    
+        $password = password_hash($password, PASSWORD_BCRYPT);
+    
+        // Get current timestamp
+        $currentTimestamp = new DateTime('now', new DateTimeZone('Asia/Singapore'));
+        $currentTimestamp = $currentTimestamp->format('Y-m-d H:i:s');
+    
+        // Calculate expiration timestamp
+        if ($temp_password == 1) {
+            $expirationTimestamp = new DateTime('now', new DateTimeZone('Asia/Singapore'));
+            $expirationTimestamp->modify('+24 hours');
+            $expirationTimestamp = $expirationTimestamp->format('Y-m-d H:i:s');
+        } else {
+            $expirationTimestamp = null;
+        }
+    
+        // Check if temporary password is still within the one-minute validity period
+        if ($temp_password == 1 && $currentTimestamp > $expirationTimestamp) {
+            return "Temporary password has expired. Please generate a new one.";
+        }
+    
+        $sql = "UPDATE users SET password=?, temp_password=?, expiration_timestamp=? WHERE id=?";
+    
+        $stmt = $this->conn->prepare($sql);
+    
+        if ($stmt) {
+            if ($temp_password == 1) {
+                $stmt->bind_param("sisi", $password, $temp_password, $expirationTimestamp, $user_id);
+            } else {
+                $stmt->bind_param("sii", $password, $temp_password, $user_id);
+            }
+    
+            $result = '';
+            if ($stmt->execute() === TRUE) {
+                $result = "Updated Successfully";
+                $this->ActionLog->saveLogs('user', 'change password');
+            } else {
+                $result = "Error updating record: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            $result = "Statement preparation failed: " . $this->conn->error;
+        }
+    
+        return $result;
+    }
+        
     
     public function generateRandomPassword($length = 10) {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+';
