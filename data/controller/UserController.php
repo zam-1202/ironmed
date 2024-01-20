@@ -264,7 +264,7 @@ else if ($action == 'resetPassword') {
     ];
     $User->update_status($user_id, 1);
     $User->update_login_attempt($user_id, 0);
-    $result = $User->update_password($request);
+    $result = $User->update_Generatepassword($request);
 
     // If password update is successful, send email with the new password
     if ($result === "Updated Successfully") {
@@ -327,7 +327,6 @@ else if ($action == 'getSessionTimeoutSettings') {
 }
 
 else if ($action == "changeForgottenPassword") {
-    // Check if 'email', 'newPassword', and 'confirmPassword' are set in $_POST
     if (isset($_POST['email']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword'])) {
         $email = $_POST['email'];
         $newPassword = $_POST['newPassword'];
