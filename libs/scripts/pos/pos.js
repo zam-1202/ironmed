@@ -465,6 +465,8 @@ btnCart.addEventListener('click', (e) => {
                             transaction ++
                             checkDiscount()
                             posForm.reset();
+                        } else {
+                            posForm.reset();
                         }
                     });
                 } else {
