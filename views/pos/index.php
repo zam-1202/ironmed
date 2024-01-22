@@ -54,7 +54,7 @@ if(!$_SESSION['user']) {
 
                 <div class="pos__body__content">
                     <form class="pos__form" action="">
-                    <input type="number" id="bCode" placeholder="Barcode" class="pos__form__barcode" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
+                    <input type="number" id="bCode" placeholder="Barcode" class="pos__form__barcode" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'" required autofocus>
                     
                         <input type="text" placeholder="Product" class="pos__form__product" disabled readonly>
                         <!-- <select name="" id="" class="pos__form__batch">
