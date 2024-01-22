@@ -49,7 +49,7 @@ if(!$_SESSION['user']) {
                         <label for="Customer Name">Customer Name: </label>
                         <input type="text" class="pos__body__customer__input">
                     </div>
-                    <span class="pos__body__customer__error">Please enter<b>OSCA or PWD ID and CUSTOMER NAME and</b> to avail the discount</span>
+                    <span class="pos__body__customer__error">Please enter <b>OSCA or PWD ID and CUSTOMER NAME and</b> to avail the discount</span>
                 </div>
 
                 <div class="pos__body__content">
