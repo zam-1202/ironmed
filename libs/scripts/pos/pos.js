@@ -256,7 +256,6 @@ inpBarcode.addEventListener('click', ()=>{
     inpBarcode.classList.remove('error');
 });
 inpBarcode.addEventListener('blur', (e)=>{
-    // console.log(e.currentTarget);
     $.ajax({
         type:'GET',
         url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${inpBarcode.value}`,
@@ -416,16 +415,61 @@ btnCart.addEventListener('click', (e) => {
             }, 0);
 
             if (data.length > 0 && totalAvailableQuantity >= requiredQuantity) {
-                const exist = productCart.some(el => el.barcode === data[0].barcode);
-                if(exist){
-                    Swal.fire(
-                                `${data[0].barcode}`,
-                                'Item is already on the list',
-                                'question'
-                            )
-                            data = [];
-                }
-                else{
+                const exist = productCart.find(el => el.barcode === data[0].barcode);
+                if (exist) {
+                    Swal.fire({
+                        title: `${data[0].product_name}`,
+                        text: 'Item is already on the list. Update the item quantity?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            exist.quantity += requiredQuantity;
+
+                            //Just for checking in console
+                            productCart.forEach(item => {
+                            const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
+                            console.log('Grand Total:', totalItemPrice);
+                        });
+                            console.log('Item quantity updated:', exist);
+                            
+
+                            const updatedAmount = exist.quantity * exist.price;
+                            const existingRow = $(`#pos__table tbody .row${exist.barcode}`);
+
+                            // Update the quantity cell in the DataTable
+                            if (existingRow.length > 0) {
+                                existingRow.find('.p-quantity').text(exist.quantity);
+                                existingRow.find('.p-amount').text(updatedAmount.toFixed(2));
+                            }
+                
+                            grandTotal = 0;
+                            productCart.forEach(item => {
+                                const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
+                                if (inpDiscount.checked) {
+                                    const discountedPrice = calculateDiscount(totalItemPrice, item.type);
+                                    grandTotal += discountedPrice;
+                                } else {
+                                    grandTotal += totalItemPrice;
+                                }
+                            });
+                        
+                            // Destroy and reinitialize DataTable
+                            $('.table').DataTable().destroy();
+                            $('#pos__table').DataTable(tableConfig);
+                            container ++
+                            checkCart()
+                            transaction ++
+                            checkDiscount()
+                            posForm.reset();
+                        } else {
+                            posForm.reset();
+                        }
+                    });
+                } else {
                     const item = {
                         barcode: data[0].barcode,
                         name: data[0].product_name,
@@ -466,6 +510,7 @@ btnCart.addEventListener('click', (e) => {
                         const typeValue = product.type ? product.type : '-';
                         const amount = product.sale_price * availableQuantity;
                         const rowClass = `rowClass row${product.barcode}`;
+                        
                         row += `<tr class="${rowClass}">
                             <td>
                                 <button class="btn-remove" onclick="confirmVoidCart(${product.barcode})">&#10008;</button>
