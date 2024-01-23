@@ -36,20 +36,21 @@ if(!$_SESSION['user']) {
                 <div class="pos__body__header">
                     <!-- <h2 class="pos__body__title">Home - Manage Sales</h2> -->
 
-                    <div class="pos__body__discount">
-                        <label for="">Apply Discount</label>
-                        <input type="checkbox" class="pos__body__discount__input">
-                    </div>
-
                     <div class="pos__body__customer_number">
                         <label for="OSCA ID">OSCA or PWD ID: </label>
-                        <input type="text" class="pos__body__customer__number">
+                        <input type="number" class="pos__body__customer__number" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 13) this.value = this.value.slice(0, 13);">
                     </div>
                     <div class="pos__body__customer">
-                        <label for="Customer Name">Customer Name: </label>
+                        <label for="Customer Name">Customer Name:&nbsp;</label>
                         <input type="text" class="pos__body__customer__input">
                     </div>
                     <span class="pos__body__customer__error">Please enter <b>OSCA or PWD ID and CUSTOMER NAME and</b> to avail the discount</span>
+                    <div style="margin-bottom: 10px;"></div>
+                    <div class="pos__body__discount">
+                        <label for="">Apply Discount&nbsp;&nbsp;&nbsp;</label>
+                        <input type="checkbox" class="pos__body__discount__input">
+                    </div>
+                
                 </div>
 
                 <div class="pos__body__content">
@@ -65,7 +66,7 @@ if(!$_SESSION['user']) {
                         </select> -->
                         <input type="number" min="1" oninput="validity.valid || (value='')" placeholder="Quantity" class="pos__form__quantity">
                         <button type="submit" class="pos__button pos__form__submit">Add to cart</button>
-                        <button type="button" class="post__button pos__form__checkout" disabled style="background-color:gray">Check out</button>
+                        <button type="button" class="pos__button pos__form__checkout" disabled style="background-color:gray">Check out</button>
                     </form>
                     <table class="table table-bordered pos__table" id="pos__table">
                         <thead>
