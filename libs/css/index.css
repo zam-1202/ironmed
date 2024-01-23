@@ -519,7 +519,7 @@ canvas {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .pos__body__customer.show {
@@ -529,6 +529,13 @@ canvas {
 .pos__body__customer label {
   padding: 0 5px;
 }
+
+.pos__body__customer input:disabled,
+.pos__body__customer_number input:disabled {
+  background-color: #ebebeb;
+  border: 2px solid #dfdfdf;
+}
+
 
 .pos__body__customer input {
   outline: none;
@@ -561,7 +568,7 @@ canvas {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .pos__body__customer_number.show {
@@ -605,8 +612,17 @@ canvas {
 .pos__form__checkout {
   color: #505050;
   background-color: #2cafa8;
-  border: 2px solid #505050;
+  border: 1px solid #505050;
   font-weight: 700;
+}
+
+.pos__form button:hover {
+  border: 1px solid #24958f;
+}
+
+.pos__form button:disabled:hover {
+  border: none;
+  border: 1px solid #505050;
 }
 
 .pos__form__submit {
@@ -647,10 +663,6 @@ canvas {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-}
-
-.pos__form button:hover {
-  border: 2px solid #24958f;
 }
 
 .pos__list {

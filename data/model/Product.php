@@ -184,13 +184,14 @@ class Product
         INNER JOIN categories c ON c.id = p.category_id
         WHERE expired_status = 0
         AND barcode = $barcode
-        AND pd.quantity != 0
+
         ORDER BY batch ASC";
         $result = $this->conn->query($sql);
 
         return $result->fetch_all(MYSQLI_ASSOC);
 
     }
+    // AND pd.quantity != 0 -- was removed to trigger out of stock products
 
     public function getTotalProduct()
     {

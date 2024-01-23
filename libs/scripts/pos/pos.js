@@ -38,6 +38,89 @@ var tableConfig = {
     info: false
 };
 
+var unsavedChanges = false;
+var hasValues = false;
+
+var initialFieldValues = {};
+
+$(':input').each(function () {
+    initialFieldValues[this.id] = $(this).val();
+});
+
+$(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls^="DataTables_Table_"])', function () {
+
+    var currentFieldValue = $(this).val();
+    var initialFieldValue = initialFieldValues[this.id];
+
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+
+    if (this.id !== 'slc_status') {
+        if (currentFieldValue !== initialFieldValue) {
+            unsavedChanges = true;
+            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+        } else {
+            unsavedChanges = false;
+        }
+    }
+});
+
+window.onbeforeunload = function() {
+    if (unsavedChanges) {
+        return "There are unsaved changes";
+    }
+};
+
+function showLeaveConfirmation() {
+    return Swal.fire({
+            title: 'Transaction is in progress',
+            text: 'Are you sure you want to leave?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, leave anyway',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No'
+    });
+}
+
+
+function resetUnsavedChanges() {
+    unsavedChanges = false;
+}
+
+function UnsavedChangesTrue() {
+    unsavedChanges = true;
+}
+
+$(document).on('click', 'a[href]:not([target="_blank"])', function (e) {
+    if ($(this).closest('.paginate_button').length === 0) {
+        if (unsavedChanges) {
+            var nonEmptyInputs = $(':input').filter(function () {
+                return this.value.trim() !== '';
+            });
+
+            if (nonEmptyInputs.length === 0) {
+                resetUnsavedChanges();
+                return;
+            }
+
+            if ($(this).text().trim().toLowerCase() === 'logout') {
+                window.onbeforeunload = null;
+                window.location.href = e.target.href;
+                return;
+            }
+
+            e.preventDefault();
+            showLeaveConfirmation().then((result) => {
+                if (result.isConfirmed) {
+                    resetUnsavedChanges();
+                    window.location.href = e.target.href;
+                }
+            });
+        }
+    }
+});
+
 
 const printReceipt = (invoiceId) => {
     // window.location.href = ('http://localhost/pos/views/pos/receipt.php?invoice_id=${invoiceId}');
@@ -102,15 +185,29 @@ const checkSalesToday = () => {
 // }
 
 const checkCart = () => {
-    if(container == 0){
-        btnCheckout.style.backgroundColor="#808080";
-        btnCheckout.disabled=true;
+    console.log('Number of items in the cart:', productCart.length);
+    console.log('Container:', container);
+    if (productCart.length === 0) {
+        console.log('Cart is empty. Disabling checkout.');
+        btnCheckout.style.backgroundColor = "#808080";
+        btnCheckout.disabled = true;
+        inpDiscount.setAttribute("disabled", "disabled");
+        inpDiscount.checked = false;
+        inpCustomerNumber.setAttribute("disabled", "disabled");
+        inpCustomer.setAttribute("disabled", "disabled");
+        inpDiscount.checked = false;
+        inpCustomerNumber.value = "";
+        inpCustomer.value = "";
+        unsavedChanges = false;
+    } else {
+        console.log('Cart has items. Enabling checkout.');
+        btnCheckout.style.backgroundColor = "#99FFCC";
+        btnCheckout.disabled = false;
+        inpCustomerNumber.removeAttribute("disabled");
+        inpCustomer.removeAttribute("disabled");
     }
-    else{
-        btnCheckout.style.backgroundColor="#99FFCC";
-        btnCheckout.disabled=false;
-    }
-}
+};
+
 
 const removeItem = (barcode) => {
 
@@ -121,14 +218,15 @@ const removeItem = (barcode) => {
     const rowClass = `.row${barcode}`;
     const table = $('.table').DataTable(tableConfig);
     const rows = table
-        .rows( rowClass )
+        .rows(rowClass)
         .remove()
         .draw()
-        container --
-        transaction --
-        checkCart();
+        container--;
+        transaction--;
+
         updateFooterVisibility();
         updateGrandTotal();
+        checkCart();
 }
 
 const validateAdminPassword = () => {
@@ -173,7 +271,10 @@ const confirmVoidCart = (barcode) => {
         $('#modal_confirmpassword').modal('show');
     } 
     else {
-        removeItem(barcode)
+        console.log('Product Cart before removal:', productCart.length);
+        removeItem(barcode);
+        console.log('Product Cart after removal:', productCart.length);
+        checkCart();
     }
 }
 
@@ -213,33 +314,53 @@ const calculateDiscount = (amount, discountType) => {
                 return amount - (amount * discount);
 };
 
+const checkCustomerFields = () => {
+    const customerName = inpCustomer.value.trim();
+    const customerNumber = inpCustomerNumber.value.trim();
+
+    if (customerName !== '' && customerNumber !== '') {
+        inpDiscount.removeAttribute("disabled");
+    } else {
+        inpDiscount.setAttribute("disabled", "disabled");
+        inpDiscount.checked = false; // Uncheck the discount checkbox if customer fields are empty
+    }
+};
+
+inpCustomer.addEventListener('input', checkCustomerFields);
+inpCustomerNumber.addEventListener('input', checkCustomerFields);
+
+// Add this line to check the fields on page load
+checkCustomerFields();
+
 const checkDiscount = () => {
     const rows = document.querySelectorAll('tbody tr.rowClass');
     let grandTotalValue = 0;
-    
-    if(rows.length > 0){
-        rows.forEach((row)=>{
-            const price = row.querySelector('.p-price');
-            const quantity = row.querySelector('.p-quantity');
-            const amount = row.querySelector('.p-amount');
-            const type = row.querySelector('.p-type');
-            let amountValue = (+price.innerHTML * +quantity.innerHTML).toFixed(2);
-            
-            posCustomer.classList.remove('show');
-            posCustomerNumber.classList.remove('show');
-            if(inpDiscount.checked){
-                console.log('Discount is checked');
-                posCustomer.classList.add('show');
-                posCustomerNumber.classList.add('show');
-                amountValue = calculateDiscount(amountValue, type.innerHTML);
-            }
-            amount.innerHTML = amountValue;
-            grandTotalValue += parseFloat(amountValue);
-        })
-    }
-    else{
-        posCustomer.classList.toggle('show');
-        posCustomerNumber.classList.toggle('show');
+    let customerName = inpCustomer.value.trim();
+    let customerNumber = inpCustomerNumber.value.trim();
+
+    if (customerName === '' || customerNumber === '') {
+        inpDiscount.disabled = true;
+        inpDiscount.checked = false;
+    } else {
+        inpDiscount.disabled = false;
+
+        if (rows.length > 0) {
+            rows.forEach((row) => {
+                const price = row.querySelector('.p-price');
+                const quantity = row.querySelector('.p-quantity');
+                const amount = row.querySelector('.p-amount');
+                const type = row.querySelector('.p-type');
+                let amountValue = (+price.innerHTML * +quantity.innerHTML).toFixed(2);
+
+                if (inpDiscount.checked) {
+                    console.log('Discount is checked');
+                    amountValue = calculateDiscount(amountValue, type.innerHTML).toFixed(2);
+                }
+
+                amount.innerHTML = amountValue;
+                grandTotalValue += parseFloat(amountValue);
+            });
+        }
     }
 
     const grandTotalCell = document.getElementById('grandTotalCell');
@@ -252,32 +373,73 @@ inpDiscount.addEventListener('change', checkDiscount);
 posQuantity.addEventListener('click', ()=>{
     posQuantity.classList.remove('error');
 });
+
 inpBarcode.addEventListener('click', ()=>{
     inpBarcode.classList.remove('error');
 });
+
 inpBarcode.addEventListener('blur', (e)=>{
+
+    if (inpBarcode.value.trim() === '') {
+        inpProduct.value = '';
+        // unsavedChanges = false;
+        return;
+    }
+
     $.ajax({
-        type:'GET',
+        type: 'GET',
         url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${inpBarcode.value}`,
         dataType: 'json',
-        cache:false,
+        cache: false,
         success: (data) => {
-            
-            if(data.length > 0){
+
+            if (data.length > 0) {
                 inpProduct.value = data[0].product_name;
-            }
-            else{
-                inpBarcode.classList.add('error');
-                inpProduct.value = '';
+                unsavedChanges = true;
+            
+                const totalAvailableQuantity = data.reduce((accumulator, product) => {
+                    return accumulator + parseInt(product.quantity);
+                }, 0);
+            
+                if (totalAvailableQuantity === 0) {
+                    console.log("Out of stock");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Out of Stock',
+                        html: `${data[0].product_name} <br>
+                        Product is currently out of stock.`,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            inpBarcode.classList.remove('error');
+                            inpBarcode.value = '';
+                            inpProduct.value = '';
+                            posQuantity.value = '';
+                            unsavedChanges = false;
+                        }
+                    });
+                } else {
+                    console.log("Product found with available quantity");
+                }
+            } else {
+                console.log("Not found");
                 Swal.fire({
                     icon: 'error',
                     title: 'Product Not Found',
-                    text: 'It seems like the product that you\'re looking for does not exist or out of stock',
-                    // footer: `<a class="kaboom" href="${HOST}views/master-page/products.php">You might check the list of available products here</a>`
-                })
+                    text: 'It seems like the product that you\'re looking for does not exist.',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        inpBarcode.classList.remove('error');
+                        inpBarcode.value = '';
+                        inpProduct.value = '';
+                        posQuantity.value = '';
+                        unsavedChanges = false;
+                    }
+                });
             }
         }
-    })
+    });
 });
 
 btnCheckout.addEventListener('click', (e)=>{
@@ -364,7 +526,7 @@ btnCheckout.addEventListener('click', (e)=>{
 
     $('.pos__list').html(list);
 
-    $('#myModal').modal('show');
+    $('#myModal').addClass('fade').modal('show');
 });
 
 $('#grandTotalName').parent().addClass('hidden-footer');
@@ -428,13 +590,12 @@ btnCart.addEventListener('click', (e) => {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             exist.quantity += requiredQuantity;
-
                             //Just for checking in console
                             productCart.forEach(item => {
                             const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
-                            console.log('Grand Total:', totalItemPrice);
+                            // console.log('Grand Total:', totalItemPrice);
                         });
-                            console.log('Item quantity updated:', exist);
+                            // console.log('Item quantity updated:', exist);
                             
 
                             const updatedAmount = exist.quantity * exist.price;
@@ -445,7 +606,7 @@ btnCart.addEventListener('click', (e) => {
                                 existingRow.find('.p-quantity').text(exist.quantity);
                                 existingRow.find('.p-amount').text(updatedAmount.toFixed(2));
                             }
-                
+                            
                             grandTotal = 0;
                             productCart.forEach(item => {
                                 const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
@@ -460,11 +621,12 @@ btnCart.addEventListener('click', (e) => {
                             // Destroy and reinitialize DataTable
                             $('.table').DataTable().destroy();
                             $('#pos__table').DataTable(tableConfig);
-                            container ++
-                            checkCart()
-                            transaction ++
+                            container++;
+                            checkCart();
+                            transaction ++;
                             checkDiscount()
                             posForm.reset();
+                            updateGrandTotal();
                         } else {
                             posForm.reset();
                         }
@@ -478,6 +640,7 @@ btnCart.addEventListener('click', (e) => {
                         type:data[0].type
                     }
                     productCart.push(item);
+                    checkCart();
     
                     grandTotal = 0;
 
@@ -532,38 +695,76 @@ btnCart.addEventListener('click', (e) => {
                 $('#pos__table tbody').append(row);
                 $('.table').DataTable(tableConfig);
                 container ++
-                checkCart()
                 transaction ++
                 checkDiscount()
                 posForm.reset();
+                updateGrandTotal();
+                checkCart();
                 }
-            } else if (data.length > 0 && totalAvailableQuantity < requiredQuantity) {
+            } else if (totalAvailableQuantity < requiredQuantity && totalAvailableQuantity != 0) {
                 posQuantity.classList.add('error');
-                Swal.fire(
-                    `${data[0].product_name}`,
-                    `We only have ${totalAvailableQuantity} items left for this product`,
-                    'info'
-                )
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Insufficient stock',
+                    html: `${data[0].product_name} <br>
+                    We only have ${totalAvailableQuantity} items left for this product`,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        posQuantity.classList.remove('error');
+                        inpBarcode.value = '';
+                        inpProduct.value = '';
+                        posQuantity.value = '';
+                        unsavedChanges = false;
+                    }
+                });
+            } else if (totalAvailableQuantity === 0) {
+                    console.log("Out of stock");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Out of Stock',
+                        html: `${data[0].product_name} <br>
+                        Product is currently out of stock.`,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            inpBarcode.classList.remove('error');
+                            inpBarcode.value = '';
+                            inpProduct.value = '';
+                            posQuantity.value = '';
+                            unsavedChanges = false;
+                        }
+                    }); 
             } else {
+                inpBarcode.classList.add('error');
+                inpProduct.value = '';
                 Swal.fire({
                     icon: 'error',
-                    title: 'Out of Stock',
-                    text: 'It seems like the product that you\'re looking for is out of stock',
-                    // footer: '<a class="kaboom" href="http://localhost/pos/views/master-page/products.php">You might check the list of available products here</a>'
+                    title: 'Product Not Found',
+                    text: 'It seems like the product that you\'re looking for does not exist',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        inpBarcode.classList.remove('error');
+                        posQuantity.value = '';
+                        unsavedChanges = false;
+                    }
                 });
-            }
+            }            
             updateFooterVisibility();
         }
     });
 });
 
-inpCustomer.addEventListener('click',()=>{
-    inpCustomerError.classList.remove('show');
-});
 
-inpCustomerNumber.addEventListener('click',()=>{
-    inpCustomerError.classList.remove('show');
-});
+
+// inpCustomer.addEventListener('click',()=>{
+//     inpCustomerError.classList.remove('show');
+// });
+
+// inpCustomerNumber.addEventListener('click',()=>{
+//     inpCustomerError.classList.remove('show');
+// });
 
 btnConfirm.addEventListener('click',()=>{
     
@@ -572,6 +773,14 @@ btnConfirm.addEventListener('click',()=>{
     let customerNumber = '';
     let cashPayment = $('.pos__body__payment').val();
     let process = 1;
+
+    if (cashPayment.trim() === '') {
+        $('.pos__body__payment').addClass('error');
+        return;
+    } else {
+        $('.pos__body__payment').removeClass('error');
+    }
+
     if(inpDiscount.checked){
         discount = 'discounted';
         customerName = inpCustomer.value;
@@ -600,6 +809,7 @@ btnConfirm.addEventListener('click',()=>{
             },
             success: function (last_invoice_id) 
             {
+                window.onbeforeunload = null;
                 console.log('success');
                 printReceipt(last_invoice_id);
                 window.location.href = HOST_2 + '/views/pos/index.php';
@@ -613,7 +823,7 @@ btnConfirm.addEventListener('click',()=>{
         inpPaymentError.classList.add('show');
     }
     else{
-        $('#myModal').modal('hide');
+        $('#myModal').addClass('fade').modal('hide');
         inpCustomerError.classList.add('show');
     }
 
