@@ -635,8 +635,8 @@ const Product = (() => {
                                 toUpdate = true;
                                 
             
-                                $('#btn_save_product').html('Add Stocks');
-                                $('#txt_title').html('Add Stocks');
+                                $('#btn_save_product').html('Update Product');
+                                $('#txt_title').html('Update Product');
                                 unsavedChanges = true;
                                 hasValues = true;
             
@@ -690,8 +690,8 @@ const Product = (() => {
                     toUpdate = true;
                     
 
-                    $('#btn_save_product').html('Add Stocks');
-                    $('#txt_title').html('Add Stocks');
+                    $('#btn_save_product').html('Update Product');
+                    $('#txt_title').html('Update Product');
                     unsavedChanges = true;
                     hasValues = true;
 
@@ -812,7 +812,7 @@ const Product = (() => {
                     $('#txt_location').prop( "disabled", false );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#btn_save_product').html('Add Stocks');
+                    $('#btn_save_product').html('Update Product');
                     thisProduct.loadTableData();
                     
                     }
@@ -860,7 +860,7 @@ const Product = (() => {
                     // $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#btn_save_product').html('Add Stocks');
+                    $('#btn_save_product').html('Update Product');
                     unsavedChanges = false;
                     hasValues = false
                             }
@@ -887,7 +887,7 @@ const Product = (() => {
                 // $('#txt_location').prop( "disabled", true );
                 $('#txt_location').removeClass('red-input');
 
-                $('#btn_save_product').html('Add Stocks');
+                $('#btn_save_product').html('Update Product');
                 unsavedChanges = false;
                 hasValues = false
                 }
@@ -915,7 +915,7 @@ const Product = (() => {
         // $('#txt_location').prop( "disabled", true );
         $('#txt_location').removeClass('red-input');
 
-        $('#btn_save_product').html('Add Stocks');
+        $('#btn_save_product').html('Update Product');
         unsavedChanges = false;
     }
 
