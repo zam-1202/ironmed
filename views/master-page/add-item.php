@@ -22,7 +22,7 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-6 col-md-14 ">
                     <div class="product__table-wrapper">
-                        <h2 class="form-wrapper" id="txt_title">Register Stocks</h2>
+                        <h2 class="form-wrapper" id="txt_title">Register Products</h2>
 
                            <div>&nbsp;</div>
 
