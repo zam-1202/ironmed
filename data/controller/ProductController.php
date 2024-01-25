@@ -496,7 +496,6 @@ else if ($action == 'updateProduct')
     $product_barcode = $_POST['product_barcode'];
     $product_category = $_POST['product_category'];
     $selling_price = $_POST['selling_price'];
-    // $lot_num = $_POST['lot_num'];
     $status = $_POST['status'];
     $max_stock = $_POST['max_stock'];
     $min_stock = $_POST['min_stock'];
@@ -509,7 +508,6 @@ else if ($action == 'updateProduct')
         'product_barcode' => $product_barcode,
         'product_category' => $product_category,
         'selling_price' => $selling_price,
-        // 'lot_num' => $lot_num,
         'status' => $status,
         'max_stock' => $max_stock,
         'min_stock' => $min_stock,

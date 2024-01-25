@@ -152,17 +152,18 @@ const Product = (() => {
                 $('#txt_product_name').val(response.name);
                 $('#txt_product_barcode').val(response.barcode);
                 $('#slc_product_category').val(response.category_id);
-                // $('#txt_lot_number').val(response.lot_num);
                 $('#txt_selling_price').val(parseFloat(response.sale_price).toFixed(2));
                 $('#slc_status').val(response.status);
                 $('#txt_max_stock').val(response.max_stock);
                 $('#txt_min_stock').val(response.min_stock);
                 $('#slc_type').val(response.type);
-                // $('#txt_location').val(response.location);
                
                 $('#modal_update_details').modal('show')
                 $('#modal_update_details_header').html('Update ' + product_name)
 
+                $('#txt_product_name').prop( "disabled", true );
+                $('#txt_product_barcode').prop( "disabled", true );
+                $('#slc_product_category').prop( "disabled", true );
             },
             error: function () {
 
@@ -180,7 +181,6 @@ const Product = (() => {
         const max_stock = $('#txt_max_stock').val();
         const min_stock = $('#txt_min_stock').val();
         const type = $('#slc_type').val();
-        // const location = $('#txt_location').val();        
 
         $.ajax({
             type: "POST",

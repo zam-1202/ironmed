@@ -91,8 +91,8 @@ if(!$_SESSION['user']) {
 
     <!-- MODAL FOR PRODUCT DETAILS -->
   
-    <div class="modal fade bd-example-modal-lg" id="modal_view_details" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg ">
+    <div class="modal fade bd-example-modal-xl" id="modal_view_details" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl ">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal_view_details_header">Product details</h5>

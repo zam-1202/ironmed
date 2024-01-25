@@ -111,7 +111,6 @@ class Product
         $product_barcode = $request['product_barcode'];
         $product_category = $request['product_category'];
         $selling_price = $request['selling_price'];
-        // $lot_num = $request['lot_num'];
         $status = $request['status'];
         $max_stock = $request['max_stock'];
         $min_stock = $request['min_stock'];
