@@ -181,9 +181,7 @@ class Product
         FROM products p 
         INNER JOIN product_details pd ON pd.product_id = p.id
         INNER JOIN categories c ON c.id = p.category_id
-        WHERE expired_status = 0
         AND barcode = $barcode
-
         ORDER BY batch ASC";
         $result = $this->conn->query($sql);
 
@@ -191,6 +189,7 @@ class Product
 
     }
     // AND pd.quantity != 0 -- was removed to trigger out of stock products
+    // WHERE expired_status = 0 was removed, it was causing the issue of not retrieving existing products during registration.
 
     public function getTotalProduct()
     {
