@@ -48,11 +48,6 @@ nav {
   margin-top: 1rem;
 }
 
-
-.btn-main {
-  background-color: #2cafa8;
-}
-
 /* Specificity increased */
 .btn-primary,
 .btn-primary:active,
@@ -70,12 +65,29 @@ nav {
   background-color: #2cafa8;
 }
 
+.btn-secondary{
+  background-color: #2cafa8;
+}
+
 /* Changed order and specificity increased for main button hover */
 .btn-main:hover {
   background-color: #24958f !important;
   color: #fff !important;
 }
 
+.btn-dropdown-export{
+  background-color: #2cafa8;
+  width: 160px;
+  padding: 4px 4px;
+}
+
+.btn-dropdown-export.dropdown-toggle,
+.btn-dropdown-export.dropdown-toggle:focus,
+.btn-dropdown-export.dropdown-toggle:active {
+    color: white;
+    background-color: #2cafa8; /* Change to your desired background color */
+    border-color: #2cafa8; /* Change border color if needed */
+}
 
 label {
   color: #24958f;
@@ -91,10 +103,10 @@ label {
 }
 
 .category {
-  padding: .4rem .7rem;
-  border-radius: 15px;
+  padding: .2rem .4rem;
+  border-radius: 7px;
   font-size: .8rem;
-  font-weight: 500;
+  /* font-weight: 500; */
   /* border: 2px solid #080a0a; */
   color: #000000;
 }
@@ -1466,6 +1478,7 @@ a.previous.round {
 
 .export-option {
   cursor: pointer;
+  color: white;
 }
 
 ::-ms-reveal {
@@ -1522,4 +1535,73 @@ a.previous.round {
 
 .fade-out.hide {
   opacity: 0;
+}
+
+.container-sm{
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container-sm {
+  width: 90%; 
+  max-width: 100px;
+  margin: 0 auto;
+}
+
+/* .table.table-bordered{
+  font-size: 0.8rem;
+}
+
+.table.table-bordered th,
+.table.table-bordered td {
+  padding: 0.2rem;
+}
+
+
+table thead {
+  white-space: nowrap;
+  padding: 800px;
+  color: #fff;
+  background-color: #24958f;
+  border: 1px solid #c4f3f0;
+} */
+
+.table-wrapper.inventory-box table {
+  font-size: 0.8rem;
+}
+
+.table-wrapper.inventory-box table td {
+  padding: 0.2rem;
+}
+
+.table-wrapper.inventory-box table th{
+  padding: 10px;
+}
+
+.table-wrapper.inventory-box table thead {
+  white-space: nowrap;
+  color: #fff;
+  background-color: #24958f;
+  border: 1px solid #c4f3f0;
+}
+
+
+.small-dropdown {
+  font-size: 0.9rem;
+  width: 160px;
+  padding: 4px 4px;
+}
+
+.custom-icon {
+  color: #2dafa9; /* Change the color to your desired color */
+}
+
+.icon-container {
+  background-color: #2dafa9; /* Change the background color to your desired color */
+
+}
+
+.custom-icon {
+  color: white; /* Change the color of the icon */
 }

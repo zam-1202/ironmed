@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     Product.loadTableData();
     Product.loadSelectData();
-
+    Product.loadSelectDataCategory();
 
     $('.btn').click(function (event) {
         event.preventDefault()
@@ -91,7 +91,7 @@ const Product = (() => {
             dataType: "json",
             success: function (response) {
 
-                $('#slc_product_category').html(response);
+                $('#slc_product_category_modal').html(response);
             },
             error: function () {
 
@@ -101,7 +101,7 @@ const Product = (() => {
 
     //ProductsTable
 
-    thisProduct.loadSelectData = () => {
+    thisProduct.loadSelectDataCategory = () => {
         $.ajax({
             type: "GET",
             url: CATEGORY_CONTROLLER + '?action=getSelectDataCategory',
@@ -149,14 +149,15 @@ const Product = (() => {
                 product_id: id
             },
             success: function (response) {
+                console.log(response);
                 $('#txt_product_name').val(response.name);
                 $('#txt_product_barcode').val(response.barcode);
-                $('#slc_product_category').val(response.category_id);
+                $('#slc_product_category_modal').val(response.category_id);
                 $('#txt_selling_price').val(parseFloat(response.sale_price).toFixed(2));
                 $('#slc_status').val(response.status);
                 $('#txt_max_stock').val(response.max_stock);
                 $('#txt_min_stock').val(response.min_stock);
-                $('#slc_type').val(response.type);
+                $('#slc_type_modal').val(response.type);
                
                 $('#modal_update_details').modal('show')
                 $('#modal_update_details_header').html('Update ' + product_name)
@@ -175,12 +176,12 @@ const Product = (() => {
     thisProduct.update = () => {
         const product_name = $('#txt_product_name').val();
         const product_barcode = $('#txt_product_barcode').val();
-        const product_category = $('#slc_product_category').val();
+        const product_category = $('#slc_product_category_modal').val();
         const selling_price = $('#txt_selling_price').val();
         const status = $('#slc_status').val();
         const max_stock = $('#txt_max_stock').val();
         const min_stock = $('#txt_min_stock').val();
-        const type = $('#slc_type').val();
+        const type = $('#slc_type_modal').val();
 
         $.ajax({
             type: "POST",
@@ -200,7 +201,7 @@ const Product = (() => {
             success: function (response) 
             {
                 thisProduct.loadTableData();
-                // thisProduct.resetFields();
+                thisProduct.loadSelectData();
                 $('#modal_update_details').modal('hide')
             },
             error: function () {
@@ -386,6 +387,8 @@ const Product = (() => {
             }
         });
     }
+
+    
     
     
     return thisProduct;
