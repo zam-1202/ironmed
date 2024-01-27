@@ -400,12 +400,54 @@ const Product = (() => {
                 $('#tbody_product').html(response);
 
                 $('.table').DataTable();
-            },
-            error: function () {
-
-            }
-        });
-    }
+                
+                $(document).ready(function () {
+                    var table = $('.table').DataTable();
+                    $('.dataTables_filter input')
+                        .off()
+                        .on('input', function () {
+                            $('.table').DataTable().search(this.value, true, false).draw();
+                            var body = $(table.table().body());
+                            body.unhighlight();
+                            body.highlight(table.search());
+                            var searchTerm = this.value.toLowerCase();
+    
+                            var regex = searchTerm.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+                            $.fn.dataTable.ext.search.push(function (settings, searchData, index, rowData, counter) {
+                                for (var i = 0; i < searchData.length; i++) {
+                                    if (searchData[i].toLowerCase().indexOf(regex) !== -1) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            });
+    
+                            table.draw();
+    
+                            // Remove the custom search function
+                            $.fn.dataTable.ext.search.pop();
+    
+                            console.log('Search term in console: "' + searchTerm + '"');
+    
+                            // Check if the user's search exactly matches a value in the DataTable
+                            var exactMatch = table
+                                .rows({ search: 'applied' })
+                                .data()
+                                .toArray()
+                                .some(row => row.some(value => value.toLowerCase() === searchTerm.toLowerCase()));
+    
+                            // console.log('Exact match in DataTable:', exactMatch);
+                            // console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
+                        });
+    
+                    });
+    
+                },
+                error: function () {
+    
+                }
+            });
+        }
 
     thisProduct.clickSaveButton = () => {
         console.log('test');
@@ -555,7 +597,7 @@ const Product = (() => {
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Stocks Added Successfully',
+                        title: 'Product added successfully',
                         showConfirmButton: true,
                     })
                 },
@@ -618,7 +660,7 @@ const Product = (() => {
                                 $('#txt_lot_number').prop( "disabled", false );
                                 $('#txt_buying_price').val(response.buy_price);
                                 $('#txt_selling_price').val(response.sale_price);
-                                $('#txt_selling_price').prop( "disabled", true );
+                                $('#txt_selling_price').prop( "disabled", false );
                                 $('#txt_manufature_date').val(response.manufacture_date);
                                 $('#txt_manufature_date').prop( "disabled", false );
                                 $('#txt_expiraton_date').val(response.expiration_date);
@@ -627,7 +669,7 @@ const Product = (() => {
                                 $('#slc_status').prop( "disabled", true );
                                 $('#txt_quantity').val(response.quantity);
                                 $('#slc_type').val(response.type);
-                                $('#slc_type').prop( "disabled", false );
+                                $('#slc_type').prop( "disabled", true );
                                 $('#txt_location').val(response.location);
                                 $('#txt_location').prop( "disabled", false );
                                 $('#txt_location').removeClass('red-input');
@@ -635,8 +677,8 @@ const Product = (() => {
                                 toUpdate = true;
                                 
             
-                                $('#btn_save_product').html('Add Stocks');
-                                $('#txt_title').html('Add Stocks');
+                                $('#btn_save_product').html('Update');
+                                $('#txt_title').html('Update Product');
                                 unsavedChanges = true;
                                 hasValues = true;
             
@@ -670,19 +712,19 @@ const Product = (() => {
                     $('#slc_product_category').val(response.category_id);
                     $('#slc_product_category').prop( "disabled", true );
                     $('#txt_lot_number').val(response.lot_num);
-                    $('#txt_lot_number').prop( "disabled", false );
+                    $('#txt_lot_number').prop( "disabled", true );
                     $('#txt_buying_price').val(response.buy_price);
                     $('#txt_selling_price').val(response.sale_price);
-                    $('#txt_selling_price').prop( "disabled", true );
+                    $('#txt_selling_price').prop( "disabled", false );
                     $('#txt_manufature_date').val(response.manufacture_date);
-                    $('#txt_manufature_date').prop( "disabled", false );
+                    $('#txt_manufature_date').prop( "disabled", true );
                     $('#txt_expiraton_date').val(response.expiration_date);
-                    $('#txt_expiraton_date').prop( "disabled", false );
+                    $('#txt_expiraton_date').prop( "disabled", true );
                     $('#slc_status').val(response.status);
                     $('#slc_status').prop( "disabled", true );
                     $('#txt_quantity').val(response.quantity);
                     $('#slc_type').val(response.type);
-                    $('#slc_type').prop( "disabled", false );
+                    $('#slc_type').prop( "disabled", true );
                     $('#txt_location').val(response.location);
                     $('#txt_location').prop( "disabled", false );
                     $('#txt_location').removeClass('red-input');
@@ -690,8 +732,8 @@ const Product = (() => {
                     toUpdate = true;
                     
 
-                    $('#btn_save_product').html('Add Stocks');
-                    $('#txt_title').html('Add Stocks');
+                    $('#btn_save_product').html('Update');
+                    $('#txt_title').html('Update Product');
                     unsavedChanges = true;
                     hasValues = true;
 
@@ -787,7 +829,7 @@ const Product = (() => {
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Stock Added successfully',
+                        title: 'Product updated successfully',
                         showConfirmButton: true,
                     })
 
@@ -812,7 +854,8 @@ const Product = (() => {
                     $('#txt_location').prop( "disabled", false );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#btn_save_product').html('Add Stocks');
+                    $('#txt_title').html('Register Product');
+                    $('#btn_save_product').html('Register');
                     thisProduct.loadTableData();
                     
                     }
@@ -859,8 +902,8 @@ const Product = (() => {
                     $('#slc_product_category').prop( "disabled", true );
                     // $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
-
-                    $('#btn_save_product').html('Add Stocks');
+                    $('#txt_title').html('Register Product');
+                    $('#btn_save_product').html('Register');
                     unsavedChanges = false;
                     hasValues = false
                             }
@@ -887,7 +930,7 @@ const Product = (() => {
                 // $('#txt_location').prop( "disabled", true );
                 $('#txt_location').removeClass('red-input');
 
-                $('#btn_save_product').html('Add Stocks');
+                $('#btn_save_product').html('Register');
                 unsavedChanges = false;
                 hasValues = false
                 }
@@ -915,7 +958,7 @@ const Product = (() => {
         // $('#txt_location').prop( "disabled", true );
         $('#txt_location').removeClass('red-input');
 
-        $('#btn_save_product').html('Add Stocks');
+        $('#btn_save_product').html('Update');
         unsavedChanges = false;
     }
 

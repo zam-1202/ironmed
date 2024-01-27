@@ -3,105 +3,100 @@
 
 <?php include '../layouts/head.php' ?>
 
-<?php 
+<?php
 if(!$_SESSION['user']) {
-    header("Location: login.php"); 
+    header("Location: login.php");
 }
 ?>
 
 <body>
     <?php include '../layouts/nav.php'; ?>
 
-        <!-- <h1 class="section__title">Admin</h1> -->
-        <div class="container-fluid section__body">
-            <div class="row">
-                <div class="col-lg-11 col-md-11 mx-auto">
-                    <div class="user__table-wrapper">
-                        <h2 class="form-wrapper">List of Products</h2>
-                        <div class="col-lg-12 col-md-12">
-                        <div class="row">
-                            <div class=" col-md-4">
-                            <div class="btn-group dropend col-md-6" role="group">
-                            <button class="btn form-control btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="chosen_Export">
-                            Export
-                            </button>
-                                    <ul class="dropdown-menu">
-                                        <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseCSV()">CSV</a></li>
-                                        <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLSX()">XLSX</a></li>
-                                        <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
-                                    </ul>
-                            <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-                            <div class="col-md-10">
-                            <div class="input-group">
-                            <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
-                                <select class="form-control" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
-                                                <option value="" selected="true" disabled>Filter by Category</option>
-                                                <option value="">Catgeory 1</option>
-                                                <option value="">Catgeory 2</option>
-                                                <option value="">Catgeory 3</option>
-                                </select>
-                            </div>
-                            </div>
-
-                            <div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-                            <div class="col-md-10">
-                            <div class="input-group">
-                             <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
-                                 <select name="" id="slc_type" class="form-control" onchange="Product.loadFilteredTableDataByType()">
-                                    <option value="" selected="true">Select Type</option>
-                                    <option value="branded">Branded</option>
-                                    <option value="generic">Generic</option>
-                                </select>
-                         </div>
-                         </div>
-                        <!-- </div>      -->
+    <div class="container-fluid section__body">
+    <div class="row">
+        <div class="col-lg-11 col-md-11 mx-auto">
+            <div class="user__table-wrapper">
+                <h2 class="form-wrapper mb-4">List of Products</h2>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button class="btn btn-dropdown-export dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Export</button>
+                            <ul class="dropdown-menu">
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseCSV()">CSV</a></li>
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.chooseXLSX()">XLSX</a></li>
+                                    <li class="active"><a class="dropdown-item export-option" onclick="Product.choosePDF()">PDF</a></li>
+                                </ul>
                         </div>
-                        </div>
-                    </div>
-                    
-                        <div class="table-wrapper inventory-box">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Type</th>
-                                        <th>Barcode</th>
-                                        <th>Stock</th>
-                                        <th>Max Stock</th>                                
-                                        <th>Min Stock</th>
-                                        <th>Selling Price</th>
-                                        <th>Status</th>
-                                        <th>Expired Products</th>
-                                        <!-- <th>Lot Number </th> -->
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_product">
-                                </tbody>
-                            </table>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
+                                        <select class="form-control small-dropdown" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
+                                            <option value="" selected="true" disabled>Filter by Category</option>
+                                            <option value="">Category 1</option>
+                                            <option value="">Category 2</option>
+                                            <option value="">Category 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
+                                        <select name="" id="slc_type" class="form-control small-dropdown" onchange="Product.loadFilteredTableDataByType()">
+                                            <option value="" selected="true">Select Type</option>
+                                            <option value="branded">Branded</option>
+                                            <option value="generic">Generic</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
+                <div class="table-wrapper inventory-box mt-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Barcode</th>
+                                <th>Stock</th>
+                                <th>Max Stock</th>
+                                <th>Min Stock</th>
+                                <th>Selling Price</th>
+                                <th>Status</th>
+                                <th>Expired</th>
+                                <!-- <th>Lot Number </th> -->
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_product">
+                            <!-- Table body content -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
 
     <!-- MODAL FOR PRODUCT DETAILS -->
-  
-    <div class="modal fade bd-example-modal-lg" id="modal_view_details" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg ">
+
+    <div class="modal fade bd-example-modal-xl" id="modal_view_details" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl ">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal_view_details_header">Product details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">                    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div class="modal-body">
                 <div class="table-wrapper">
-                    
+
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -113,7 +108,7 @@ if(!$_SESSION['user']) {
                                 <th>Manufacture Date</th>
                                 <th>Expiration Date</th>
                                 <th>Already Expired?</th>
-                               
+
                                 <!-- <th>Actions</th> -->
                             </tr>
                         </thead>
@@ -125,7 +120,7 @@ if(!$_SESSION['user']) {
             </div>
         </div>
     </div>
-    
+
 
 
     <!-- MODAL FOR UPDATE PRODUCT DETAIL -->
@@ -156,8 +151,8 @@ if(!$_SESSION['user']) {
                                 <label for="recipient-name" class="col-form-label">Category:</label>
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
-                                    <select class="form-control" name="" id="slc_product_category">
-                                        <option value="" selected="true" disabled>Select Category</option>
+                                    <select class="form-control" name="" id="slc_product_category_modal">
+                                        <option value="" selected="true">Select Category</option>
                                         <option value="">Catgeory 1</option>
                                         <option value="">Catgeory 2</option>
                                         <option value="">Catgeory 3</option>
@@ -200,7 +195,7 @@ if(!$_SESSION['user']) {
                                 <label for="message-text" class="col-form-label">Type:</label>
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon3"><i class="bi bi-file-check"></i></span>
-                                    <select name="" id="slc_type" class="form-control">
+                                    <select name="" id="slc_type_modal" class="form-control">
                                         <option value="" selected="true">Select Type</option>
                                         <option value="branded">Branded</option>
                                         <option value="generic">Generic</option>
