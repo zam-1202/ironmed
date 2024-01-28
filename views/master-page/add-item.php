@@ -22,7 +22,7 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-6 col-md-14 ">
                     <div class="product__table-wrapper">
-                        <h2 class="form-wrapper" id="txt_title">Register Product</h2>
+                        <h2 class="form-wrapper" id="txt_title">Add Stock</h2>
 
                            <div>&nbsp;</div>
 
@@ -128,7 +128,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     </div>
                                 </div> 
                                 <div class="col-6">
-                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-primary">Register</button>
+                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-primary">Add</button>
                                 </div>
                                 <div class="col-6">
                                     <button  onclick="Product.resetFields()" class="btn form-control btn-warning">Cancel</button>
