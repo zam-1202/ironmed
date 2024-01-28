@@ -25,8 +25,8 @@
                             Register
                         </a>
                         <ul class="dropdown-menu">
-                            <!-- <li class="active"><a class="dropdown-item" href="../master-page/register-products.php">Products</a></li> -->
-                            <li class="active"><a class="dropdown-item" href="../master-page/add-item.php">Products</a></li>
+                            <li class="active"><a class="dropdown-item" href="../master-page/register-products.php">Products</a></li>
+                            <li class="active"><a class="dropdown-item" href="../master-page/add-item.php">Stocks</a></li>
                             <li class="active"><a class="dropdown-item" href="../master-page/category.php">Category</a></li>
                         </ul>
                     </li>

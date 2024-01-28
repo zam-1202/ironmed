@@ -854,7 +854,7 @@ const Product = (() => {
                     $('#txt_location').prop( "disabled", false );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#txt_title').html('Register Product');
+                    $('#txt_title').html('Add Stock');
                     $('#btn_save_product').html('Register');
                     thisProduct.loadTableData();
                     
@@ -902,8 +902,8 @@ const Product = (() => {
                     $('#slc_product_category').prop( "disabled", true );
                     // $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
-                    $('#txt_title').html('Register Product');
-                    $('#btn_save_product').html('Register');
+                    $('#txt_title').html('Add Stock');
+                    $('#btn_save_product').html('Add');
                     unsavedChanges = false;
                     hasValues = false
                             }
@@ -930,7 +930,7 @@ const Product = (() => {
                 // $('#txt_location').prop( "disabled", true );
                 $('#txt_location').removeClass('red-input');
 
-                $('#btn_save_product').html('Register');
+                $('#btn_save_product').html('Add');
                 unsavedChanges = false;
                 hasValues = false
                 }
