@@ -335,6 +335,8 @@ btnConfirmPassword.addEventListener('click', validateAdminPassword);
     $(this).blur();
   });
 
-
-
-
+  $(document).ready(function() {
+    var currentDate = new Date();
+    var yearMonth = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2);
+    $('#txt_invoice_month').val(yearMonth);
+});
