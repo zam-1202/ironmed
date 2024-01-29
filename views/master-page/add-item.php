@@ -22,7 +22,7 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-6 col-md-14 ">
                     <div class="product__table-wrapper">
-                        <h2 class="form-wrapper" id="txt_title">Add Stock</h2>
+                        <h2 class="form-wrapper" id="txt_title">Update Stock</h2>
 
                            <div>&nbsp;</div>
 
@@ -39,7 +39,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_lot_number" class="form-label">Lot number</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="text" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 20)" class="form-control" id="txt_lot_number" maxlength="20">
+                                        <input type="text" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 20)" class="form-control" id="txt_lot_number" maxlength="20" disabled>
                                     </div>
                                 </div>
 
@@ -88,24 +88,24 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_manufature_date" class="form-label">Manufacture Date</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-calendar-x"></i></span>
-                                        <input type="date" class="form-control" oninput="validity.valid || (value='')"  id="txt_manufature_date">
+                                        <input type="date" class="form-control" oninput="validity.valid || (value='')"  id="txt_manufature_date" disabled>
                                     </div>
                                 </div>                                
                                 <div class="col-md-4">
                                     <label for="txt_expiraton_date" class="form-label">Expiration Date</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-calendar-x"></i></span>
-                                        <input type="date" class="form-control" oninput="validity.valid || (value='')"  id="txt_expiraton_date">
+                                        <input type="date" class="form-control" oninput="validity.valid || (value='')"  id="txt_expiraton_date" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="slc_status" class="form-label">Status</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-file-check"></i></span>
-                                        <select name="" id="slc_status" class="form-control">
-                                            <option value="" disabled>Select Status</option>
-                                            <option value="1" selected="true" >Active</option>
-                                            <option value="0">Deactivate</option>
+                                        <select name="" id="slc_status" class="form-control" disabled>
+                                            <option value="" disabled selected>Select Status</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="slc_type" class="form-label">Type</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
-                                        <select name="" id="slc_type" class="form-control">
+                                        <select name="" id="slc_type" class="form-control" disabled>
                                             <option value="" selected="true">Select Type</option>
                                             <option value="branded">Branded</option>
                                             <option value="generic">Generic</option>
@@ -128,7 +128,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     </div>
                                 </div> 
                                 <div class="col-6">
-                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-primary">Add</button>
+                                    <button type="submit" id="btn_save_product" onclick="Product.clickSaveButton()" class="btn form-control btn-primary">Update</button>
                                 </div>
                                 <div class="col-6">
                                     <button  onclick="Product.resetFields()" class="btn form-control btn-warning">Cancel</button>
