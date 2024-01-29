@@ -476,84 +476,65 @@ const Product = (() => {
         const location = $('#txt_location').val();
         const date = new Date();
         date.setDate(date.getDate() + 180);
-        var expiration = new Date(expiraton_date);
-        // var todayDate = Date(expiraton_date);
+        const expiration = new Date(expiraton_date);
         const datetoday = new Date();
         datetoday.setDate(datetoday.getDate());
-        var manufacture = new Date(manufature_date);
-        // a = todayDate.toString();
-
-        if(product_barcode == "" 
-        || product_name == ""
-        || product_category == ""
-        || lot_num == ""
-        || buying_price == ""
-        || selling_price == ""
-        || manufature_date == ""
-        || expiraton_date == ""
-        || quantity == ""
-        || type == null
-        || status == null
-        || location == "") {
+        const manufacture = new Date(manufature_date);
+    
+        // Perform form field validation
+        if (
+            product_barcode == "" ||
+            buying_price == "" ||
+            selling_price == "" ||
+            quantity == "" ||
+            location == ""
+        ) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Please fill out all fields',
                 showConfirmButton: true,
-            })
-            
+            });
+            return;
         }
-        else if (manufacture >= datetoday){
+
+        if (manufacture >= datetoday) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'Cannot add products that is not manufactured yet',
+                title: 'Cannot add products that are not manufactured yet',
                 showConfirmButton: true,
-            })
-        }          
-        else if (date >= expiration){
+            });
+            return;
+        }
+        if (date >= expiration) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Expiration date is due in less than six months',
                 showConfirmButton: true,
-            })
-        }    
-        else if (expiration <= date){
+            });
+            return;
+        }
+        if (expiration <= date) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Invalid expiration date',
                 showConfirmButton: true,
-            })
+            });
+            return;
         }
-        else if (buying_price >= selling_price){
+        if (buying_price >= selling_price) {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
                 title: 'Buying price should be lower than Selling price',
                 showConfirmButton: true,
-            })
-        }
-        else if (!regex.test(product_name)) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Invalid Product Name',
-                text: 'Only letters, numbers, hyphen, and period are allowed.',
-                showConfirmButton: true,
             });
+            return;
         }
-        else if (product_name.trim() === "") {
-            Swal.fire({
-                position: 'center',
-                icon: 'warning',
-                title: 'Empty Product Name',
-                text: 'Please fill out the name field.',
-                showConfirmButton: true,
-            });
-        }
-        else if (!regex.test(location)) {
+        if (!regex.test(location)) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -561,8 +542,9 @@ const Product = (() => {
                 text: 'Only letters, numbers, hyphen, and period are allowed.',
                 showConfirmButton: true,
             });
+            return;
         }
-        else if (location.trim() === "") {
+        if (location.trim() === "") {
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
@@ -570,43 +552,75 @@ const Product = (() => {
                 text: 'Please fill out the location field.',
                 showConfirmButton: true,
             });
+            return;
         }
-        else {
-            $.ajax({
-                type: "POST",
-                url: PRODUCT_CONTROLLER + '?action=save',
-                dataType: "json",
-                data:{
-                    product_barcode: product_barcode,
-                    product_name: product_name,
-                    product_category: product_category,
-                    lot_num: lot_num,
-                    buying_price: buying_price,
-                    selling_price: selling_price,
-                    manufature_date: manufature_date,
-                    expiraton_date: expiraton_date,
-                    status: status,
-                    quantity: quantity,
-                    type: type,
-                    location: location,
-                },
-                success: function (response) 
-                {
-                    thisProduct.loadTableData();
-                    thisProduct.resetFormFields();
+    
+        $.ajax({
+            type: 'GET',
+            url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${product_barcode}`,
+            dataType: 'json',
+            success: (response) => {
+                if (response.length === 0) {
                     Swal.fire({
                         position: 'center',
-                        icon: 'success',
-                        title: 'Product added successfully',
+                        icon: 'error',
+                        title: 'Product Not Found',
+                        text: 'The product with the provided barcode is not registered.',
                         showConfirmButton: true,
-                    })
-                },
-                error: function () {                }
-                
-                
-            });
-        }
-    }
+                    });
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: PRODUCT_CONTROLLER + '?action=save',
+                        dataType: "json",
+                        data: {
+                            product_barcode: product_barcode,
+                            product_name: product_name,
+                            product_category: product_category,
+                            lot_num: lot_num,
+                            buying_price: buying_price,
+                            selling_price: selling_price,
+                            manufature_date: manufature_date,
+                            expiraton_date: expiraton_date,
+                            status: status,
+                            quantity: quantity,
+                            type: type,
+                            location: location,
+                        },
+                        success: function (response) {
+                            thisProduct.loadTableData();
+                            thisProduct.resetFormFields();
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Product added successfully',
+                                showConfirmButton: true,
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while saving the product.',
+                                showConfirmButton: true,
+                            });
+                        }
+                    });
+                }
+            },
+            error: () => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while checking the product barcode.',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    };
+    
 
     thisProduct.clickUpdate = (id, product_table_id) => {
         
@@ -848,14 +862,20 @@ const Product = (() => {
 
                     $('.form-control').prop("disabled", false);
 
+                    $('#txt_product_barcode').prop( "disabled", false );
+                    $('#txt_lot_number').prop( "disabled", true );
                     $('#txt_product_name').prop( "disabled", true );
                     $('#slc_product_category').prop( "disabled", true );
-                    console.log("Location field enabled");
+                    $('#txt_manufature_date').prop( "disabled", true );
+                    $('#txt_expiraton_date').prop( "disabled", true );
+                    $('#slc_status').prop( "disabled", true );
+                    $('#slc_type').prop( "disabled", true );
+                    // $('#txt_location').prop( "disabled", true );
                     $('#txt_location').prop( "disabled", false );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#txt_title').html('Add Stock');
-                    $('#btn_save_product').html('Register');
+                    $('#txt_title').html('Update Stock');
+                    $('#btn_save_product').html('Update');
                     thisProduct.loadTableData();
                     
                     }
@@ -898,12 +918,17 @@ const Product = (() => {
 
                     $('.form-control').prop("disabled", false);
 
+                    $('#txt_lot_number').prop( "disabled", true );
                     $('#txt_product_name').prop( "disabled", true );
                     $('#slc_product_category').prop( "disabled", true );
+                    $('#txt_manufature_date').prop( "disabled", true );
+                    $('#txt_expiraton_date').prop( "disabled", true );
+                    $('#slc_status').prop( "disabled", true );
+                    $('#slc_type').prop( "disabled", true );
                     // $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
-                    $('#txt_title').html('Add Stock');
-                    $('#btn_save_product').html('Add');
+                    $('#txt_title').html('Update Stock');
+                    $('#btn_save_product').html('Update');
                     unsavedChanges = false;
                     hasValues = false
                             }
@@ -925,12 +950,18 @@ const Product = (() => {
 
                 $('.form-control').prop("disabled", false);
 
+                $('#txt_lot_number').prop( "disabled", true );
                 $('#txt_product_name').prop( "disabled", true );
                 $('#slc_product_category').prop( "disabled", true );
+                $('#txt_manufature_date').prop( "disabled", true );
+                $('#txt_expiraton_date').prop( "disabled", true );
+                $('#slc_status').prop( "disabled", true );
+                $('#slc_type').prop( "disabled", true );
                 // $('#txt_location').prop( "disabled", true );
                 $('#txt_location').removeClass('red-input');
+                $('#txt_location').removeClass('red-input');
 
-                $('#btn_save_product').html('Add');
+                $('#btn_save_product').html('Update');
                 unsavedChanges = false;
                 hasValues = false
                 }
@@ -977,9 +1008,9 @@ const Product = (() => {
             url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${product_barcode}`,
             dataType: 'json',
             cache:false,
-            success: (response) => {               
+            success: (response) => {           
+                console.log('Response:', response);    
                 if(response.length > 0){
-                    
                     $('#txt_product_name').val(response[0].product_name);
                     $('#txt_product_name').prop( "disabled", true );
                     $('#slc_product_category').val(response[0].category_id);
@@ -990,23 +1021,23 @@ const Product = (() => {
                     $('#slc_status').prop( "disabled", true );
                     $('#slc_type').val(response[0].type);
                     $('#slc_type').prop( "disabled", true );
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Product Not Found',
+                        text:'The product with the provided barcode is not registered',
+                        showConfirmButton: true,
+                    })
                 }
-                else{
-                    $('#txt_product_name').val("");
-                    $('#slc_product_category').val("");
-                    $('#txt_buying_price').val("");
-                    $('#txt_selling_price').val("");
-                    $('#txt_manufature_date').val("");
-                    $('#txt_expiraton_date').val("");
-                    $('#slc_status').val("");
-                    $('#txt_quantity').val("");
-                    $('#slc_type').val("");
-
-                    $('.form-control').prop("disabled", false);
-                }
+            },
+            error: () => {
+                // Handle AJAX error here
+                swal("Error", "An error occurred while fetching the product details.", "error");
             }
-        })
-    }
+        });
+    };
+    
 
    
 
