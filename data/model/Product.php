@@ -174,20 +174,33 @@ class Product
     }
 
     public function getAvailableProductByBarcode($barcode){
-        $sql = "SELECT
-        p.id, p.barcode, p.name AS product_name, p.sale_price, p.type, p.status, p.category_id,
-        pd.id, pd.product_id, pd.expired_status, pd.quantity, pd.batch, pd.manufacture_date, pd.expiration_date,
-        c.id, c.name AS category_name
-        FROM products p 
-        INNER JOIN product_details pd ON pd.product_id = p.id
-        INNER JOIN categories c ON c.id = p.category_id
-        AND barcode = $barcode
-        ORDER BY batch ASC";
-        $result = $this->conn->query($sql);
+    $sql = "SELECT
+    p.barcode, p.name AS product_name, p.sale_price, p.type, p.status, p.category_id,
+    c.id, c.name AS category_name
+    FROM products p
+    JOIN categories c ON c.id = p.category_id
+    WHERE p.barcode = '$barcode'";
+    $result = $this->conn->query($sql);
 
-        return $result->fetch_all(MYSQLI_ASSOC);
-
+    return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+
+    // public function getAvailableProductByBarcode($barcode){
+    //     $sql = "SELECT
+    //     p.id, p.barcode, p.name AS product_name, p.sale_price, p.type, p.status, p.category_id,
+    //     pd.id, pd.product_id, pd.expired_status, pd.quantity, pd.batch, pd.manufacture_date, pd.expiration_date,
+    //     c.id, c.name AS category_name
+    //     FROM products p 
+    //     INNER JOIN product_details pd ON pd.product_id = p.id
+    //     INNER JOIN categories c ON c.id = p.category_id
+    //     AND barcode = $barcode
+    //     ORDER BY batch ASC";
+    //     $result = $this->conn->query($sql);
+
+    //     return $result->fetch_all(MYSQLI_ASSOC);
+
+    // }
     // AND pd.quantity != 0 -- was removed to trigger out of stock products
     // WHERE expired_status = 0 was removed, it was causing the issue of not retrieving existing products during registration.
 
