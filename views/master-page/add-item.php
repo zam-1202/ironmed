@@ -67,21 +67,21 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_quantity" class="form-label">Quantity</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-box"></i></span>
-                                        <input type="number" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_quantity" maxlength="6">
+                                        <input type="number" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_quantity" maxlength="6" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="txt_buying_price" class="form-label">Buying Price</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"(required)>₱</span>
-                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_buying_price" maxlenght="6">
+                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_buying_price" maxlenght="6" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="txt_selling_price" class="form-label" >Selling Price</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3" (required)>₱</span>
-                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_selling_price" maxlenght="6">
+                                        <input type="number" step="0.01" min="1" oninput="Product.limitCharacterInput(this, 6)" class="form-control" id="txt_selling_price" maxlenght="6" disabled>
                                     </div>
                                 </div>                               
                                 <div class="col-md-4">
@@ -103,8 +103,8 @@ else if($_SESSION['user']['role'] === 3) {
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-file-check"></i></span>
                                         <select name="" id="slc_status" class="form-control" disabled>
-                                            <option value="" disabled selected>Select Status</option>
-                                            <option value="1">Active</option>
+                                            <option value="" disabled>Select Status</option>
+                                            <option value="1" selected>Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
                                     </div>
@@ -124,7 +124,7 @@ else if($_SESSION['user']['role'] === 3) {
                                     <label for="txt_location" class="form-label">Location  </label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-upc-scan"></i></span>
-                                        <input type="text" class="form-control" id="txt_location" maxlength="30" onkeyup = validateLocationName();><span id="lname">
+                                        <input type="text" class="form-control" id="txt_location" maxlength="30" onkeyup = validateLocationName(); disabled><span id="lname">
                                     </div>
                                 </div> 
                                 <div class="col-6">
