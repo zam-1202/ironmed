@@ -612,29 +612,67 @@ const Product = (() => {
                 dataType: "json",
                 data:{product_id : product_id},
                 success: function(response) {
-                    console.log('Response:', response); 
-                    // $originallot_num = response.name;
-                    // $originalbuying_price = response.name;
-                    // $originalselling_price = response.name;
-                    // $originalmanufature_date = response.name;
-                    // $originalexpiraton_date = response.name;
-                    // $originalquantity = response.name;
-                    // $originallocation = response.name;
-                    $('#txt_product_barcode').val(response[0]['barcode']);
-                    $('#txt_product_name').val(response[0]['name']);
-                    $('#slc_product_category').val(response[0]['category_id']);
-                    $('#slc_type').val(response[0]['type']);
+                    console.log("First");
+                    if ($('#txt_product_barcode').val() === '' && $('#txt_product_name').val() === '') {
+                        // Data not already present in the fields, populate directly without confirmation
+                        $('#txt_product_barcode').val(response[0]['barcode']);
+                        $('#txt_product_name').val(response[0]['name']);
+                        $('#slc_product_category').val(response[0]['category_id']);
+                        $('#slc_type').val(response[0]['type']);
 
-                    $('#txt_product_barcode').prop( "disabled", true );
-                    $('#txt_lot_number').prop( "disabled", false );
-                    $('#txt_quantity').prop( "disabled", false );
-                    $('#txt_buying_price').prop( "disabled", false );
-                    $('#txt_selling_price').prop( "disabled", false );
-                    $('#txt_manufature_date').prop( "disabled", false );
-                    $('#txt_expiraton_date').prop( "disabled", false );
-                    $('#txt_location').prop( "disabled", false );
+
+                        $('#txt_lot_number').val(response.lot_num);
+                        $('#txt_buying_price').val(response.buy_price);
+                        $('#txt_selling_price').val(response.sale_price);
+                        $('#txt_manufature_date').val(response.manufacture_date);
+                        $('#txt_expiraton_date').val(response.expiration_date);
+                        $('#slc_status').val(response.status);
+                        $('#txt_quantity').val(response.quantity);;
+                        $('#txt_location').val(response.location);
+
+            
+                        $('#txt_product_barcode').prop( "disabled", true );
+                        $('#txt_lot_number').prop( "disabled", false );
+                        $('#txt_quantity').prop( "disabled", false );
+                        $('#txt_buying_price').prop( "disabled", false );
+                        $('#txt_selling_price').prop( "disabled", false );
+                        $('#txt_manufature_date').prop( "disabled", false );
+                        $('#txt_expiraton_date').prop( "disabled", false );
+                        $('#txt_location').prop( "disabled", false );
+                        unsavedChanges = true;
+                        hasValues = true;
+                    } else {
+                        showLeaveConfirmation().then((result) => {
+                            if (result.isConfirmed) {
+                                $('#txt_product_barcode').val(response[0]['barcode']);
+                                $('#txt_product_name').val(response[0]['name']);
+                                $('#slc_product_category').val(response[0]['category_id']);
+                                $('#slc_type').val(response[0]['type']);
+
+                                $('#txt_lot_number').val(response.lot_num);
+                                $('#txt_buying_price').val(response.buy_price);
+                                $('#txt_selling_price').val(response.sale_price);
+                                $('#txt_manufature_date').val(response.manufacture_date);
+                                $('#txt_expiraton_date').val(response.expiration_date);
+                                $('#slc_status').val(response.status);
+                                $('#txt_quantity').val(response.quantity);;
+                                $('#txt_location').val(response.location);
+            
+                                $('#txt_product_barcode').prop( "disabled", true );
+                                $('#txt_lot_number').prop( "disabled", false );
+                                $('#txt_quantity').prop( "disabled", false );
+                                $('#txt_buying_price').prop( "disabled", false );
+                                $('#txt_selling_price').prop( "disabled", false );
+                                $('#txt_manufature_date').prop( "disabled", false );
+                                $('#txt_expiraton_date').prop( "disabled", false );
+                                $('#txt_location').prop( "disabled", false );
+                                unsavedChanges = true;
+                                hasValues = true;
+                            }
+                        });
+                    }
                 }
-            })
+            });            
         } else {
             if (unsavedChanges) {
                 showLeaveConfirmation().then((result) => {
