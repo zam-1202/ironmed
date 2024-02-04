@@ -619,6 +619,7 @@ const Product = (() => {
                         $('#txt_product_name').val(response[0]['name']);
                         $('#slc_product_category').val(response[0]['category_id']);
                         $('#slc_type').val(response[0]['type']);
+                        $('#slc_status').val(response[0]['status']);
 
 
                         $('#txt_lot_number').val(response.lot_num);
@@ -626,7 +627,7 @@ const Product = (() => {
                         $('#txt_selling_price').val(response.sale_price);
                         $('#txt_manufature_date').val(response.manufacture_date);
                         $('#txt_expiraton_date').val(response.expiration_date);
-                        $('#slc_status').val(response.status);
+                        // $('#slc_status').val(response.status);
                         $('#txt_quantity').val(response.quantity);;
                         $('#txt_location').val(response.location);
 
@@ -648,13 +649,14 @@ const Product = (() => {
                                 $('#txt_product_name').val(response[0]['name']);
                                 $('#slc_product_category').val(response[0]['category_id']);
                                 $('#slc_type').val(response[0]['type']);
+                                $('#slc_status').val(response[0]['status']);
 
                                 $('#txt_lot_number').val(response.lot_num);
                                 $('#txt_buying_price').val(response.buy_price);
                                 $('#txt_selling_price').val(response.sale_price);
                                 $('#txt_manufature_date').val(response.manufacture_date);
                                 $('#txt_expiraton_date').val(response.expiration_date);
-                                $('#slc_status').val(response.status);
+                                // $('#slc_status').val(response.status);
                                 $('#txt_quantity').val(response.quantity);;
                                 $('#txt_location').val(response.location);
             
@@ -907,7 +909,7 @@ const Product = (() => {
                     $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#txt_title').html('Update Stock');
+                    $('#txt_title').html('`Update` Stock');
                     $('#btn_save_product').html('Update');
                     console.log('no change');
                     thisProduct.loadTableData();
