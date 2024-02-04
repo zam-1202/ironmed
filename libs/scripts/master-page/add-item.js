@@ -453,7 +453,7 @@ const Product = (() => {
         console.log('test');
         if(!toUpdate) {
             console.log('test2');
-            thisProduct.save()
+            thisProduct.save();
         }
         else {
             thisProduct.update()
@@ -584,7 +584,7 @@ const Product = (() => {
                             },
                             success: function (response) {
                                 thisProduct.loadTableData();
-                                thisProduct.resetFields();
+                                thisProduct.resetFormFields();
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'success',
@@ -640,6 +640,7 @@ const Product = (() => {
                         $('#txt_manufature_date').prop( "disabled", false );
                         $('#txt_expiraton_date').prop( "disabled", false );
                         $('#txt_location').prop( "disabled", false );
+                        toUpdate = true;
                         unsavedChanges = true;
                         hasValues = true;
                     } else {
@@ -668,6 +669,7 @@ const Product = (() => {
                                 $('#txt_manufature_date').prop( "disabled", false );
                                 $('#txt_expiraton_date').prop( "disabled", false );
                                 $('#txt_location').prop( "disabled", false );
+                                toUpdate = true;
                                 unsavedChanges = true;
                                 hasValues = true;
                             }
@@ -1029,15 +1031,25 @@ const Product = (() => {
         $('#slc_type').val("");
         $('#txt_location').val("");
 
-        $('.form-control').prop("disabled", false);
-
+        $('#txt_product_barcode').prop( "disabled", false );
+        $('#txt_lot_number').prop( "disabled", true );
         $('#txt_product_name').prop( "disabled", true );
         $('#slc_product_category').prop( "disabled", true );
-        // $('#txt_location').prop( "disabled", true );
+        $('#txt_buying_price').prop( "disabled", true );
+        $('#txt_quantity').prop( "disabled", true ); 
+        $('#txt_selling_price').prop( "disabled", true );
+        $('#txt_manufature_date').prop( "disabled", true );
+        $('#txt_expiraton_date').prop( "disabled", true );
+        $('#slc_status').prop( "disabled", true );
+        $('#slc_status').val("1");
+        $('#slc_type').prop( "disabled", true );
+        $('#txt_location').prop( "disabled", true );
+
         $('#txt_location').removeClass('red-input');
 
         $('#btn_save_product').html('Update');
         unsavedChanges = false;
+        hasValues = false
     }
 
 
