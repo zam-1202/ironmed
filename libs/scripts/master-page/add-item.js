@@ -483,7 +483,7 @@ const Product = (() => {
     
         $.ajax({
             type: 'GET',
-            url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${product_barcode}`,
+            url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcodeRegister&barcode=${product_barcode}`,
             dataType: 'json',
             success: (response) => {
                 if (response.length === 0) {
@@ -1052,7 +1052,7 @@ const Product = (() => {
     //     const product_barcode = $('#txt_product_barcode').val();
     //     $.ajax({
     //         type:'GET',
-    //         url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${product_barcode}`,
+    //         url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcodeRegister&barcode=${product_barcode}`,
     //         dataType: 'json',
     //         cache:false,
     //         success: (response) => {           
@@ -1103,7 +1103,7 @@ const Product = (() => {
         if (product_barcode.trim() !== '') {
         $.ajax({
             type: 'GET',
-            url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcode&barcode=${product_barcode}`,
+            url: PRODUCT_CONTROLLER + `?action=getAvailableProductByBarcodeRegister&barcode=${product_barcode}`,
             dataType: 'json',
             cache: false,
             success: (response) => {

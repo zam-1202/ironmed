@@ -52,12 +52,12 @@ $(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls
     var currentFieldValue = $(this).val();
     var initialFieldValue = initialFieldValues[this.id];
 
-    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+    // console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
 
     if (this.id !== 'slc_status') {
         if (currentFieldValue !== initialFieldValue) {
             unsavedChanges = true;
-            console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
+            // console.log('Field ID with unsaved changes:', this.id, 'Current Value:', currentFieldValue);
         } else {
             unsavedChanges = false;
         }
@@ -188,7 +188,7 @@ const checkCart = () => {
     console.log('Number of items in the cart:', productCart.length);
     console.log('Container:', container);
     if (productCart.length === 0) {
-        console.log('Cart is empty. Disabling checkout.');
+        // console.log('Cart is empty. Disabling checkout.');
         btnCheckout.style.backgroundColor = "#808080";
         btnCheckout.disabled = true;
         inpDiscount.setAttribute("disabled", "disabled");
@@ -200,7 +200,7 @@ const checkCart = () => {
         inpCustomer.value = "";
         unsavedChanges = false;
     } else {
-        console.log('Cart has items. Enabling checkout.');
+        // console.log('Cart has items. Enabling checkout.');
         btnCheckout.style.backgroundColor = "#99FFCC";
         btnCheckout.disabled = false;
         inpCustomerNumber.removeAttribute("disabled");
@@ -210,24 +210,25 @@ const checkCart = () => {
 
 
 const removeItem = (barcode) => {
-
     productCart = productCart.filter((item)=>{
         if(item.barcode != barcode) return item; 
     });
 
+    
     const rowClass = `.row${barcode}`;
     const table = $('.table').DataTable(tableConfig);
     const rows = table
         .rows(rowClass)
         .remove()
         .draw()
-        container--;
+        container = 0;
         transaction--;
 
         updateFooterVisibility();
         updateGrandTotal();
         checkCart();
 }
+
 
 const validateAdminPassword = () => {
  var barcode = $('#modal_confirmpassword').data('barcode');
@@ -419,13 +420,13 @@ inpBarcode.addEventListener('blur', (e)=>{
                         }
                     });
                 } else {
-                    console.log("Product found with available quantity");
+                    // console.log("Product found with available quantity");
                 }
             } else {
                 console.log("Not found");
                 Swal.fire({
                     icon: 'error',
-                    title: 'Product Not Found',
+                    title: 'Product Not Found1',
                     text: 'It seems like the product that you\'re looking for does not exist.',
                     confirmButtonText: 'OK'
                 }).then((result) => {
@@ -555,6 +556,8 @@ const updateGrandTotal = () => {
             grandTotal += totalItemPrice;
         }
     });
+
+    console.log('Grand Total:', grandTotal);
     
     const grandTotalCell = document.getElementById('grandTotalCell');
     if (grandTotalCell) {
@@ -740,7 +743,7 @@ btnCart.addEventListener('click', (e) => {
                 inpProduct.value = '';
                 Swal.fire({
                     icon: 'error',
-                    title: 'Product Not Found',
+                    title: 'Product Not Found2',
                     text: 'It seems like the product that you\'re looking for does not exist',
                     confirmButtonText: 'OK'
                 }).then((result) => {
