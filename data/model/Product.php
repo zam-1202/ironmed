@@ -352,6 +352,17 @@ class Product
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getFilteredByCategoryAndType($category, $type)
+    {
+        $sql = $this->commonSql . " WHERE expired_status = 0 AND category_id = ? AND type = ? " . $this->groupBySql;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("is", $category, $type);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    
     public function getFilteredByCategory($category)
     {
     $sql = $this->commonSql . " WHERE expired_status = 0 AND category_id = ? " . $this->groupBySql;
@@ -361,7 +372,7 @@ class Product
     $result = $stmt->get_result();
 
     return $result->fetch_all(MYSQLI_ASSOC);
-}
+    }
 
     public function getFilteredByType($type)
 {

@@ -614,16 +614,21 @@ else if ($action == 'searchProduct') {
 }
 
 else if ($action == 'getFilteredProductTable') {
-    $selectedCategory = $_GET['category'];
-    $result = $Product->getFilteredByCategory($selectedCategory);
+    $selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+    $selectedType = isset($_GET['type']) ? $_GET['type'] : '';
 
-    if (empty($selectedCategory)) {
-        $result = $Product->getAll(); // or handle the default behavior as needed
-    } else {
+    $result = $Product->getAll();
+
+    if (!empty($selectedCategory) && !empty($selectedType)) {
+        $result = $Product->getFilteredByCategoryAndType($selectedCategory, $selectedType);
+    } 
+    else if (!empty($selectedCategory)) {
         $result = $Product->getFilteredByCategory($selectedCategory);
     }
+    else if (!empty($selectedType)) {
+        $result = $Product->getFilteredByType($selectedType);
+    }
 
-    // $result = $Product->getAll();
     $resultExpired = $Product->getAllExpired();
 
     $productExpiredQty = [];
@@ -676,7 +681,12 @@ else if ($action == 'getFilteredProductTableByType') {
     $selectedType = $_GET['type'];
     $result = $Product->getFilteredByType($selectedType);
 
-    // $result = $Product->getAll();
+    if ($selectedType === "") {
+        $result = $Product->getAll();
+    } else {
+        $result = $Product->getFilteredByType($selectedType);
+    }
+
     $resultExpired = $Product->getAllExpired();
 
     $productExpiredQty = [];
