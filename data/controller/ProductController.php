@@ -526,8 +526,8 @@ else if ($action == 'updateProduct')
 
 }
 
-else if($action === 'getAvailableProductByBarcode'){
-    $result = $Product->getAvailableProductByBarcode($barcode);
+else if($action === 'getAvailableProductByBarcodeRegister'){
+    $result = $Product->getAvailableProductByBarcodeRegister($barcode);
     echo json_encode($result);
 }
 
