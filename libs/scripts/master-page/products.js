@@ -3,6 +3,7 @@ $(document).ready(function () {
     Product.loadTableData();
     Product.loadSelectData();
     Product.loadSelectDataCategory();
+    Product.loadSelectDataType();
 
     $('.btn').click(function (event) {
         event.preventDefault()
@@ -350,31 +351,32 @@ const Product = (() => {
     }
 
 
+    // thisProduct.loadFilteredTableData = () => {
+    //     var selectedCategory = $('#slc_product_category').val();
+    
+    //     $.ajax({
+    //         type: "GET",
+    //         url: PRODUCT_CONTROLLER + '?action=getFilteredProductTable&category=' + selectedCategory,
+    //         dataType: "json",
+    //         success: function (response) {
+    //             $('.table').DataTable().destroy();
+    //             $('#tbody_product').html(response);
+    
+    //             $('.table').DataTable();
+    //         },
+    //         error: function () {
+    
+    //         }
+    //     });
+    // }
+
     thisProduct.loadFilteredTableData = () => {
         var selectedCategory = $('#slc_product_category').val();
-    
-        $.ajax({
-            type: "GET",
-            url: PRODUCT_CONTROLLER + '?action=getFilteredProductTable&category=' + selectedCategory,
-            dataType: "json",
-            success: function (response) {
-                $('.table').DataTable().destroy();
-                $('#tbody_product').html(response);
-    
-                $('.table').DataTable();
-            },
-            error: function () {
-    
-            }
-        });
-    }
-
-    thisProduct.loadFilteredTableDataByType = () => {
         var selectedType = $('#slc_type').val();
     
         $.ajax({
             type: "GET",
-            url: PRODUCT_CONTROLLER + '?action=getFilteredProductTableByType&type=' + selectedType,
+            url: PRODUCT_CONTROLLER + '?action=getFilteredProductTable&category=' + selectedCategory + '&type=' + selectedType,
             dataType: "json",
             success: function (response) {
                 $('.table').DataTable().destroy();
@@ -383,13 +385,55 @@ const Product = (() => {
                 $('.table').DataTable();
             },
             error: function () {
-                // Handle error if needed
+    
             }
         });
     }
 
     
+    thisProduct.loadFilteredTableDataByType = () => {
+        var selectedType = $('#slc_type').val();
     
+        if (selectedType === "") {
+            $.ajax({
+                type: "GET",
+                url: PRODUCT_CONTROLLER + '?action=getFilteredProductTableByType&type=' + selectedType,
+                dataType: "json",
+                success: function (response) {
+                    console.log('Failed');
+                    $('.table').DataTable().destroy();
+                    $('#tbody_product').html(response);
     
+                    $('.table').DataTable();
+                },
+                error: function () {
+                }
+            });
+        } else {
+            $.ajax({
+                type: "GET",
+                url: PRODUCT_CONTROLLER + '?action=getFilteredProductTableByType&type=' + selectedType,
+                dataType: "json",
+                success: function (response) {
+                    console.log('Perpek');
+                    $('.table').DataTable().destroy();
+                    $('#tbody_product').html(response);
+    
+                    $('.table').DataTable();
+                },
+                error: function () {
+                }
+            });
+        }
+    }
+    
+
+    thisProduct.ResetFiltersButton = () => {
+        $('#slc_product_category').val('');
+        $('#slc_type').val('');
+        Product.loadFilteredTableData();
+    }
+
+
     return thisProduct;
 })();

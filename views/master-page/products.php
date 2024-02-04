@@ -29,7 +29,7 @@ if(!$_SESSION['user']) {
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tag"></i></span>
                                         <select class="form-control small-dropdown" name="" id="slc_product_category" onchange="Product.loadFilteredTableData()">
@@ -43,12 +43,15 @@ if(!$_SESSION['user']) {
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-tags"></i></span>
-                                        <select name="" id="slc_type" class="form-control small-dropdown" onchange="Product.loadFilteredTableDataByType()">
+                                        <select name="" id="slc_type" class="form-control small-dropdown" onchange="Product.loadFilteredTableData()">
                                             <option value="" selected="true">Select Type</option>
                                             <option value="branded">Branded</option>
                                             <option value="generic">Generic</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" id="btnResetFilters" onclick="Product.ResetFiltersButton()" class="btn form-control btn-primary">Reset Filter</button>
                                 </div>
                             </div>
                         </div>
