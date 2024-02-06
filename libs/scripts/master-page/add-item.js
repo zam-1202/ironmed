@@ -591,6 +591,8 @@ const Product = (() => {
                                     title: 'Stocks Added Successfully',
                                     showConfirmButton: true,
                                 });
+                                $('#btn_save_product').html('Update');
+                                $('#txt_title').html('Update Stock');
                             },
                             error: function () {}
                         });
@@ -911,7 +913,7 @@ const Product = (() => {
                     $('#txt_location').prop( "disabled", true );
                     $('#txt_location').removeClass('red-input');
 
-                    $('#txt_title').html('`Update` Stock');
+                    $('#txt_title').html('Update Stock');
                     $('#btn_save_product').html('Update');
                     console.log('no change');
                     thisProduct.loadTableData();
