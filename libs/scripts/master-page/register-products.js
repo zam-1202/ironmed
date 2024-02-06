@@ -187,6 +187,7 @@ const Product = (() => {
                     $('#slc_product_category').val("");
                     // $('#slc_status').val("");
                     $('#slc_type').val("");
+                    $('#txt_product_name').removeClass('red-input');
                     unsavedChanges = false;
                 }
             });
@@ -196,6 +197,7 @@ const Product = (() => {
             $('#slc_product_category').val("");
             // $('#slc_status').val("");
             $('#slc_type').val("");
+            $('#txt_product_name').removeClass('red-input');
             unsavedChanges = false;
         }
     };
@@ -208,12 +210,14 @@ const Product = (() => {
             $('#slc_product_category').val("");
             // $('#slc_status').val("");
             $('#slc_type').val("");
+            $('#txt_product_name').removeClass('red-input');
             unsavedChanges = false;
         }
 
 
 
     thisProduct.register = () => {
+        const regex = /^[a-zA-Z0-9\-\.]+$/;
         var txt_product_barcode = $("#txt_product_barcode").val();
         var txt_product_name = $("#txt_product_name").val().trim();
         var slc_product_category = $("#slc_product_category").val();
@@ -233,6 +237,14 @@ const Product = (() => {
                 title: 'Please fillout all fields',
                 showConfirmButton: true,
             })   
+        } else if (!regex.test(txt_product_name)) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Invalid Product Name',
+                text: 'Only letters, numbers, hyphen, and period are allowed.',
+                showConfirmButton: true,
+            });
         } else if (txt_product_barcode.trim() === '0' || /^0+$/.test(txt_product_barcode.trim())) {
         Swal.fire({
             position: 'center',
@@ -418,5 +430,26 @@ const Category = (() => {
     return thisCategory;
 })()
 
+const validateProductName = () => {
+    //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
+    const regex = /^[a-zA-Z0-9\-\.]+$/;
+    const productname = $('#txt_product_name').val().trim();
+    const pname = document.getElementById('pname');
+    const txtProductName = $('#txt_product_name');
 
+    txtProductName.removeClass('red-input green-input');
+    pname.innerHTML = "";
 
+    if (productname === '') {
+        txtProductName.removeClass('red-input green-input');
+        pname.innerHTML = "";
+    } else if (!regex.test(productname)) {
+        txtProductName.addClass('red-input').removeClass('green-input');
+        // pname.innerHTML = "First name contains invalid characters.";
+        pname.style.color = 'red';
+    } else {
+        txtProductName.removeClass('red-input');
+        pname.style.color = 'green';
+        pname.innerHTML = "";
+    }
+}
