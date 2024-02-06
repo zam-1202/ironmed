@@ -531,6 +531,11 @@ else if($action === 'getAvailableProductByBarcodeRegister'){
     echo json_encode($result);
 }
 
+else if($action === 'getAvailableProductByBarcode'){
+    $result = $Product->getAvailableProductByBarcode($barcode);
+    echo json_encode($result);
+}
+
 else if($action === 'getTotalProduct')
 {
     $result = $Product->getTotalProduct();
