@@ -461,7 +461,7 @@ const Product = (() => {
     }
 
     thisProduct.save = () => {
-        const regex = /^[a-zA-Z1-9-'.' ]+$/;
+        const regex = /^[a-zA-Z0-9\-\. ]+$/;
         const product_barcode = $('#txt_product_barcode').val();
         const product_name = $('#txt_product_name').val();
         const product_category = $('#slc_product_category').val();
@@ -797,7 +797,7 @@ const Product = (() => {
 };
 
     thisProduct.update = () => {
-        const regex = /^[a-zA-Z0-9-'.' ]+$/;
+        const regex = /^[a-zA-Z0-9\-\. ]+$/;
         const buying_price = $('#txt_buying_price').val();
         const selling_price = $('#txt_selling_price').val();
         const lot_num = $('#txt_lot_number').val();
@@ -1167,7 +1167,7 @@ window.onload = function(){
 
 const validateProductName = () => {
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
-    const regex = /^[a-zA-Z0-9-'.' ]+$/;
+    const regex = /^[a-zA-Z0-9\-\. ]+$/;
     const productname = $('#txt_product_name').val().trim();
     const pname = document.getElementById('pname');
     const txtProductName = $('#txt_product_name');
@@ -1191,7 +1191,7 @@ const validateProductName = () => {
 
 const validateLocationName = () => {
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
-    const regex = /^[a-zA-Z0-9-'.' ]+$/;
+    const regex = /^[a-zA-Z0-9\-\. ]+$/;
     const locationname = $('#txt_location').val().trim();
     const lname = document.getElementById('pname');
     const txtLocationName = $('#txt_location');

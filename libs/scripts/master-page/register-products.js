@@ -217,7 +217,7 @@ const Product = (() => {
 
 
     thisProduct.register = () => {
-        const regex = /^[a-zA-Z0-9\-\.]+$/;
+        const regex = /^[a-zA-Z0-9\-\. ]+$/;
         var txt_product_barcode = $("#txt_product_barcode").val();
         var txt_product_name = $("#txt_product_name").val().trim();
         var slc_product_category = $("#slc_product_category").val();
@@ -432,7 +432,7 @@ const Category = (() => {
 
 const validateProductName = () => {
     //Only accepts A-Z (uppercase and lowercase), digits (0-9), single quotation, hyphen, and period
-    const regex = /^[a-zA-Z0-9\-\.]+$/;
+    const regex = /^[a-zA-Z0-9\-\. ]+$/;
     const productname = $('#txt_product_name').val().trim();
     const pname = document.getElementById('pname');
     const txtProductName = $('#txt_product_name');
