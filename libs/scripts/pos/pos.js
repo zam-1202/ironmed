@@ -426,7 +426,7 @@ inpBarcode.addEventListener('blur', (e)=>{
                 console.log("Not found");
                 Swal.fire({
                     icon: 'error',
-                    title: 'Product Not Found1',
+                    title: 'Product Not Found',
                     text: 'It seems like the product that you\'re looking for does not exist.',
                     confirmButtonText: 'OK'
                 }).then((result) => {
@@ -743,7 +743,7 @@ btnCart.addEventListener('click', (e) => {
                 inpProduct.value = '';
                 Swal.fire({
                     icon: 'error',
-                    title: 'Product Not Found2',
+                    title: 'Product Not Found',
                     text: 'It seems like the product that you\'re looking for does not exist',
                     confirmButtonText: 'OK'
                 }).then((result) => {
