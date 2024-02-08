@@ -93,10 +93,10 @@ function resetSessionTimeout() {
     sessionTimeoutEnabled = sessionTimeoutToggle.prop('checked');
 
     if (sessionTimeoutEnabled) {
-        $('#minute_value, #seconds_value, #btn_save_session').prop('disabled', false);
+        $('#minute_value, #btn_save_session').prop('disabled', false);
         startTimer();
     } else {
-        $('#minute_value, #seconds_value, #btn_save_session').prop('disabled', true);
+        $('#minute_value, #btn_save_session').prop('disabled', true);
         clearTimeout(timeout);
     }
 
@@ -107,10 +107,10 @@ function resetSessionTimeout() {
     sessionTimeoutEnabled = this.checked;
     console.log('Toggle is ' + (this.checked ? 'on' : 'off'));
         if (sessionTimeoutEnabled) {
-            $('#minute_value, #seconds_value, #btn_save_session').prop('disabled', false);
+            $('#minute_value, #btn_save_session').prop('disabled', false);
             startTimer();
         } else {
-            $('#minute_value, #seconds_value, #btn_save_session').prop('disabled', true);
+            $('#minute_value, #btn_save_session').prop('disabled', true);
             clearTimeout(timeout);
         }
             localStorage.setItem(localStorageKey, JSON.stringify(sessionTimeoutEnabled));
@@ -174,9 +174,8 @@ function resetSessionTimeout() {
   
   function clickSaveSessionButton() {
     const minutes = $('#minute_value').val();
-    const seconds = $('#seconds_value').val();
 
-    if (minutes === '' || seconds === '') {
+    if (minutes === '') {
         Swal.fire({
             position: 'center',
             icon: 'warning',
@@ -186,7 +185,7 @@ function resetSessionTimeout() {
         return;
     }
 
-    const totalMinutes = parseInt(minutes) + parseInt(seconds) / 60;
+    const totalMinutes = parseInt(minutes);
     console.log('Total minutes entered:', totalMinutes);
 
     if (totalMinutes < 10) {
@@ -215,7 +214,6 @@ function resetSessionTimeout() {
         dataType: "json",
         data: {
             minutes: minutes,
-            seconds: seconds
         },
         success: function (response) {
             console.log('It was successful');

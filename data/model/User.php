@@ -66,12 +66,11 @@ class User
     public function save_session($user_id, $request)
     {
         $minutes = $request['minutes'];
-        $seconds = $request['seconds'];
     
-        $sql = "UPDATE users SET minutes = ?, seconds = ? WHERE id = ?";
+        $sql = "UPDATE users SET minutes = ? WHERE id = ?";
         
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iii", $minutes, $seconds, $user_id);
+        $stmt->bind_param("ii", $minutes, $user_id);
         
         $result = '';
         if ($stmt->execute() === TRUE) {

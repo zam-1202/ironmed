@@ -47,16 +47,7 @@ if (!$_SESSION['user']) {
                                     <label for="minutes" class="form-label">Minutes</label>
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
-                                        <input type="number" min="1" class="form-control" id="minute_value">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label for="minutes" class="form-label">Seconds</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon3"><i class="bi bi-clock"></i></span>
-                                        <input type="number" min="1" class="form-control" id="seconds_value">
-                                    </div>
+                                        <input type="text" min="1" class="form-control" id="minute_value" oninput="this.value = this.value.replace(/[^\d]/g, '').substring(0, 2)" onchange="Product.onChangeBarcode()" onkeydown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'">                                    </div>
                                 </div>
 
                                 <div class="col-md-2 align-self-end">
