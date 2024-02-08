@@ -105,11 +105,9 @@ else if ($action == 'save_session')
 {
     $user_id = $_SESSION['user']['id'];
     $minutes = $_POST['minutes'];
-    $seconds = $_POST['seconds'];
 
     $request = [
         'minutes' => $minutes,
-        'seconds' => $seconds
     ];
 
     $result = $User->save_session($user_id, $request);
