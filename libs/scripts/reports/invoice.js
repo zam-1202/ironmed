@@ -266,14 +266,23 @@ const validateAdminPassword = () => {
 }
 
 const confirmVoidItem = (invoice, product) => {
-    invoice_id = invoice;
-    product_id = product
-    if(SessionRole.value == 3) {
-        $('#modal_confirmpassword').modal('show');
-    } 
-    else {
-        voidItem(invoice, product)
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This action cannot be reverted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, void it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (SessionRole.value == 3) {
+                $('#modal_confirmpassword').modal('show');
+            } else {
+                voidItem(invoice, product);
+            }
+        }
+    });
 }
 
 const voidItem = (invoice, product) => {
