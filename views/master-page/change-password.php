@@ -25,7 +25,7 @@ if (!$_SESSION['user']) {
                                 <label for="oldpassword" class="form-label">Old Password</label>
                                 <span style="color:red"> *</span>
                                 <div style="position: relative;">
-                                    <input type="password" class="form-control" id="txt_oldpassword" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateOldPassword()" autofill="on">
+                                    <input type="text" class="form-control" id="txt_oldpassword" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.isValidPasswordFormat()" autofill="on">
                                     <button class="custom-search-button" type="button" id="txt_oldpassword-toggle" onclick="togglePasswordVisibility('txt_oldpassword')">SHOW</button>
                                 </div>
                                 <span id="oldp"></span>
@@ -35,7 +35,7 @@ if (!$_SESSION['user']) {
                                 <span style="color:red"> *</span>
                                 <p style="color:gray"><i><sup>Must be at least eight characters, has uppercase, and lowercase, special character and a number</sup></i></p>
                                 <div style="position: relative;">
-                                    <input type="password" class="form-control" id="txt_newpassword" maxlength="128" onkeyup = validateNewPass(); required/>
+                                    <input type="text" class="form-control" id="txt_newpassword" maxlength="128" onkeyup = "ChangePassword.isValidPasswordFormat()" required/>
                                     <button class="custom-search-button" type="button" id="txt_newpassword-toggle" onclick="togglePasswordVisibility('txt_newpassword')">SHOW</button>
                                 </div>
                                 <span id="mess"></span>
@@ -44,7 +44,7 @@ if (!$_SESSION['user']) {
                                 <label for="confirmPassword" class="form-label">Confirm New Password</label>
                                 <span style="color:red"> *</span>
                                     <div style="position: relative;">
-                                        <input type="password" class="form-control" id="txt_confirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.validateConfirmPassword()">
+                                        <input type="text" class="form-control" id="txt_confirm_password" maxlength="128" name="txt_oldpassword" onkeyup = "ChangePassword.isValidPasswordFormat()">
                                         <button class="custom-search-button" type="button" id="txt_confirm_password-toggle" onclick="togglePasswordVisibility('txt_confirm_password')">SHOW</button>
                                     </div>
                                     <span id="confirmPass"></span>
@@ -70,7 +70,7 @@ if (!$_SESSION['user']) {
 
     <?php include '../layouts/scripts.php' ?>
 </body>
-<script src="../../libs/scripts/master-page/change-password.js"></script>
+<script src="../../libs/scripts/master-page/change-password-inside.js"></script>
 <script src="../../libs/scripts/pos/session_timer.js"></script>
 
 </html>
