@@ -106,4 +106,42 @@ class ActionLog
 
         $this->save($request);
     }
+
+        public function searchDaily($date)
+    {
+        $sql = "SELECT *
+                FROM action_logs
+                WHERE DATE(datetime) = '$date'";
+        $result = $this->conn->query($sql);
+
+        $this->conn->close();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
+    public function searchMonthly($yearmonth)
+    {
+        $sql = "SELECT *
+        FROM action_logs
+        WHERE YEAR(datetime) = '$yearmonth[0]'
+        AND MONTH(datetime) = '$yearmonth[1]'";
+        $result = $this->conn->query($sql);
+
+        $this->conn->close();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function searchRange($start, $end)
+    {
+        $sql = "SELECT *
+        FROM action_logs
+        WHERE  DATE(datetime) >= '$start'
+        AND DATE(datetime) <= '$end'
+        ";
+        $result = $this->conn->query($sql);
+
+        $this->conn->close();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
