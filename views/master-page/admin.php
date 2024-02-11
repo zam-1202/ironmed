@@ -19,11 +19,11 @@ else if($_SESSION['user']['role'] === 3) {
     <section class="section user" style="border: none;">
         <div class="container-fluid section__body">
             <div class="row">
-                <div class="col-lg-8 col-md-12 ">
+                <div class="col-lg-8 col-md-12">
                     <div class="user__table-wrapper">
                         <h2 class="form-wrapper" id="txt_title">List of Accounts</h2>
 
-                        <div class="table-wrapper">
+                        <div class="table-wrapper inventory-box mt-4">
                         <table id="userTable" class="table table-bordered">
                                 <thead>
                                     <tr>
