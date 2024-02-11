@@ -20,9 +20,7 @@ $(document).ready(() => {
     let currentDate = new Date().toJSON().slice(0, 10);
     inpSearchDaily.value = currentDate;
     inpSearchDaily.max = currentDate;
-    inpSearchRangeStart.value = currentDate;
     inpSearchRangeStart.max = currentDate;
-    inpSearchRangeEnd.value = currentDate;
     inpSearchRangeEnd.max = currentDate;
     getActionLogs();
 });
