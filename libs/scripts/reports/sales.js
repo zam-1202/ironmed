@@ -1,11 +1,27 @@
+const btnSearchDaily = document.querySelector('.invoice__filters__daily__button');
+const btnSearchMonthly = document.querySelector('.invoice__filters__monthly__button');
+const btnSearchRange = document.querySelector('.invoice__filters__range__button');
+const btnConfirmPassword = document.querySelector('.admin__password__button');
+
+const inpSearchDaily = document.querySelector('.invoice__filters__daily__input');
+const inpSearchMonthly = document.querySelector('.invoice__filters__monthly__input');
+const inpSearchRangeStart = document.querySelector('.invoice__filters__monthly__input__start');
+const inpSearchRangeEnd = document.querySelector('.invoice__filters__monthly__input__end');
+
 $(document).ready(function () {
     // Sales.getTotalProduct();
     // Sales.getTotalSales();
 
     let currentDate = new Date().toJSON().slice(0, 10);
     $("#date_daily").val(currentDate);
+    inpSearchDaily.value = currentDate;
+    inpSearchDaily.max = currentDate;
+    inpSearchRangeStart.max = currentDate;
+    inpSearchRangeEnd.max = currentDate;
+
     Sales.getReportsData(currentDate, currentDate);
 });
+
 
 const select = document.querySelector('.invoice__filters__select');
 const filterGroups = document.querySelectorAll('.invoice__filters__group');
