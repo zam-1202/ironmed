@@ -15,12 +15,45 @@ if(!$_SESSION['user']) {
     <section class="section user" style="border: none;">
         <div class="container-fluid section__body">
             <div class="row">
-                <div class="col-lg-12 col-md-12 ">
+                <div class="col-lg-12 col-md-12">
                     <div class="user__table-wrapper">
-                        <h2 class="section__sub-title">Action Logs</h2>
+                        <h2 class="form-wrapper mb-4">Action Logs</h2>
 
-                        <div class="table-wrapper">
-                            <table class="table table-bordered">
+                        <div class="container-fluid section__body">
+
+                            <div class="invoice__filters">
+                                <div class="invoice__filters__left">
+                                    <label for="">Filter by</label>
+                                    <select name="" id="" class="invoice__filters__select" onchange=" this.dataset.chosen = this.value;">
+                                        <option value="0" selected="true">Daily</option>
+                                        <option value="1">Monthly</option>
+                                        <option value="2">Date Range</option>
+                                    </select>
+                                </div>
+                                <div class="invoice__filters__right">
+                                    <div class="invoice__filters__group invoice__filters__daily ">
+                                        <label for="" class="invoice__filters__daily__label">Date</label>
+                                        <input type="date" class="invoice__filters__daily__input" id="txt_invoice_date">
+                                        <button class="invoice__filters__daily__button">Search</button>
+                                    </div>
+                                    <div class="invoice__filters__group invoice__filters__monthly hidden">
+                                        <label for="" class="invoice__filters__monthly__label">Month/Year</label>
+                                        <input type="month" class="invoice__filters__monthly__input" id="txt_invoice_month">
+                                        <button class="invoice__filters__monthly__button">Search</button>
+                                    </div>
+                                    <div class="invoice__filters__group invoice__filters__range hidden">
+                                        <label for="" class="invoice__filters__range__label">Start Date</label>
+                                        <input type="date" class="invoice__filters__monthly__input__start" id="txt_invoice_startdate">
+                                        <label for="" class="invoice__filters__range__label">End Date</label>
+                                        <input type="date" class="invoice__filters__monthly__input__end" id="txt_invoice_enddate">
+                                        <button class="invoice__filters__range__button">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-wrapper inventory-box mt-4">
+                            <table class="table table-bordered logs_table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
