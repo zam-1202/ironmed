@@ -15,6 +15,10 @@ $ProductDetails = new ProductDetails($conn);
 $Invoice = new Invoice($conn);
 $Sales = new Sales($conn);
 
+function generateColor($string) {
+    $color = substr(md5($string), 0, 6);
+    return '#' . $color;
+}
 
 if ($action === 'getReportData') {
 
@@ -34,11 +38,12 @@ if ($action === 'getReportData') {
         'backgroundColor' => []
     ];
     $total_sales = 0;
+
     foreach ($reports_data as $report_data) {
         $chart_label[] = $report_data['product_name'];
 
-        $color = random_color();
-        $color = '#'.$color;
+        $color = generateColor($report_data['product_name']);
+        
         $piechart_dataset['data'][] = $report_data['total_price'];
         $piechart_dataset['backgroundColor'][] = $color;
 
@@ -47,6 +52,7 @@ if ($action === 'getReportData') {
 
         $total_sales = $total_sales + $report_data['total_price'];
     }
+
 
     $charts_data = [
         'labels' => $chart_label,

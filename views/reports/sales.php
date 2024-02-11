@@ -45,9 +45,9 @@ else if($_SESSION['user']['role'] === 3) {
                                     </div>
                                     <div class="invoice__filters__group invoice__filters__range hidden">
                                         <label for="" class="invoice__filters__range__label">Start Date</label>
-                                        <input type="date" id="date_start" class="invoice__filters__monthly__input">
+                                        <input type="date" id="date_start" class="invoice__filters__monthly__input__start">
                                         <label for="" class="invoice__filters__range__label">End Date</label>
-                                        <input type="date" id="date_end" class="invoice__filters__monthly__input">
+                                        <input type="date" id="date_end" class="invoice__filters__monthly__input__end">
                                         <button class="invoice__filters__range__button" onclick="Sales.searchClick('DateRange')">Search</button>
                                     </div>
                                 </div>
