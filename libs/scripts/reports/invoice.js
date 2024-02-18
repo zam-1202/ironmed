@@ -4,6 +4,11 @@ const filterGroups = document.querySelectorAll('.invoice__filters__group');
 const btnSearchDaily = document.querySelector('.invoice__filters__daily__button');
 const btnSearchMonthly = document.querySelector('.invoice__filters__monthly__button');
 const btnSearchRange = document.querySelector('.invoice__filters__range__button');
+
+const btnExportRange = document.querySelector('.invoice__export__daily__button');
+const btnExportMonthly = document.querySelector('.invoice__export__monthly__button');
+const btnYearRange = document.querySelector('.invoice__export__year__button');
+
 const btnConfirmPassword = document.querySelector('.admin__password__button');
 
 const inpSearchDaily = document.querySelector('.invoice__filters__daily__input');
@@ -27,14 +32,29 @@ var tableConfig = {
 };
 
 
-$(document).ready(() => {
-    let currentDate = new Date().toJSON().slice(0, 10);
-    inpSearchDaily.value = currentDate;
+// $(document).ready(() => {
+//     let currentDate = new Date().toJSON().slice(0, 10);
+//     inpSearchDaily.value = currentDate;
 
+//     inpSearchDaily.max = currentDate;
+
+//     getInvoices();
+// });
+$(document).ready(() => {
+    // Set the desired date to February 10, 2024
+    let selectedDate = '2024-02-10';
+
+    // Set the value of the input field to the selected date
+    inpSearchDaily.value = selectedDate;
+
+    // Set the maximum allowed date to the current date
+    let currentDate = new Date().toJSON().slice(0, 10);
     inpSearchDaily.max = currentDate;
 
+    // Call the function to get the invoices
     getInvoices();
 });
+
 
 const invoiceTable = document.querySelector('.invoice__table');
 
@@ -44,6 +64,13 @@ select.addEventListener('change',()=>{
         group.classList.contains('hidden')? '': group.classList.add('hidden');
     });
     filterGroups[select.value].classList.remove('hidden');
+
+    inpSearchDaily.classList.remove('error');
+    inpSearchMonthly.classList.remove('error');
+    inpSearchRangeStart.classList.remove('error');
+    inpSearchRangeEnd.classList.remove('error');
+    inpSearchRangeStart.value = '';
+    inpSearchRangeEnd.value = '';
 
     $('.table').DataTable().destroy();
     $('.invoice__table tbody').html('');
@@ -302,11 +329,48 @@ const voidItem = (invoice, product) => {
             }
         });
 }
+const exportInvoices = () => {
+
+    const selectedDate = document.getElementById('txt_invoice_date').value;
+    console.log('Selected Date:', selectedDate); // Log the selected date to the console
+    // Ajax request to export the invoices
+    $.ajax({
+        type: 'GET',
+        url: INVOICE_CONTROLLER + `?action=exportDaily&date=${selectedDate}`,
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            // Assuming your response contains the filename
+            var filename = response.filename;
+            var fileUrl = INVOICE_CONTROLLER + '?action=download&filename=' + filename;
+
+            // Create a link element to trigger the download
+            var link = document.createElement('a');
+            link.href = fileUrl;
+            link.setAttribute('download', filename);
+
+            // Trigger the download
+            document.body.appendChild(link);
+            link.click();
+
+            // Remove the link from the DOM
+            document.body.removeChild(link);
+        },
+        error: (xhr, status, error) => {
+            console.error(error); // Log any errors to the console
+        }
+    });
+}
+
+
 
 btnSearchDaily.addEventListener('click', getInvoices);
 btnSearchMonthly.addEventListener('click', getInvoices);
 btnSearchRange.addEventListener('click', getInvoices);
 btnConfirmPassword.addEventListener('click', validateAdminPassword);
+
+btnExportRange.addEventListener('click', exportInvoices);
+
 
  // Disable manual typing for the invoice date
  $('#txt_invoice_date').on('keydown paste', function (e) {

@@ -29,11 +29,13 @@ if(!$_SESSION['user']) {
                         <label for="" class="invoice__filters__daily__label">Date</label>
                         <input type="date" class="invoice__filters__daily__input" id="txt_invoice_date">
                         <button class="invoice__filters__daily__button">Search</button>
+                        <button class="invoice__export__daily__button">Export</button>
                     </div>
                     <div class="invoice__filters__group invoice__filters__monthly hidden">
                         <label for="" class="invoice__filters__monthly__label">Month/Year</label>
                         <input type="month" class="invoice__filters__monthly__input" id="txt_invoice_month">
                         <button class="invoice__filters__monthly__button">Search</button>
+                        <button class="invoice__export__monthly__button">Export</button>
                     </div>
                     <div class="invoice__filters__group invoice__filters__range hidden">
                         <label for="" class="invoice__filters__range__label">Start Date</label>
@@ -41,6 +43,7 @@ if(!$_SESSION['user']) {
                         <label for="" class="invoice__filters__range__label">End Date</label>
                         <input type="date" class="invoice__filters__monthly__input__end" id="txt_invoice_enddate">
                         <button class="invoice__filters__range__button">Search</button>
+                        <button class="invoice__export__year__button">Export</button>
                     </div>
                 </div>
             </div>
