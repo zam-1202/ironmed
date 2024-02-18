@@ -5,6 +5,7 @@ include_once('../model/Category.php');
 include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/Invoice.php');
+include_once('../model/ExportInvoice.php');
 
 
 $action = $_GET['action'];
@@ -25,8 +26,10 @@ if ($action === 'confirmedCheckout') {
         $cashPayment = $_POST['cashPayment'];
         echo json_encode($Invoice->save($data, $discounted, $customerName, $osca_number, $cashPayment));
     }
+
 } else if ($action === 'getTotalSalesToday') {
     echo json_encode($Invoice->getTotalSalesToday());
+
 } else if ($action === 'searchDaily') {
 
     if (isset($_GET['date'])) {
@@ -35,6 +38,7 @@ if ($action === 'confirmedCheckout') {
     } else {
         echo json_encode('No selected date');
     }
+
 } else if ($action === 'searchMonthly') {
 
     if (isset($_GET['yearmonth'])) {
@@ -43,6 +47,7 @@ if ($action === 'confirmedCheckout') {
     } else {
         echo json_encode('No selected date');
     }
+
 } else if ($action === 'searchRange') {
 
     if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
@@ -52,6 +57,7 @@ if ($action === 'confirmedCheckout') {
     } else {
         echo json_encode('No selected date');
     }
+
 } else if ($action === 'getInvoiceSales') {
 
     if (isset($_GET['invoice_id'])) {
@@ -60,6 +66,7 @@ if ($action === 'confirmedCheckout') {
     } else {
         echo json_encode('No Invoice ID');
     }
+
 } else if ($action === 'voidItem') {
 
     if (isset($_POST['product']) && isset($_POST['invoice'])) {
@@ -69,6 +76,38 @@ if ($action === 'confirmedCheckout') {
     } else {
         echo json_encode('No Invoice ID');
     }
-} else {
-    return 'Something went wrong';
+
+} else if ($action == "exportDaily") {
+    if (isset($_GET['date'])) {
+        $date = $_GET['date'];
+
+        $invoices = $Invoice->ExportDaily($date);
+
+        if ($invoices) {
+            $data = [];
+            foreach ($invoices as $invoice) {
+                // Exclude VOIDED items (where 'Action' is equal to 1)
+                // if ($invoice['void'] != 1) {
+                    $data[] = [
+                        'Issue By' => $invoice['users_name'],
+                        'Transaction Date' => $invoice['date_transact'],
+                        'Invoice Number' => $invoice['number'],
+                        'Product Name' => $invoice['product_name'], 
+                        'Quantity' => $invoice['qty'], 
+                        'Price' => $invoice['price'], 
+                        'Total Items' => $invoice['total_items'],
+                        'Total Purchase' => $invoice['total_purchase'],
+                        'Action' => $invoice['void'], 
+                    ];
+                // }
+            }
+
+            $filename = ExportInvoice($data);
+            echo json_encode(['filename' => $filename]);
+        } else {
+            echo json_encode('No data found for the specified date');
+        }
+    } else {
+        echo json_encode('No date provided');
+    }
 }
