@@ -14,22 +14,43 @@ function ExportInvoice($data)
     $spreadsheet = new Spreadsheet();
     $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
     $sheet = $spreadsheet->getActiveSheet();
+
+    $sheet->setCellValue('A1', 'IRONMED PHARMACY');
+    $sheet->mergeCells('A1:I1');
+    $sheet->getStyle('A1:I1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(20)->setColor(new Color('24958f'));
+    $sheet->getRowDimension('1')->setRowHeight(30);
+    
+
+    $date = date('Y-m-d'); // Example date format
+    $address = '836 F. Gomez St, Santa Rosa, 4026 Laguna';
+    
+    // Concatenate the date and address with the separator "|"
+    $sheet->setCellValue('A2', $address . ' | ' . $date);
+    $sheet->mergeCells('A2:I2');
+    $sheet->getStyle('A2:I2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getRowDimension('2')->setRowHeight(15);
+    $sheet->getStyle('A2')->getFont()->setSize(10);
+    
     
     $sheet
-        ->setCellValue('A1', 'Issue By')
-        ->setCellValue('B1', 'Transaction Date')
-        ->setCellValue('C1', 'Invoice Number')
-        ->setCellValue('D1', 'Product Name')
-        ->setCellValue('E1', 'Quantity')
-        ->setCellValue('F1', 'Price')
-        ->setCellValue('G1', 'Total Items')
-        ->setCellValue('H1', 'Total Purchase')
-        ->setCellValue('I1', 'Action');
+        ->setCellValue('A3', 'Issue By')
+        ->setCellValue('B3', 'Transaction Date')
+        ->setCellValue('C3', 'Invoice Number')
+        ->setCellValue('D3', 'Product Name')
+        ->setCellValue('E3', 'Quantity')
+        ->setCellValue('F3', 'Price')
+        ->setCellValue('G3', 'Total Items')
+        ->setCellValue('H3', 'Total Purchase')
+        ->setCellValue('I3', 'Action');
 
-        $sheet->getStyle('A1:I1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $boldFontStyle = $sheet->getStyle('A3:I3')->getFont();
+        $boldFontStyle->setBold(true);
+
+        $sheet->getStyle('A3:I3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 
-    $row = 2;
+    $row = 4;
     foreach ($data as $product) {
         $sheet->setCellValue('A' . $row, $product['Issue By']);
         $sheet->setCellValue('B' . $row, $product['Transaction Date']);
@@ -72,16 +93,17 @@ function ExportInvoice($data)
     $boldFont->setBold(true);
 
 
-    //Header
-    $headerBorderStyle = [
+    // Set border style for the ranges A1:I1 and A2:I2
+    $borderStyle = [
         'borders' => [
-            'allBorders' => [
-                'borderStyle' => Border::BORDER_MEDIUM,
+            'outline' => [
+                'borderStyle' => Border::BORDER_THIN,
+                'color' => ['rgb' => '000000'],
             ],
         ],
     ];
 
-    $sheet->getStyle('A1:I1')->applyFromArray($headerBorderStyle);
+    $sheet->getStyle('A1:I2')->applyFromArray($borderStyle);
 
     //Body
     $thinBorderStyle = [
@@ -92,7 +114,8 @@ function ExportInvoice($data)
         ],
     ];
 
-    $sheet->getStyle('A1:I' . count($data) + 1)->applyFromArray($thinBorderStyle);
+    $sheet->getStyle('A4:I' . (count($data) + 3))->applyFromArray($thinBorderStyle);
+    $sheet->getStyle('A3:I' . (count($data) + 3))->applyFromArray($thinBorderStyle);
 
     $grandTotalPurchase = array_sum(array_column($data, 'Total Purchase'));
 
