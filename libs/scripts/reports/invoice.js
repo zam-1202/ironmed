@@ -32,28 +32,28 @@ var tableConfig = {
 };
 
 
-// $(document).ready(() => {
-//     let currentDate = new Date().toJSON().slice(0, 10);
-//     inpSearchDaily.value = currentDate;
-
-//     inpSearchDaily.max = currentDate;
-
-//     getInvoices();
-// });
 $(document).ready(() => {
-    // Set the desired date to February 10, 2024
-    let selectedDate = '2024-02-10';
-
-    // Set the value of the input field to the selected date
-    inpSearchDaily.value = selectedDate;
-
-    // Set the maximum allowed date to the current date
     let currentDate = new Date().toJSON().slice(0, 10);
+    inpSearchDaily.value = currentDate;
+
     inpSearchDaily.max = currentDate;
 
-    // Call the function to get the invoices
     getInvoices();
 });
+// $(document).ready(() => {
+//     // Set the desired date to February 10, 2024
+//     let selectedDate = '2024-02-10';
+
+//     // Set the value of the input field to the selected date
+//     inpSearchDaily.value = selectedDate;
+
+//     // Set the maximum allowed date to the current date
+//     let currentDate = new Date().toJSON().slice(0, 10);
+//     inpSearchDaily.max = currentDate;
+
+//     // Call the function to get the invoices
+//     getInvoices();
+// });
 
 
 const invoiceTable = document.querySelector('.invoice__table');
