@@ -329,39 +329,51 @@ const voidItem = (invoice, product) => {
             }
         });
 }
-const exportInvoices = () => {
 
+const exportInvoices = () => {
     const selectedDate = document.getElementById('txt_invoice_date').value;
-    console.log('Selected Date:', selectedDate); // Log the selected date to the console
-    // Ajax request to export the invoices
+    console.log('Selected Date:', selectedDate);
+    
+
     $.ajax({
         type: 'GET',
         url: INVOICE_CONTROLLER + `?action=exportDaily&date=${selectedDate}`,
         dataType: 'json',
         cache: false,
         success: (response) => {
-            // Assuming your response contains the filename
-            var filename = response.filename;
-            var fileUrl = INVOICE_CONTROLLER + '?action=download&filename=' + filename;
+            if (response && response.filename) {
 
-            // Create a link element to trigger the download
-            var link = document.createElement('a');
-            link.href = fileUrl;
-            link.setAttribute('download', filename);
+                var filename = response.filename;
+                var fileUrl = INVOICE_CONTROLLER + '?action=download&filename=' + filename;
 
-            // Trigger the download
-            document.body.appendChild(link);
-            link.click();
 
-            // Remove the link from the DOM
-            document.body.removeChild(link);
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', filename);
+
+
+                document.body.appendChild(link);
+                link.click();
+
+
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+               Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
         },
         error: (xhr, status, error) => {
-            console.error(error); // Log any errors to the console
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
         }
     });
 }
-
 
 
 btnSearchDaily.addEventListener('click', getInvoices);
