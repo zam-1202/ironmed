@@ -106,19 +106,18 @@ function ExportInvoice($data)
     $writer = new Xlsx($spreadsheet);
     $writer->save($filename);
 
-    // Return the filename for download link
+
     return $filename;
 }
 
-// Example usage
+
 if ($_GET['action'] === 'download' && isset($_GET['filename'])) {
-    // Download the generated Excel file
     $filename = $_GET['filename'];
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="' . $filename . '"');
     header('Cache-Control: max-age=0');
     readfile($filename);
-    unlink($filename); // Delete the file after download
+    unlink($filename);
     exit;
 } else {
 

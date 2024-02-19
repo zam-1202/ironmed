@@ -105,7 +105,7 @@ if ($action === 'confirmedCheckout') {
             $filename = ExportInvoice($data);
             echo json_encode(['filename' => $filename]);
         } else {
-            echo json_encode('No data found for the specified date');
+            echo json_encode(['message' => 'No data available']);
         }
     } else {
         echo json_encode('No date provided');
