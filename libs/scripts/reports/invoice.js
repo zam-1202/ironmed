@@ -330,14 +330,63 @@ const voidItem = (invoice, product) => {
         });
 }
 
-const exportInvoices = () => {
+const exportDailyInvoices = () => {
     const selectedDate = document.getElementById('txt_invoice_date').value;
+    const filename = 'InvoiceReport_' + selectedDate; // Using the selected date as the filename
     console.log('Selected Date:', selectedDate);
     
 
     $.ajax({
         type: 'GET',
-        url: INVOICE_CONTROLLER + `?action=exportDaily&date=${selectedDate}`,
+        url: INVOICE_CONTROLLER + `?action=exportDaily&date=${selectedDate}&filename=${filename}`, // Pass the filename in the URL
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            if (response && response.filename) {
+
+                var filename = response.filename;
+                var fileUrl = INVOICE_CONTROLLER + '?action=download&filename=' + filename;
+
+
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', filename);
+
+
+                document.body.appendChild(link);
+                link.click();
+
+
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+               Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
+        }
+    });
+}
+
+const exportMonthlyInvoices = () => {
+    const selectedMonth = document.getElementById('txt_invoice_month').value;
+    const filename = 'InvoiceReport_' + selectedMonth;
+    console.log('Selected Month:', selectedMonth);
+    
+
+    $.ajax({
+        type: 'GET',
+        url: INVOICE_CONTROLLER + `?action=exportMonthly&yearmonth=${selectedMonth}&filename=${filename}`,
+        dataType: 'json',
+        cache: false,
         dataType: 'json',
         cache: false,
         success: (response) => {
@@ -381,7 +430,8 @@ btnSearchMonthly.addEventListener('click', getInvoices);
 btnSearchRange.addEventListener('click', getInvoices);
 btnConfirmPassword.addEventListener('click', validateAdminPassword);
 
-btnExportRange.addEventListener('click', exportInvoices);
+btnExportRange.addEventListener('click', exportDailyInvoices);
+btnExportMonthly.addEventListener('click', exportMonthlyInvoices);
 
 
  // Disable manual typing for the invoice date
