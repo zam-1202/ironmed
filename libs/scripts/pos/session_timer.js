@@ -9,9 +9,7 @@
     if (sessionTimeoutEnabled) {
         console.log('Session timeout enabled. Starting Swal...');
 
-        const timeoutDuration = (
-            parseInt($('#minute_value').val()) * 60 +
-            parseInt($('#seconds_value').val())) * 1000;
+        const timeoutDuration = 60 * 1000;
 
         Swal.fire({
             title: "Your session will expire soon.",
@@ -67,6 +65,7 @@
     }
 }
 
+
   
 
   document.addEventListener("mousemove", function() {
@@ -89,18 +88,18 @@ function resetSessionTimeout() {
         startTimer();
     }
 
-    const sessionTimeoutToggle = $('#enableSessionTimeout');
-    sessionTimeoutEnabled = sessionTimeoutToggle.prop('checked');
+    // const sessionTimeoutToggle = $('#enableSessionTimeout');
+    // sessionTimeoutEnabled = sessionTimeoutToggle.prop('checked');
 
-    if (sessionTimeoutEnabled) {
-        $('#minute_value, #btn_save_session').prop('disabled', false);
-        startTimer();
-    } else {
-        $('#minute_value, #btn_save_session').prop('disabled', true);
-        clearTimeout(timeout);
-    }
+    // if (sessionTimeoutEnabled) {
+    //     $('#minute_value, #btn_save_session').prop('disabled', false);
+    //     startTimer();
+    // } else {
+    //     $('#minute_value, #btn_save_session').prop('disabled', true);
+    //     clearTimeout(timeout);
+    // }
 
-    localStorage.setItem(localStorageKey, JSON.stringify(sessionTimeoutEnabled));
+    // localStorage.setItem(localStorageKey, JSON.stringify(sessionTimeoutEnabled));
 
 
     $('#enableSessionTimeout').change(function () {
