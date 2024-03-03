@@ -86,20 +86,13 @@ if ($action === 'confirmedCheckout') {
         if ($invoices) {
             $data = [];
             foreach ($invoices as $invoice) {
-                // Exclude VOIDED items (where 'Action' is equal to 1)
-                // if ($invoice['void'] != 1) {
                     $data[] = [
                         'Issue By' => $invoice['users_name'],
                         'Transaction Date' => $invoice['date_transact'],
                         'Invoice Number' => $invoice['number'],
-                        'Product Name' => $invoice['product_name'], 
-                        'Quantity' => $invoice['qty'], 
-                        'Price' => $invoice['price'], 
                         'Total Items' => $invoice['total_items'],
                         'Total Purchase' => $invoice['total_purchase'],
-                        'Action' => $invoice['void'], 
                     ];
-                // }
             }
 
             $filename = ExportInvoice($data);
@@ -109,5 +102,33 @@ if ($action === 'confirmedCheckout') {
         }
     } else {
         echo json_encode('No date provided');
+    }
+}
+
+
+else if ($action == "exportMonthly") {
+    if (isset($_GET['yearmonth'])) {
+        $yearmonth = explode('-', $_GET['yearmonth']);
+        $invoices = $Invoice->searchMonthly($yearmonth);
+
+        if ($invoices) {
+            $data = [];
+            foreach ($invoices as $invoice) {
+                $data[] = [
+                    'Issue By' => $invoice['users_name'],
+                    'Transaction Date' => $invoice['date_transact'],
+                    'Invoice Number' => $invoice['number'],
+                    'Total Items' => $invoice['total_items'],
+                    'Total Purchase' => $invoice['total_purchase'],
+                ];
+            }
+
+            $filename = ExportInvoice($data);
+            echo json_encode(['filename' => $filename]);
+        } else {
+            echo json_encode(['message' => 'No data available']);
+        }
+    } else {
+        echo json_encode('No selected date');
     }
 }

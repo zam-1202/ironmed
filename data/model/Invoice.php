@@ -199,13 +199,29 @@ class Invoice
     public function ExportDaily($date)
     {
         $sql = "SELECT invoices.*, CONCAT(users.first_name, ' ', users.last_name) AS users_name,
-        products.name AS product_name, 
-        sales.product_id, sales.price, sales.qty, sales.void, invoices.total_items
+        sales.product_id, invoices.total_items, invoices.number
         FROM invoices
         INNER JOIN users ON users.id = invoices.user_id
         INNER JOIN sales ON invoices.id = sales.invoice_id
         INNER JOIN products ON products.id = sales.product_id
-        WHERE DATE(invoices.date_transact) = '$date'";
+        WHERE DATE(invoices.date_transact) = '$date'
+        GROUP BY invoices.id";
+        $result = $this->conn->query($sql);
+    
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function exportMonthly($date)
+    {
+        $sql = "SELECT invoices.*, CONCAT(users.first_name, ' ', users.last_name) AS users_name,
+        sales.product_id, invoices.total_items, invoices.number
+        FROM invoices
+        INNER JOIN users ON users.id = invoices.user_id
+        INNER JOIN sales ON invoices.id = sales.invoice_id
+        INNER JOIN products ON products.id = sales.product_id
+        WHERE DATE(invoices.date_transact) = '$date'
+        GROUP BY invoices.id";
         $result = $this->conn->query($sql);
     
 
