@@ -40,20 +40,6 @@ $(document).ready(() => {
 
     getInvoices();
 });
-// $(document).ready(() => {
-//     // Set the desired date to February 10, 2024
-//     let selectedDate = '2024-02-10';
-
-//     // Set the value of the input field to the selected date
-//     inpSearchDaily.value = selectedDate;
-
-//     // Set the maximum allowed date to the current date
-//     let currentDate = new Date().toJSON().slice(0, 10);
-//     inpSearchDaily.max = currentDate;
-
-//     // Call the function to get the invoices
-//     getInvoices();
-// });
 
 
 const invoiceTable = document.querySelector('.invoice__table');
@@ -332,7 +318,7 @@ const voidItem = (invoice, product) => {
 
 const exportDailyInvoices = () => {
     const selectedDate = document.getElementById('txt_invoice_date').value;
-    const filename = 'InvoiceReport_' + selectedDate; // Using the selected date as the filename
+    const filename = 'InvoiceReport_' + selectedDate + '.xlsx';
     console.log('Selected Date:', selectedDate);
     
 
@@ -378,15 +364,13 @@ const exportDailyInvoices = () => {
 
 const exportMonthlyInvoices = () => {
     const selectedMonth = document.getElementById('txt_invoice_month').value;
-    const filename = 'InvoiceReport_' + selectedMonth;
+    const filename = 'InvoiceReport_' + selectedMonth + '.xlsx';
     console.log('Selected Month:', selectedMonth);
     
 
     $.ajax({
         type: 'GET',
         url: INVOICE_CONTROLLER + `?action=exportMonthly&yearmonth=${selectedMonth}&filename=${filename}`,
-        dataType: 'json',
-        cache: false,
         dataType: 'json',
         cache: false,
         success: (response) => {
@@ -425,6 +409,45 @@ const exportMonthlyInvoices = () => {
 }
 
 
+const exportRangeInvoices = () => {
+    const startDate = document.getElementById('txt_invoice_startdate').value;
+    const endDate = document.getElementById('txt_invoice_enddate').value;
+    const filename = 'InvoiceReport_' + startDate + '_' + endDate + '.xlsx';
+    console.log('Selected Range:', startDate + '_' + endDate);
+
+    $.ajax({
+        type: 'GET',
+        url: INVOICE_CONTROLLER + `?action=exportRange&startDate=${inpSearchRangeStart.value}&endDate=${inpSearchRangeEnd.value}&filename=${filename}`,
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            if (response && response.filename) {
+                var fileUrl = INVOICE_CONTROLLER + '?action=download&filename=' + response.filename;
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', response.filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
+        }
+    });
+}
+
+
 btnSearchDaily.addEventListener('click', getInvoices);
 btnSearchMonthly.addEventListener('click', getInvoices);
 btnSearchRange.addEventListener('click', getInvoices);
@@ -432,6 +455,8 @@ btnConfirmPassword.addEventListener('click', validateAdminPassword);
 
 btnExportRange.addEventListener('click', exportDailyInvoices);
 btnExportMonthly.addEventListener('click', exportMonthlyInvoices);
+btnYearRange.addEventListener('click', exportRangeInvoices);
+
 
 
  // Disable manual typing for the invoice date

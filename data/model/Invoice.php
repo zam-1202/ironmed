@@ -227,6 +227,24 @@ class Invoice
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    
+    public function exportRange($start, $end)
+    {
+        $sql = "SELECT invoices.*, CONCAT(users.first_name, ' ', users.last_name) AS users_name,
+        sales.product_id, invoices.total_items, invoices.number
+        FROM invoices
+        INNER JOIN users ON users.id = invoices.user_id
+        INNER JOIN sales ON invoices.id = sales.invoice_id
+        INNER JOIN products ON products.id = sales.product_id
+        WHERE  DATE(invoices.date_transact) >= '$start'
+        AND DATE(invoices.date_transact) <= '$end'
+        GROUP BY invoices.id";
+        $result = $this->conn->query($sql);
+    
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
         
 
     public function searchMonthly($yearmonth)

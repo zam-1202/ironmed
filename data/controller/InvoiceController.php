@@ -105,11 +105,39 @@ if ($action === 'confirmedCheckout') {
     }
 }
 
-
 else if ($action == "exportMonthly") {
     if (isset($_GET['yearmonth'])) {
         $yearmonth = explode('-', $_GET['yearmonth']);
         $invoices = $Invoice->searchMonthly($yearmonth);
+
+        if ($invoices) {
+            $data = [];
+            foreach ($invoices as $invoice) {
+                $data[] = [
+                    'Issue By' => $invoice['users_name'],
+                    'Transaction Date' => $invoice['date_transact'],
+                    'Invoice Number' => $invoice['number'],
+                    'Total Items' => $invoice['total_items'],
+                    'Total Purchase' => $invoice['total_purchase'],
+                ];
+            }
+
+            $filename = ExportInvoice($data);
+            echo json_encode(['filename' => $filename]);
+        } else {
+            echo json_encode(['message' => 'No data available']);
+        }
+    } else {
+        echo json_encode('No selected date');
+    }
+}
+
+else if ($action == "exportRange") {
+    if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+        $start = $_GET['startDate'];
+        $end = $_GET['endDate'];
+
+        $invoices = $Invoice->exportRange($start, $end);
 
         if ($invoices) {
             $data = [];
