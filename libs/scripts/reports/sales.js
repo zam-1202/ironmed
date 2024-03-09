@@ -1,229 +1,377 @@
-const btnSearchDaily = document.querySelector('.invoice__filters__daily__button');
-const btnSearchMonthly = document.querySelector('.invoice__filters__monthly__button');
-const btnSearchRange = document.querySelector('.invoice__filters__range__button');
-const btnConfirmPassword = document.querySelector('.admin__password__button');
-
-const inpSearchDaily = document.querySelector('.invoice__filters__daily__input');
-const inpSearchMonthly = document.querySelector('.invoice__filters__monthly__input');
-const inpSearchRangeStart = document.querySelector('.invoice__filters__monthly__input__start');
-const inpSearchRangeEnd = document.querySelector('.invoice__filters__monthly__input__end');
-
-$(document).ready(function () {
-    // Sales.getTotalProduct();
-    // Sales.getTotalSales();
-
-    let currentDate = new Date().toJSON().slice(0, 10);
-    $("#date_daily").val(currentDate);
-    inpSearchDaily.value = currentDate;
-    inpSearchDaily.max = currentDate;
-    inpSearchRangeStart.max = currentDate;
-    inpSearchRangeEnd.max = currentDate;
-
-    Sales.getReportsData(currentDate, currentDate);
-});
-
-
-const select = document.querySelector('.invoice__filters__select');
-const filterGroups = document.querySelectorAll('.invoice__filters__group');
+const select = document.querySelector('.sales__filters__select');
+const filterGroups = document.querySelectorAll('.sales__filters__group');
 const btnExport = document.querySelector('.button__export__file');
 
+const btnSearchDaily = document.querySelector('.sales__filters__daily__button');
+const btnSearchMonthly = document.querySelector('.sales__filters__monthly__button');
+const btnSearchRange = document.querySelector('.sales__filters__range__button');
+const btnConfirmPassword = document.querySelector('.admin__password__button');
 
-select.addEventListener('change', () => {
-    // console.log('changed');
-    console.log(select.value);
-    filterGroups.forEach(group => {
-        group.classList.contains('hidden') ? '' : group.classList.add('hidden');
-    });
-    filterGroups[select.value].classList.remove('hidden');
+const inpSearchDaily = document.querySelector('.sales__filters__daily__input');
+const inpSearchMonthly = document.querySelector('.sales__filters__monthly__input');
+const inpSearchRangeStart = document.querySelector('.sales__filters__monthly__input__start');
+const inpSearchRangeEnd = document.querySelector('.sales__filters__monthly__input__end');
+
+const btnExportRange = document.querySelector('.sales__export__daily__button');
+const btnExportMonthly = document.querySelector('.sales__export__monthly__button');
+const btnYearRange = document.querySelector('.sales__export__year__button');
+
+var tableConfig = {
+    paging: true,
+    searching: true,
+    ordering: true,
+    search: {
+        regex: true,
+    },
+};
+
+// $(document).ready(() => {
+//     // Set the desired date to February 10, 2024
+//     let selectedDate = '2024-03-03';
+
+//     // Set the value of the input field to the selected date
+//     inpSearchDaily.value = selectedDate;
+
+//     // Set the maximum allowed date to the current date
+//     let currentDate = new Date().toJSON().slice(0, 10);
+//     inpSearchDaily.max = currentDate;
+
+//     // Call the function to get the invoices
+//     getSales();
+// });
+
+$(document).ready(() => {
+    let currentDate = new Date().toJSON().slice(0, 10);
+    inpSearchDaily.value = currentDate;
+
+    inpSearchDaily.max = currentDate;
+
+    getSales();
 });
 
 
-const Sales = (() => {
-    const thisSales = {};
-    let barchart;
-    let piechart;
-    let dateFrom;
-    let dateTo;
+const salesTable = document.querySelector('.sales__table');
 
+select.addEventListener('change',()=>{
+    console.log(select.value);
+    filterGroups.forEach(group =>{
+        group.classList.contains('hidden')? '': group.classList.add('hidden');
+    });
+    filterGroups[select.value].classList.remove('hidden');
 
-    thisSales.searchClick = (filter_by) => {
-        // let dateFrom;
-        // let dateTo;
-        if(filter_by == 'Daily') {
-            let txt_date = $('#date_daily').val();
-            if(txt_date == '') {
-                alert("date should have value");
-            } else {
-                dateFrom = txt_date;
-                dateTo = txt_date;
-            }
-        } else if(filter_by == 'Monthly') {
-            let txt_date = $('#date_monthly').val();
-            if(txt_date == '') {
-                alert("date should have value");
-            } else {
-                dateFrom = `${txt_date}-01`;
-                dateTo =  `${txt_date}-31`;
-            }
+    inpSearchDaily.classList.remove('error');
+    inpSearchMonthly.classList.remove('error');
+    inpSearchRangeStart.classList.remove('error');
+    inpSearchRangeEnd.classList.remove('error');
+    inpSearchRangeStart.value = '';
+    inpSearchRangeEnd.value = '';
 
-        } else if (filter_by == 'DateRange') {
-            let date_start = $('#date_start').val();
-            let date_end = $('#date_end').val();
-            if(date_start == '' || date_end == '') {
-                alert("date should have value");
-            } else {
-                dateFrom = date_start;
-                dateTo =  date_end;
-            }
+    $('.table').DataTable().destroy();
+    $('.sales__table tbody').html('');
+    $('.table').DataTable();
+});
+
+const getSales =  () => {
+
+    let actionURL;
+
+    if(select.value == 0){
+        if(inpSearchDaily.value == ''){
+            inpSearchDaily.classList.add('error');
+        }
+        else{
+            inpSearchDaily.classList.remove('error');
+            actionURL = `?action=searchDaily&date=${inpSearchDaily.value}`;
         }
 
-
-        thisSales.getReportsData(dateFrom, dateTo);
-        // thisSales.getReportTable(dateFrom, dateTo);
-        thisSales.showSalesTable(dateFrom, dateTo);
     }
-
-    thisSales.getReportsData = (dateFrom, dateTo) => {
-        const action = '?action=getReportData';
-        $.ajax({
-            type: "POST",
-            url: `${SALES_CONTROLLER}${action}`,
-            data: {
-                dateFrom: dateFrom,
-                dateTo: dateTo
-            },
-            dataType: "json",
-            success: function (response) {   
-                $('#lbl_total_sales').html(`Total Sales: ₱${parseFloat(response.total_sales).toFixed(2)}`)
-
-                if(barchart) {
-                    barchart.destroy();
-                    piechart.destroy();
-                }
-                
-
-                thisSales.loadBarchart(response.labels, response.barchart_dataset)
-                thisSales.loadPieChart(response.labels, response.piechart_dataset)
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-
-    thisSales.loadBarchart = (labels, dataset) => {
-        var graphCanvas = $('#productSalesChart').get(0).getContext('2d')
-
-        var areaChartData = {
-            labels: labels,
-            datasets: [dataset]
+    else if(select.value == 1){
+        if(inpSearchMonthly.value == ''){
+            inpSearchMonthly.classList.add('error');
+        }
+        else{
+            inpSearchMonthly.classList.remove('error');
+            actionURL = `?action=searchMonthly&yearmonth=${inpSearchMonthly.value}`;
         }
 
-        var barChartData = $.extend(true, {}, areaChartData)
-
-        var barChartOptions = {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    display: true,
-                    ticks: {
-                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-                        suggestedMax: 50,    // minimum will be 0, unless there is a lower value.
-                        // OR //
-                        beginAtZero: true   // minimum value will be 0.
-                    }
-                }]
-            }
+    }
+    else if(select.value == 2){
+        if(inpSearchRangeStart.value == '' || inpSearchRangeEnd.value == ''){
+            inpSearchRangeStart.classList.add('error');
+            inpSearchRangeEnd.classList.add('error');
+        }
+        else{
+            inpSearchRangeStart.classList.remove('error');
+            inpSearchRangeEnd.classList.remove('error');
+            actionURL = `?action=searchRange&startDate=${inpSearchRangeStart.value}&endDate=${inpSearchRangeEnd.value}`;
         }
 
-        barchart = new Chart(graphCanvas, {
-            type: 'bar',
-            data: barChartData,
-            options: barChartOptions
-        })
+    }
+    else{
+
     }
 
-    thisSales.loadPieChart = (labels, dataset) => {
-        var pieChartCanvas = $('#piechart').get(0).getContext('2d')
-        var pieData = {
-            labels: labels,
-            datasets: [
-                dataset
-            ]
-        }
-        var pieOptions = {
-            maintainAspectRatio: false,
-            responsive: true,
-        }
-        piechart = new Chart(pieChartCanvas, {
-            type: 'pie',
-            data: pieData,
-            options: pieOptions
-        })
-    }
+    $.ajax({
+        type:'GET',
+        url: SALES_CONTROLLER + actionURL,
+        dataType:'json',
+        cache:false,
+        success: (data) => {
+            console.log(data);
+            let tbody = '';
+            let count = 1;
+            data.forEach(sale =>{
+                tbody+=`<tr>
+                <td>${count++}</td>
+                <td>${sale.users_name}</td>             
+                <td>${sale.date_purchased}</td>
+                <td>${sale.number}</td>
+                <td>${sale.name}</td>
+                <td>${sale.qty}</td>
+                <td>${sale.original_price}</td>
+                <td>${sale.total_purchase}</td>
+            </tr>`;
+            });
 
-    thisSales.showSalesTable = (dateFrom, dateTo) => {
-        const action = '?action=showReportTable';
-        $.ajax({
-            type: "POST",
-            url: `${SALES_CONTROLLER}${action}`,
-            data: {
-                dateFrom: dateFrom,
-                dateTo: dateTo
-            },
-            dataType: "json",
-            success: function (response) {   
-                $('.table').DataTable().destroy();
-                $('#tbody_sales').html(response);
-                // thisSales.export(response);
+            $('.table').DataTable().destroy();
+            $('.sales__table tbody').html(tbody);
+            $('.table').DataTable(tableConfig);
+    
+            $(document).ready(function () {
+            var table = $('.table').DataTable();
+            $('.dataTables_filter input')
+                .off()
+                .on('input', function () {
+                    $('.table').DataTable().search(this.value, true, false).draw();
+                    var body = $(table.table().body());
+                    body.unhighlight();
+                    body.highlight(table.search());
+                    var searchTerm = this.value.toLowerCase();
 
-                $('.table').DataTable();
-                
-            },
-            error: function () {
 
-            }
-        });
-    }
+                    var regex = searchTerm.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+                    $.fn.dataTable.ext.search.push(function (settings, searchData, index, rowData, counter) {
+                        for (var i = 0; i < searchData.length; i++) {
+                            if (searchData[i].toLowerCase().indexOf(regex) !== -1) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
 
-    thisSales.export = () => {
-        const action = '?action=exportData';
-        $.ajax({
-            type: "POST",
-            url: `${SALES_CONTROLLER}${action}`,
-            data: {
-                dateFrom: dateFrom,
-                dateTo: dateTo
-            },
-            dataType: "json",
-            success: function (data) {   
+                    table.draw();
 
-                var currentDate = new Date();
-                var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
-                var filename = `Sales Report ${formattedDate}.csv`; // Construct the filename with the current date
-            
-                var csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += Object.keys(data[0]).join(",") + "\n";
-                data.forEach(function (item) {
-                    var row = Object.values(item).join(",");
-                    csvContent += row + "\n";
+                    // Remove the custom search function
+                    $.fn.dataTable.ext.search.pop();
+
+                    console.log('Search term in console: "' + searchTerm + '"');
+
+                    // Check if the user's search exactly matches a value in the DataTable
+                    var exactMatch = table
+                        .rows({ search: 'applied' })
+                        .data()
+                        .toArray()
+                        .some(row => row.some(value => value.toLowerCase() === searchTerm.toLowerCase()));
+
+                    console.log('Exact match in DataTable:', exactMatch);
+                    console.log('DataTable values:', table.rows({ search: 'applied' }).data().toArray());
                 });
 
-                var encodedUri = encodeURI(csvContent);
-                var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", filename);
-                link.style.display = "none";  // Hide the link element
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            },
-            error: function () {
+            });
 
-            }
-        });
-    }
+        },
+        error: function () {
+
+        }
+    });
+}
+
+// const Sales = (() => {
+//     const thisSales = {};
+//     let barchart;
+//     let piechart;
+//     let dateFrom;
+//     let dateTo;
+
+
+//     thisSales.searchClick = (filter_by) => {
+//         // let dateFrom;
+//         // let dateTo;
+//         if(filter_by == 'Daily') {
+//             let txt_date = $('#date_daily').val();
+//             if(txt_date == '') {
+//                 alert("date should have value");
+//             } else {
+//                 dateFrom = txt_date;
+//                 dateTo = txt_date;
+//             }
+//         } else if(filter_by == 'Monthly') {
+//             let txt_date = $('#date_monthly').val();
+//             if(txt_date == '') {
+//                 alert("date should have value");
+//             } else {
+//                 dateFrom = `${txt_date}-01`;
+//                 dateTo =  `${txt_date}-31`;
+//             }
+
+//         } else if (filter_by == 'DateRange') {
+//             let date_start = $('#date_start').val();
+//             let date_end = $('#date_end').val();
+//             if(date_start == '' || date_end == '') {
+//                 alert("date should have value");
+//             } else {
+//                 dateFrom = date_start;
+//                 dateTo =  date_end;
+//             }
+//         }
+
+
+//         thisSales.getReportsData(dateFrom, dateTo);
+//         // thisSales.getReportTable(dateFrom, dateTo);
+//         thisSales.showSalesTable(dateFrom, dateTo);
+//     }
+
+    // thisSales.getReportsData = (dateFrom, dateTo) => {
+    //     const action = '?action=getReportData';
+    //     $.ajax({
+    //         type: "POST",
+    //         url: `${SALES_CONTROLLER}${action}`,
+    //         data: {
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo
+    //         },
+    //         dataType: "json",
+    //         success: function (response) {   
+    //             $('#lbl_total_sales').html(`Total Sales: ₱${parseFloat(response.total_sales).toFixed(2)}`)
+
+    //             if(barchart) {
+    //                 barchart.destroy();
+    //                 piechart.destroy();
+    //             }
+                
+
+    //             // thisSales.loadBarchart(response.labels, response.barchart_dataset)
+    //             // thisSales.loadPieChart(response.labels, response.piechart_dataset)
+    //         },
+    //         error: function () {
+
+    //         }
+    //     });
+    // }
+
+
+    // thisSales.loadBarchart = (labels, dataset) => {
+    //     var graphCanvas = $('#productSalesChart').get(0).getContext('2d')
+
+    //     var areaChartData = {
+    //         labels: labels,
+    //         datasets: [dataset]
+    //     }
+
+    //     var barChartData = $.extend(true, {}, areaChartData)
+
+    //     var barChartOptions = {
+    //         responsive: true,
+    //         scales: {
+    //             yAxes: [{
+    //                 display: true,
+    //                 ticks: {
+    //                     suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+    //                     suggestedMax: 50,    // minimum will be 0, unless there is a lower value.
+    //                     // OR //
+    //                     beginAtZero: true   // minimum value will be 0.
+    //                 }
+    //             }]
+    //         }
+    //     }
+
+    //     barchart = new Chart(graphCanvas, {
+    //         type: 'bar',
+    //         data: barChartData,
+    //         options: barChartOptions
+    //     })
+    // }
+
+    // thisSales.loadPieChart = (labels, dataset) => {
+    //     var pieChartCanvas = $('#piechart').get(0).getContext('2d')
+    //     var pieData = {
+    //         labels: labels,
+    //         datasets: [
+    //             dataset
+    //         ]
+    //     }
+    //     var pieOptions = {
+    //         maintainAspectRatio: false,
+    //         responsive: true,
+    //     }
+    //     piechart = new Chart(pieChartCanvas, {
+    //         type: 'pie',
+    //         data: pieData,
+    //         options: pieOptions
+    //     })
+    // }
+
+    // thisSales.showSalesTable = (dateFrom, dateTo) => {
+    //     const action = '?action=showReportTable';
+    //     $.ajax({
+    //         type: "POST",
+    //         url: `${SALES_CONTROLLER}${action}`,
+    //         data: {
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo
+    //         },
+    //         dataType: "json",
+    //         success: function (response) {   
+    //             $('.table').DataTable().destroy();
+    //             $('#tbody_sales').html(response);
+    //             // thisSales.export(response);
+
+    //             $('.table').DataTable();
+                
+    //         },
+    //         error: function () {
+
+    //         }
+    //     });
+    // }
+
+    // thisSales.export = () => {
+    //     const action = '?action=exportData';
+    //     $.ajax({
+    //         type: "POST",
+    //         url: `${SALES_CONTROLLER}${action}`,
+    //         data: {
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo
+    //         },
+    //         dataType: "json",
+    //         success: function (data) {   
+
+    //             var currentDate = new Date();
+    //             var formattedDate = currentDate.toLocaleDateString().replaceAll('/', '-'); // Format the date as desired
+    //             var filename = `Sales Report ${formattedDate}.csv`; // Construct the filename with the current date
+            
+    //             var csvContent = "data:text/csv;charset=utf-8,";
+    //             csvContent += Object.keys(data[0]).join(",") + "\n";
+    //             data.forEach(function (item) {
+    //                 var row = Object.values(item).join(",");
+    //                 csvContent += row + "\n";
+    //             });
+
+    //             var encodedUri = encodeURI(csvContent);
+    //             var link = document.createElement("a");
+    //             link.setAttribute("href", encodedUri);
+    //             link.setAttribute("download", filename);
+    //             link.style.display = "none";  // Hide the link element
+    //             document.body.appendChild(link);
+    //             link.click();
+    //             document.body.removeChild(link);
+    //         },
+    //         error: function () {
+
+    //         }
+    //     });
+    // }
 
     // thisSales.showSalesTable = (product_name, total_price, total_sales) => {
     //     product_name = product_name;
@@ -249,8 +397,12 @@ const Sales = (() => {
     //     });
     // }
 
-    return thisSales;
-})();;
+//     return thisSales;
+// })();
+
+btnSearchDaily.addEventListener('click', getSales);
+btnSearchMonthly.addEventListener('click', getSales);
+btnSearchRange.addEventListener('click', getSales);
 
 // Disable manual typing for the sales date
 $('#date_daily').on('keydown paste', function (e) {
