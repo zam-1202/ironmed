@@ -12,7 +12,6 @@ if(!$_SESSION['user']) {
     <?php include '../layouts/nav.php'; ?>
     <section class="section user" style="border: none;">
         <h1 class="section__title">Invoice</h1>
-       
         <div class="container-fluid section__body">
 
             <div class="invoice__filters">
@@ -93,7 +92,7 @@ if(!$_SESSION['user']) {
                         <table class="table" id="sales__table">
                             <thead>
                                 <tr>
-                                    <th>Qty</th>
+                                    <th>Quantity</th>
                                     <th>Product Name</th>
                                     <th>Price</th>
                                     <th>Action</th>

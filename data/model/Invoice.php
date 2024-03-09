@@ -58,8 +58,7 @@ class Invoice
                         'date_purchased' => $currentDateTime,
                     ];
 
-
-
+                    $originalPrice = $item['price'];
 
 
                     if ($requiredQuantity >= $remaining) {
@@ -137,11 +136,12 @@ class Invoice
             // echo '</pre>';
 
             foreach ($sales as $sale) {
-                $sql = "INSERT INTO sales (product_id, price, qty, date_purchased, invoice_id, product_detail_id) VALUES (?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO sales (product_id, original_price, price, qty, date_purchased, invoice_id, product_detail_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param(
-                    "idisii",
+                    "iidisii",
                     $sale['product_id'],
+                    $originalPrice,
                     $sale['price'],
                     $sale['qty'],
                     $sale['date_purchased'],
