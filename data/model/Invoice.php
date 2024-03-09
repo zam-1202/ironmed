@@ -289,7 +289,7 @@ class Invoice
 		i.id AS invoice_id,
         p.name,
         p.id AS product_id,
-        SUM(price) AS price,
+        FORMAT(SUM(price), 2) AS price,
         SUM(qty) AS qty,
         sales.void
         FROM `sales` 
