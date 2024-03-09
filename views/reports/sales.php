@@ -35,25 +35,26 @@ else if($_SESSION['user']['role'] === 3) {
                                     <div class="invoice__filters__group invoice__filters__daily ">
                                         <label for="" class="invoice__filters__daily__label">Date</label>
                                         <input type="date" id="date_daily" class="invoice__filters__daily__input">
-                                        <button class="invoice__filters__daily__button" onclick="Sales.searchClick('Daily')">Search</button>
+                                        <button class="invoice__filters__daily__button">Search</button>
                                     
                                     </div>
                                     <div class="invoice__filters__group invoice__filters__daily hidden">
                                         <label for="" class="invoice__filters__monthly__label">Month/Year</label>
                                         <input type="month" id="date_monthly" class="invoice__filters__monthly__input">
-                                        <button class="invoice__filters__monthly__button" onclick="Sales.searchClick('Monthly')">Search</button>
+                                        <button class="invoice__filters__monthly__button">Search</button>
                                     </div>
                                     <div class="invoice__filters__group invoice__filters__range hidden">
                                         <label for="" class="invoice__filters__range__label">Start Date</label>
                                         <input type="date" id="date_start" class="invoice__filters__monthly__input__start">
                                         <label for="" class="invoice__filters__range__label">End Date</label>
                                         <input type="date" id="date_end" class="invoice__filters__monthly__input__end">
-                                        <button class="invoice__filters__range__button" onclick="Sales.searchClick('DateRange')">Search</button>
+                                        <button class="invoice__filters__range__button">Search</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        
+                        <!-- <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <h4 id="lbl_total_sales">Total Sales</h4> 
                                 <canvas id="piechart"></canvas>
@@ -61,7 +62,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="col-lg-6 col-md-6">
                                 <canvas id="productSalesChart"></canvas>
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </div>
