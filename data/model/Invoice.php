@@ -139,7 +139,7 @@ class Invoice
                 $sql = "INSERT INTO sales (product_id, original_price, price, qty, date_purchased, invoice_id, product_detail_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param(
-                    "iidisii",
+                    "iddisii",
                     $sale['product_id'],
                     $originalPrice,
                     $sale['price'],
