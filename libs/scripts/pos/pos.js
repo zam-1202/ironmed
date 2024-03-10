@@ -52,7 +52,7 @@ $(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls
     var currentFieldValue = $(this).val();
     var initialFieldValue = initialFieldValues[this.id];
 
-    // console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
 
     if (this.id !== 'slc_status') {
         if (currentFieldValue !== initialFieldValue) {
