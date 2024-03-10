@@ -230,25 +230,42 @@ class ProductDetails
         return $result->fetch_all(MYSQLI_ASSOC);
 
     }
-    public function adjustBatchNumber($product_id)
+    // public function adjustBatchNumber($product_id)
+    // {
+    //     $sql = "SELECT id, expiration_date  from product_details WHERE product_id = $product_id and expired_status = 0 ";
+    //     $result = $this->conn->query($sql);
+
+    //     $product_details = $result->fetch_all(MYSQLI_ASSOC);
+
+    //     usort($product_details, 'date_compare');
+
+    //     $counter = 1;
+    //     foreach ($product_details as $product_detail) {
+    //         $product_details_id = $product_detail['id'];
+    //         $sql = "UPDATE product_details SET batch='$counter' WHERE id=$product_details_id";
+
+    //         $this->conn->query($sql);
+
+    //         $counter++;
+    //     }
+    // }
+
+        public function adjustBatchNumber($product_id)
     {
-        $sql = "SELECT id, expiration_date  from product_details WHERE product_id = $product_id and expired_status = 0 ";
+        $sql = "SELECT id FROM product_details WHERE product_id = $product_id AND expired_status = 0 ORDER BY date_added ASC";
         $result = $this->conn->query($sql);
 
         $product_details = $result->fetch_all(MYSQLI_ASSOC);
-
-        usort($product_details, 'date_compare');
 
         $counter = 1;
         foreach ($product_details as $product_detail) {
             $product_details_id = $product_detail['id'];
             $sql = "UPDATE product_details SET batch='$counter' WHERE id=$product_details_id";
-
             $this->conn->query($sql);
-
             $counter++;
         }
     }
+
 
     public function updateExpiredStatus()
     {
@@ -366,15 +383,6 @@ class ProductDetails
         return $result;
     }              
 
-
-    // public function searchRegisteredProduct()
-    // {
-    //     $sql = "SELECT name AS product_name, barcode FROM products;";
-    //     $result = $this->conn->query($sql);
-        
-    //     $this->conn->close();
-    //     return $result->fetch_all(MYSQLI_ASSOC);
-    // }
 }
 
 function date_compare($element1, $element2) {
