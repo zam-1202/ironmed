@@ -52,7 +52,7 @@ $(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls
     var currentFieldValue = $(this).val();
     var initialFieldValue = initialFieldValues[this.id];
 
-    console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
+    // console.log('Field ID:', this.id, 'Current Value:', currentFieldValue, 'Initial Value:', initialFieldValue);
 
     if (this.id !== 'slc_status') {
         if (currentFieldValue !== initialFieldValue) {
@@ -210,25 +210,34 @@ const checkCart = () => {
 
 
 const removeItem = (barcode) => {
-    productCart = productCart.filter((item)=>{
-        if(item.barcode != barcode) return item; 
+    console.log('Removing item with barcode:', barcode);
+    
+    // Log the current state of productCart before removal
+    console.log('Product Cart before removal:', productCart);
+
+    productCart = productCart.filter((item) => {
+        if (item.barcode != barcode) return item;
     });
 
-    
+    // Log the updated state of productCart after removal
+    console.log('Product Cart after removal:', productCart);
+
     const rowClass = `.row${barcode}`;
+    console.log('Row class:', rowClass);
+
     const table = $('.table').DataTable(tableConfig);
     const rows = table
         .rows(rowClass)
         .remove()
-        .draw()
-        container = 0;
-        transaction--;
+        .draw();
+    container = 0;
+    transaction--;
 
-        posForm.reset();
-        updateFooterVisibility();
-        updateGrandTotal();
-        checkCart();
+    updateFooterVisibility();
+    updateGrandTotal();
+    checkCart();
 }
+
 
 
 const validateAdminPassword = () => {
