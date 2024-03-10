@@ -221,7 +221,7 @@ const removeItem = (barcode) => {
         .rows(rowClass)
         .remove()
         .draw()
-        container--;
+        container = 0;
         transaction--;
 
         updateFooterVisibility();
