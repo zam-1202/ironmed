@@ -224,6 +224,7 @@ const removeItem = (barcode) => {
         container = 0;
         transaction--;
 
+        posForm.reset();
         updateFooterVisibility();
         updateGrandTotal();
         checkCart();
