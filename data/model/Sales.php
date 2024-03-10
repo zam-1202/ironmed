@@ -87,6 +87,62 @@ class Sales
         return $result->fetch_all(MYSQLI_ASSOC);
     }
     
+    public function ExportDaily($date)
+    {
+
+        $sql = "SELECT sales.*,
+        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
+        sales.date_purchased, invoices.number, products.name,
+        sales.qty, sales.original_price, invoices.total_purchase
+        FROM sales
+        JOIN invoices ON invoices.id = sales.invoice_id
+        JOIN users ON users.id = invoices.user_id
+        JOIN products ON products.id = sales.product_id
+        WHERE DATE(sales.date_purchased) = '$date'
+        AND (sales.void = 0 OR sales.void IS NULL)
+        ORDER BY sales.date_purchased";
+        $result = $this->conn->query($sql);
+    
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function ExportMonthly($date)
+    {
+        $sql = "SELECT sales.*,
+        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
+        sales.date_purchased, invoices.number, products.name,
+        sales.qty, sales.original_price, invoices.total_purchase
+        FROM sales
+        JOIN invoices ON invoices.id = sales.invoice_id
+        JOIN users ON users.id = invoices.user_id
+        JOIN products ON products.id = sales.product_id
+        WHERE DATE(invoices.date_transact) = '$date'
+        AND (sales.void = 0 OR sales.void IS NULL)
+        ORDER BY sales.date_purchased";
+        $result = $this->conn->query($sql);
+    
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function ExportRange($start, $end)
+    {
+        $sql = "SELECT sales.*,
+        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
+        sales.date_purchased, invoices.number, products.name,
+        sales.qty, sales.original_price, invoices.total_purchase
+        FROM sales
+        JOIN invoices ON invoices.id = sales.invoice_id
+        JOIN users ON users.id = invoices.user_id
+        JOIN products ON products.id = sales.product_id
+        WHERE  DATE(sales.date_purchased) >= '$start'
+        AND DATE(sales.date_purchased) <= '$end'";
+        $result = $this->conn->query($sql);
+    
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
     
     
 }

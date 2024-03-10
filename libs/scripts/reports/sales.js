@@ -186,6 +186,138 @@ const getSales =  () => {
     });
 }
 
+const exportDailySales = () => {
+    const selectedDate = document.getElementById('date_daily').value;
+    const filename = 'SalesReport_' + selectedDate + '.xlsx';
+    console.log('Selected Date:', selectedDate);
+    
+
+    $.ajax({
+        type: 'GET',
+        url: SALES_CONTROLLER + `?action=exportDaily&date=${selectedDate}&filename=${filename}`, // Pass the filename in the URL
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            if (response && response.filename) {
+
+                var filename = response.filename;
+                var fileUrl = SALES_CONTROLLER + '?action=download&filename=' + filename;
+
+
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', filename);
+
+
+                document.body.appendChild(link);
+                link.click();
+
+
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+               Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
+        }
+    });
+}
+
+const exportMonthlySales = () => {
+    const selectedMonth = document.getElementById('date_monthly').value;
+    const filename = 'SalesReport_' + selectedMonth + '.xlsx';
+    console.log('Selected Month:', selectedMonth);
+    
+
+    $.ajax({
+        type: 'GET',
+        url: SALES_CONTROLLER + `?action=exportMonthly&yearmonth=${selectedMonth}&filename=${filename}`,
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            if (response && response.filename) {
+
+                var filename = response.filename;
+                var fileUrl = SALES_CONTROLLER + '?action=download&filename=' + filename;
+
+
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', filename);
+
+
+                document.body.appendChild(link);
+                link.click();
+
+
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+               Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
+        }
+    });
+}
+
+const exportRangeSales = () => {
+    const startDate = document.getElementById('date_start').value;
+    const endDate = document.getElementById('date_end').value;
+    const filename = 'SalesReport_' + startDate + '_' + endDate + '.xlsx';
+    console.log('Selected Range:', startDate + '_' + endDate);
+
+    $.ajax({
+        type: 'GET',
+        url: SALES_CONTROLLER + `?action=exportRange&startDate=${inpSearchRangeStart.value}&endDate=${inpSearchRangeEnd.value}&filename=${filename}`,
+        dataType: 'json',
+        cache: false,
+        success: (response) => {
+            if (response && response.filename) {
+                var fileUrl = SALES_CONTROLLER + '?action=download&filename=' + response.filename;
+                var link = document.createElement('a');
+                link.href = fileUrl;
+                link.setAttribute('download', response.filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (response && response.message === 'No data available') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'No data available',
+                    showConfirmButton: true,
+                });
+            } else {
+                swal("Error", "An unexpected error occurred.", "error");
+            }
+        },
+        error: (xhr, status, error) => {
+            console.error(error);
+            swal("Error", "An unexpected error occurred.", "error");
+        }
+    });
+}
+
+
+
 // const Sales = (() => {
 //     const thisSales = {};
 //     let barchart;
@@ -403,6 +535,11 @@ const getSales =  () => {
 btnSearchDaily.addEventListener('click', getSales);
 btnSearchMonthly.addEventListener('click', getSales);
 btnSearchRange.addEventListener('click', getSales);
+
+btnExportRange.addEventListener('click', exportDailySales);
+btnExportMonthly.addEventListener('click', exportMonthlySales);
+btnYearRange.addEventListener('click', exportRangeSales);
+
 
 // Disable manual typing for the sales date
 $('#date_daily').on('keydown paste', function (e) {

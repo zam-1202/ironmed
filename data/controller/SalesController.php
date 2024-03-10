@@ -6,6 +6,7 @@ include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/Invoice.php');
 include_once('../model/Sales.php');
+include_once('../model/ExportSales.php');
 
 
 $action = $_GET['action'];
@@ -92,6 +93,93 @@ else if ($action === 'searchDaily') {
     } else {
         echo json_encode('No selected date');
     }
+
+} else if ($action == "exportDaily") {
+    if (isset($_GET['date'])) {
+        $date = $_GET['date'];
+
+        $sales = $Sales->ExportDaily($date);
+
+        if ($sales) {
+            $data = [];
+            foreach ($sales as $sale) {
+                    $data[] = [
+                        'Issued By' => $sale['users_name'],
+                        'Transaction Date' => $sale['date_purchased'],
+                        'Invoice Number' => $sale['number'],
+                        'Product Name' => $sale['name'],
+                        'Quantity' => $sale['qty'],
+                        'Selling Price' => $sale['original_price'],
+                        'Total Purchase' => $sale['total_purchase'],
+                    ];
+            }
+
+            $filename = ExportSales($data);
+            echo json_encode(['filename' => $filename]);
+        } else {
+            echo json_encode(['message' => 'No data available']);
+        }
+    } else {
+        echo json_encode('No date provided');
+    }
+
+} else if ($action == "exportMonthly") {
+        if (isset($_GET['yearmonth'])) {
+            $yearmonth = explode('-', $_GET['yearmonth']);
+            $sales = $Sales->searchMonthly($yearmonth);
+
+            if ($sales) {
+                $data = [];
+                foreach ($sales as $sale) {
+                        $data[] = [
+                            'Issued By' => $sale['users_name'],
+                            'Transaction Date' => $sale['date_purchased'],
+                            'Invoice Number' => $sale['number'],
+                            'Product Name' => $sale['name'],
+                            'Quantity' => $sale['qty'],
+                            'Selling Price' => $sale['original_price'],
+                            'Total Purchase' => $sale['total_purchase'],
+                        ];
+                }
+    
+                $filename = ExportSales($data);
+                echo json_encode(['filename' => $filename]);
+            } else {
+                echo json_encode(['message' => 'No data available']);
+            }
+        } else {
+            echo json_encode('No selected date');
+        }
+
+} else if ($action == "exportRange") {
+        if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+            $start = $_GET['startDate'];
+            $end = $_GET['endDate'];
+    
+            $sales = $Sales->ExportRange($start, $end);
+    
+            if ($sales) {
+                $data = [];
+                foreach ($sales as $sale) {
+                    $data[] = [
+                        'Issued By' => $sale['users_name'],
+                        'Transaction Date' => $sale['date_purchased'],
+                        'Invoice Number' => $sale['number'],
+                        'Product Name' => $sale['name'],
+                        'Quantity' => $sale['qty'],
+                        'Selling Price' => $sale['original_price'],
+                        'Total Purchase' => $sale['total_purchase'],
+                    ];
+                }
+    
+                $filename = ExportSales($data);
+                echo json_encode(['filename' => $filename]);
+            } else {
+                echo json_encode(['message' => 'No data available']);
+            }
+        } else {
+            echo json_encode('No selected date');
+        }
 
 } else if ($action === 'showReportTable'){
     $dateFrom = date('Y-m-d', strtotime($_POST['dateFrom']));
