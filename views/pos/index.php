@@ -77,6 +77,7 @@ if(!$_SESSION['user']) {
                                 <th>Category</th>
                                 <th>Type</th>
                                 <th>Expiry Date</th>
+                                <th>Batch No.</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Amount</th>
@@ -87,7 +88,7 @@ if(!$_SESSION['user']) {
                         </tbody>
                         <tfoot>
                                     <tr>
-                                    <td id="grandTotalName" class="pos__grand__total" colspan="7"></td>
+                                    <td id="grandTotalName" class="pos__grand__total" colspan="8"></td>
                                         <td id="grandTotalName" class="pos__grand__total" >Grand Total</td>
                                         <td id="grandTotalCell" class="pos__grand__total" step="0.01">₱ 0.00</td>
                                     </tr>
