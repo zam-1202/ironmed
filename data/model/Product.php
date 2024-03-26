@@ -175,10 +175,11 @@ class Product
 
     public function getAvailableProductByBarcodeRegister($barcode){
     $sql = "SELECT
-    p.barcode, p.name AS product_name, p.sale_price, p.type, p.status, p.category_id,
+    p.barcode, p.name AS product_name, pd.batch, p.sale_price, p.type, p.status, p.category_id,
     c.id, c.name AS category_name
     FROM products p
     JOIN categories c ON c.id = p.category_id
+    JOIN product_details pd ON pd.product_id = p.id
     WHERE p.barcode = '$barcode'";
     $result = $this->conn->query($sql);
 
@@ -195,7 +196,8 @@ class Product
         INNER JOIN product_details pd ON pd.product_id = p.id
         INNER JOIN categories c ON c.id = p.category_id
         AND barcode = $barcode
-        ORDER BY batch ASC";
+        GROUP BY pd.batch
+        ORDER BY expiration_date ASC";
         $result = $this->conn->query($sql);
 
         return $result->fetch_all(MYSQLI_ASSOC);

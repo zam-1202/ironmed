@@ -142,51 +142,9 @@ const checkSalesToday = () => {
     });
 }
 
-// const getBarcode =  () => {
-
-//     let actionURL;
-
-//     if(select.value == 0){
-//         if(inpSearchDaily.value == ''){
-//             inpSearchDaily.classList.add('error');
-//         }
-//         else{
-//             inpSearchDaily.classList.remove('error');
-//             actionURL = `?action=searchDaily&date=${inpSearchDaily.value}`;
-//         }
-
-//     }
-// }
-
-// const openModal = (id) => {
-//     $('#myModal').modal('show');
-//     $.ajax({
-//         type:'get',
-//         url: INVOICE_CONTROLLER + `?action=voidCart=${id}`,
-//         dataType: 'json',
-//         cache:false,
-//         success: (data) =>{
-//             console.log(data);
-//             let tbody = '';
-
-//             data.forEach(item => {
-//                 tbody += `<tr>
-//                 <td>
-//                     <button class="invoice__modal__void" onclick="confirmVoidCart(${product.barcode}">Void</button>
-//                 </td>
-//             </tr>`;
-//             });
-
-//             $('#sales__table').DataTable().destroy();
-//             $('#sales__table tbody').html(tbody);
-//             $('#sales__table').DataTable();
-//         }
-//     })
-// }
-
 const checkCart = () => {
     console.log('Number of items in the cart:', productCart.length);
-    console.log('Container:', container);
+    // console.log('Container:', container);
     if (productCart.length === 0) {
         // console.log('Cart is empty. Disabling checkout.');
         btnCheckout.style.backgroundColor = "#808080";
@@ -208,28 +166,6 @@ const checkCart = () => {
     }
 };
 
-
-const removeItem = (barcode) => {
-    productCart = productCart.filter((item)=>{
-        if(item.barcode != barcode) return item; 
-    });
-
-    
-    const rowClass = `.row${barcode}`;
-    const table = $('.table').DataTable(tableConfig);
-    const rows = table
-        .rows(rowClass)
-        .remove()
-        .draw()
-        container = 0;
-        transaction--;
-
-        updateFooterVisibility();
-        updateGrandTotal();
-        checkCart();
-}
-
-
 const validateAdminPassword = () => {
  var barcode = $('#modal_confirmpassword').data('barcode');
     $.ajax({
@@ -248,7 +184,7 @@ const validateAdminPassword = () => {
                     title: 'Voided successfully',
                     showConfirmButton: true,
                 })
-                removeItem(barcode)
+                removeItem(batch)
                 $('#modal_confirmpassword').modal('hide');
             }
             else {
@@ -265,35 +201,85 @@ const validateAdminPassword = () => {
     inpAdminPassword.value = "";
 }
 
-const confirmVoidCart = (barcode) => {
-    barcode = barcode;
-    if(SessionRole.value == 3) {
+const confirmVoidCart = (batch, barcode) => {
+    console.log('Batch:', batch);
+    console.log('Barcode:', barcode);
+
+    if (SessionRole.value == 3) {
+        $('#modal_confirmpassword').data('batch', batch);
         $('#modal_confirmpassword').data('barcode', barcode);
         $('#modal_confirmpassword').modal('show');
-    } 
-    else {
-        console.log('Product Cart before removal:', productCart.length);
-        removeItem(barcode);
-        console.log('Product Cart after removal:', productCart.length);
-        checkCart();
+    } else {
+        removeItem(batch, barcode);
     }
 }
 
-const voidCart = (barcode) => {
-        $.ajax({
-            type: 'GET',
-            url: INVOICE_CONTROLLER + `?action=voidCart`,
-            // type: 'DELETE',
-            data:{
-                barcode:barcode,
-            },
-            dataType: 'json',
-            cache: false,
-            success: (data) => {
-                console.log(data);
-            }
-        });
+
+const removeItem = (batch, barcode) => {
+    productCart = productCart.filter((item) => {
+        return item.batch !== batch || item.barcode !== barcode;
+    });
+
+    const rowClass = `.row${batch}-${barcode}`;
+    const table = $('.table').DataTable(tableConfig);
+
+    // Detach event listeners before removing the row
+    $('.btn-remove', rowClass).off('click');
+
+    table.rows(rowClass).remove().draw(); // Redraw the DataTable
+
+    // Reattach event listeners after removing the row
+    $('.btn-remove').on('click', function() {
+        const batch = $(this).data('batch');
+        const barcode = $(this).data('barcode');
+        confirmVoidCart(batch, barcode);
+    });
+
+    container--;
+    transaction--;
+
+    // updateFooterVisibility();
+    updateGrandTotal();
+    checkCart();
 }
+
+
+
+// const removeItem = (batch) => {
+//     productCart = productCart.filter((item) => {
+//         return item.batch !== batch;
+//     });
+
+//     const rowClass = `.row${batch}`;
+//     const table = $('.table').DataTable(tableConfig);
+
+//     table.rows(rowClass).remove().draw(); // Redraw the DataTable
+
+//     container--;
+//     transaction--;
+
+//     updateFooterVisibility();
+//     updateGrandTotal();
+//     checkCart();
+// }
+
+
+
+// const voidCart = (barcode) => {
+//         $.ajax({
+//             type: 'GET',
+//             url: INVOICE_CONTROLLER + `?action=voidCart`,
+//             // type: 'DELETE',
+//             data:{
+//                 barcode:barcode,
+//             },
+//             dataType: 'json',
+//             cache: false,
+//             success: (data) => {
+//                 console.log(data);
+//             }
+//         });
+// }
 
 
 const closeModal = (modal) =>{
@@ -575,12 +561,17 @@ btnCart.addEventListener('click', (e) => {
         dataType: 'json',
         cache: false,
         success: data => {
+            
             let totalAvailableQuantity = data.reduce((accumulator, product) => {
                 return accumulator + parseInt(product.quantity);
             }, 0);
 
-            if (data.length > 0 && totalAvailableQuantity >= requiredQuantity) {
-                const exist = productCart.find(el => el.barcode === data[0].barcode);
+            let totalQuantityInCart = productCart.reduce((accumulator, item) => {
+                return accumulator + item.quantity;
+            }, 0);
+
+                if (data.length > 0 && totalAvailableQuantity >= totalQuantityInCart + requiredQuantity) {
+                const exist = productCart.find(el => el.barcode === data[0].barcode && el.batch === data[0].batch);
                 if (exist) {
                     Swal.fire({
                         title: `${data[0].product_name}`,
@@ -593,18 +584,9 @@ btnCart.addEventListener('click', (e) => {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             exist.quantity += requiredQuantity;
-                            //Just for checking in console
-                            productCart.forEach(item => {
-                            const totalItemPrice = parseInt(item.quantity) * parseFloat(item.price);
-                            // console.log('Grand Total:', totalItemPrice);
-                        });
-                            // console.log('Item quantity updated:', exist);
-                            
-
                             const updatedAmount = exist.quantity * exist.price;
-                            const existingRow = $(`#pos__table tbody .row${exist.barcode}`);
+                            const existingRow = $(`#pos__table tbody .row${exist.batch}-${exist.barcode}`);
 
-                            // Update the quantity cell in the DataTable
                             if (existingRow.length > 0) {
                                 existingRow.find('.p-quantity').text(exist.quantity);
                                 existingRow.find('.p-amount').text(updatedAmount.toFixed(2));
@@ -621,13 +603,12 @@ btnCart.addEventListener('click', (e) => {
                                 }
                             });
                         
-                            // Destroy and reinitialize DataTable
                             $('.table').DataTable().destroy();
                             $('#pos__table').DataTable(tableConfig);
                             container++;
                             checkCart();
                             transaction ++;
-                            checkDiscount()
+                            checkDiscount();
                             posForm.reset();
                             updateGrandTotal();
                         } else {
@@ -637,6 +618,7 @@ btnCart.addEventListener('click', (e) => {
                 } else {
                     const item = {
                         barcode: data[0].barcode,
+                        batch: data[0].batch,
                         name: data[0].product_name,
                         price: data[0].sale_price,
                         quantity: requiredQuantity,
@@ -675,17 +657,22 @@ btnCart.addEventListener('click', (e) => {
                         
                         const typeValue = product.type ? product.type : '-';
                         const amount = product.sale_price * availableQuantity;
-                        const rowClass = `rowClass row${product.barcode}`;
+                        // const rowClass = `rowClass row${product.batch}`;
+                        const rowClass = `rowClass row${product.batch}-${product.barcode}`;
+
                         
                         row += `<tr class="${rowClass}">
                             <td>
-                                <button class="btn-remove" onclick="confirmVoidCart(${product.barcode})">&#10008;</button>
+
+                                <button class="btn-remove" onclick="confirmVoidCart('${product.batch}', '${product.barcode}')">&#10008;</button>
+
                             </td>
                             <td>${product.barcode}</td>
                             <td>${product.product_name}</td>
                             <td>${product.category_name}</td>
                             <td class="p-type">${typeValue}</td> <!-- Display hyphen if type is empty -->
                             <td>${product.expiration_date}</td>
+                            <td>${product.batch}</td>
                             <td class="p-price">${product.sale_price}</td>
                             <td class="p-quantity">${availableQuantity}</td>
                             <td class="p-amount">${amount.toFixed(2)}</td>
@@ -699,12 +686,30 @@ btnCart.addEventListener('click', (e) => {
                 $('.table').DataTable(tableConfig);
                 container ++
                 transaction ++
-                checkDiscount()
+                checkDiscount();
                 posForm.reset();
                 updateGrandTotal();
                 checkCart();
                 }
-            } else if (totalAvailableQuantity < requiredQuantity && totalAvailableQuantity != 0) {
+            
+            } else if (totalAvailableQuantity == totalQuantityInCart) {
+                    posQuantity.classList.add('error');
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Insufficient stock',
+                        html: `${data[0].product_name} <br>
+                        We only have 0 items left for this product`,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            posQuantity.classList.remove('error');
+                            inpBarcode.value = '';
+                            inpProduct.value = '';
+                            posQuantity.value = '';
+                            unsavedChanges = false;
+                        }
+                    });
+            } else if (totalAvailableQuantity < requiredQuantity + totalQuantityInCart && totalAvailableQuantity != 0) {
                 posQuantity.classList.add('error');
                 Swal.fire({
                     icon: 'info',
@@ -758,16 +763,6 @@ btnCart.addEventListener('click', (e) => {
         }
     });
 });
-
-
-
-// inpCustomer.addEventListener('click',()=>{
-//     inpCustomerError.classList.remove('show');
-// });
-
-// inpCustomerNumber.addEventListener('click',()=>{
-//     inpCustomerError.classList.remove('show');
-// });
 
 btnConfirm.addEventListener('click',()=>{
     

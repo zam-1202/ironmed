@@ -250,13 +250,13 @@ class ProductDetails
     //     }
     // }
 
-        public function adjustBatchNumber($product_id)
+    public function adjustBatchNumber($product_id)
     {
         $sql = "SELECT id FROM product_details WHERE product_id = $product_id AND expired_status = 0 ORDER BY date_added ASC";
         $result = $this->conn->query($sql);
-
+    
         $product_details = $result->fetch_all(MYSQLI_ASSOC);
-
+    
         $counter = 1;
         foreach ($product_details as $product_detail) {
             $product_details_id = $product_detail['id'];
@@ -265,6 +265,8 @@ class ProductDetails
             $counter++;
         }
     }
+    
+    
 
 
     public function updateExpiredStatus()
