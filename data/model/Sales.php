@@ -33,7 +33,7 @@ class Sales
         $sql = "SELECT sales.*,
                        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
                        sales.date_purchased, invoices.number, products.name,
-                       sales.qty, sales.original_price, invoices.total_purchase
+                       sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
                 FROM sales
                 JOIN invoices ON invoices.id = sales.invoice_id
                 JOIN users ON users.id = invoices.user_id
@@ -52,7 +52,7 @@ class Sales
         $sql = "SELECT sales.*,
                        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
                        sales.date_purchased, invoices.number, products.name,
-                       sales.qty, sales.original_price, invoices.total_purchase
+                       sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
                 FROM sales
                 JOIN invoices ON invoices.id = sales.invoice_id
                 JOIN users ON users.id = invoices.user_id
@@ -72,7 +72,7 @@ class Sales
         $sql = "SELECT sales.*,
                        CONCAT(users.first_name, ' ', users.last_name) AS users_name,
                        sales.date_purchased, invoices.number, products.name,
-                       sales.qty, sales.original_price, invoices.total_purchase
+                       sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
                 FROM sales
                 JOIN invoices ON invoices.id = sales.invoice_id
                 JOIN users ON users.id = invoices.user_id
@@ -93,7 +93,7 @@ class Sales
         $sql = "SELECT sales.*,
         CONCAT(users.first_name, ' ', users.last_name) AS users_name,
         sales.date_purchased, invoices.number, products.name,
-        sales.qty, sales.original_price, invoices.total_purchase
+        sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
         FROM sales
         JOIN invoices ON invoices.id = sales.invoice_id
         JOIN users ON users.id = invoices.user_id
@@ -112,7 +112,7 @@ class Sales
         $sql = "SELECT sales.*,
         CONCAT(users.first_name, ' ', users.last_name) AS users_name,
         sales.date_purchased, invoices.number, products.name,
-        sales.qty, sales.original_price, invoices.total_purchase
+        sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
         FROM sales
         JOIN invoices ON invoices.id = sales.invoice_id
         JOIN users ON users.id = invoices.user_id
@@ -131,7 +131,7 @@ class Sales
         $sql = "SELECT sales.*,
         CONCAT(users.first_name, ' ', users.last_name) AS users_name,
         sales.date_purchased, invoices.number, products.name,
-        sales.qty, sales.original_price, invoices.total_purchase
+        sales.qty, sales.original_price, (sales.qty * sales.original_price) AS indiv_total_purchase
         FROM sales
         JOIN invoices ON invoices.id = sales.invoice_id
         JOIN users ON users.id = invoices.user_id

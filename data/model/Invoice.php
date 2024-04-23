@@ -58,7 +58,7 @@ class Invoice
                         'date_purchased' => $currentDateTime,
                     ];
 
-                    $originalPrice = $item['price'];
+                    
 
 
                     if ($requiredQuantity >= $remaining) {
@@ -73,6 +73,10 @@ class Invoice
 
                     //
                     $productPrice = $sale['qty'] * $item['price'];
+                    $originalPrice = $item['price'];
+                    $indiv_total_purchase =  $originalPrice * $sale['qty'];
+
+
                     if ($discounted === 'discounted') {
                         if ($item['product_type'] === 'branded') {
                             $productPrice = $productPrice - ($productPrice * 0.08);
@@ -86,6 +90,11 @@ class Invoice
 
                     $sale['product_id'] = $item['product_id'];
                     $sale['price'] = $productPrice;
+
+
+                    // $productPrice = $sale['original_price'] * $item['price'];
+                    $sale['original_price'] = $originalPrice;
+                    $sale['indiv_total_purchase'] = $indiv_total_purchase;
 
 
 
@@ -136,14 +145,16 @@ class Invoice
             // echo '</pre>';
 
             foreach ($sales as $sale) {
-                $sql = "INSERT INTO sales (product_id, original_price, price, qty, date_purchased, invoice_id, product_detail_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO sales (product_id, original_price, price, qty, indiv_total_purchase, date_purchased, invoice_id, product_detail_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param(
-                    "iddisii",
+                    "iddiisii",
                     $sale['product_id'],
-                    $originalPrice,
+                    // $originalPrice,
+                    $sale['original_price'],
                     $sale['price'],
                     $sale['qty'],
+                    $sale['indiv_total_purchase'],
                     $sale['date_purchased'],
                     $last_invoice_id,
                     $sale['product_detail_id']
