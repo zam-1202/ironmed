@@ -103,10 +103,10 @@ class Invoice
             }
 
 
-
+            $user_id = $_SESSION['user']['id'];
             $invoice_data = [
                 'number' => date('YmdHis'),
-                'user_id' => 1,
+                'user_id' => $user_id,
                 'date_transact' => $currentDateTime,
                 'total_items' => count($data),
                 'total_purchase' => $totalPrice
