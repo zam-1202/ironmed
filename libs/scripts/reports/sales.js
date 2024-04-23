@@ -129,7 +129,7 @@ const getSales =  () => {
                 <td>${sale.name}</td>
                 <td>${sale.qty}</td>
                 <td>${sale.original_price}</td>
-                <td>${sale.total_purchase}</td>
+                <td>${sale.indiv_total_purchase}</td>
             </tr>`;
             });
 

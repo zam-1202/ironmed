@@ -110,7 +110,7 @@ else if ($action === 'searchDaily') {
                         'Product Name' => $sale['name'],
                         'Quantity' => $sale['qty'],
                         'Selling Price' => $sale['original_price'],
-                        'Total Purchase' => $sale['total_purchase'],
+                        'Total Purchase' => $sale['indiv_total_purchase'],
                     ];
             }
 
