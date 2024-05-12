@@ -30,7 +30,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
-                                        <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick="Product.fileinfo()"></i>
+                                        <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick="Product.clickFileInfo()"></i>
                                     </span>
                                 </div>
                                 <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
@@ -130,4 +130,5 @@ else if($_SESSION['user']['role'] === 3) {
 </body>
 <script src="../../libs/scripts/master-page/register-products.js" ></script>
 <script src="../../libs/scripts/pos/session_timer.js"></script>
+
 </html>

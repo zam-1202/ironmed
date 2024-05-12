@@ -36,7 +36,13 @@ $(document).on('input', ':input:not(.dataTables_filter input):not([aria-controls
     }
 });
 
-
+function fileinfo() {
+    return Swal.fire({
+        icon: 'info',
+        title: 'File Guidelines',
+        text: 'You can only upload files with the extensions xlsx, xls, and csv',
+    });
+}
 
 function showLeaveConfirmation() {
     return Swal.fire({
@@ -175,6 +181,13 @@ const Product = (() => {
             resetFormFields();
         }
     };
+
+    thisProduct.clickFileInfo = () => {
+        fileinfo().then(() => {
+            console.log('File info clicked');
+        });
+    };
+    
     
 
     thisProduct.resetFields = () => {
@@ -283,6 +296,36 @@ const Product = (() => {
             })
         }     
     };
+
+    thisProduct.importExcelFile = () => {
+        var formData = new FormData();
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+    
+        formData.append('file', file);
+    
+        $.ajax({
+            type: 'POST',
+            url: PRODUCT_CONTROLLER + "?action=importExcel",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // Handle success response
+                console.log('Import successful:', response);
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error('Error occurred during import:', error);
+            }
+        });
+    }
+
+
+    // $(document).on('click', '#inputGroupFileAddon04', function() {
+    //     importExcelFile();
+    // });
+    
 
     return thisProduct;
 })();
