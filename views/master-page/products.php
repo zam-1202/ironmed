@@ -17,7 +17,7 @@ if(!$_SESSION['user']) {
         <div class="col-lg-11 col-md-11 mx-auto">
             <div class="user__table-wrapper">
                 <h2 class="form-wrapper mb-4">List of Products</h2>
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-2">
                             <button class="btn btn-dropdown-export dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Export</button>

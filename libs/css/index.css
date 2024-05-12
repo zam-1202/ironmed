@@ -75,9 +75,15 @@ nav {
   color: #fff !important;
 }
 
+.btn-import{
+  background-color: #2cafa8;
+  width: 150px;
+  padding: 4px 4px;
+}
+
 .btn-dropdown-export{
   background-color: #2cafa8;
-  width: 160px;
+  width: 150px;
   padding: 4px 4px;
 }
 
@@ -85,8 +91,9 @@ nav {
 .btn-dropdown-export.dropdown-toggle:focus,
 .btn-dropdown-export.dropdown-toggle:active {
     color: white;
-    background-color: #2cafa8; /* Change to your desired background color */
-    border-color: #2cafa8; /* Change border color if needed */
+    background-color: #2cafa8;
+    border-color: #2cafa8;
+    /* margin-left: -50px; */
 }
 
 label {
