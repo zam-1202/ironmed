@@ -30,7 +30,7 @@ else if($_SESSION['user']['role'] === 3) {
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
-                                        <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick="fileinfo()"></i>
+                                        <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick=fileinfo();></i>
                                     </span>
                                 </div>
                                 <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
