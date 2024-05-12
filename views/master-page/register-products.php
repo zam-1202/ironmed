@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<?php include '../layouts/head.php' ?>
+<?php include '../layouts/head.php'?>
 
 <?php 
 if(!$_SESSION['user']) {
@@ -11,6 +11,7 @@ if(!$_SESSION['user']) {
 else if($_SESSION['user']['role'] === 3) {
     header("Location: home.php"); 
 }
+
 ?>
 
 <body>
@@ -22,8 +23,19 @@ else if($_SESSION['user']['role'] === 3) {
             <div class="row">
                 <div class="col-lg-6 col-md-12 ">
                     <div class="product__table-wrapper">
-                    <h2 class="section__sub-title" id="txt_title">Register Products</h2>
+                    <h2 class="form-wrapper" id="txt_title">Register Products</h2>
+                    
+                <div class="box" style="margin-top: 20px; margin-bottom: 20px;" >
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                        <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
+                            <button type="submit" name = "import-excel" value="Import" class="btn btn-main " onclick="Product.importExcelFile()" id="inputGroupFileAddon04">Upload</button>
+                        </div>        
+                        <p class="error"><?php if(!empty($msg)){echo $msg; } ?></p>   
+                    </form>    
+                </div>
 
+                
                         <div class="form-wrapper">
                             <form class="row g-3">
                                 <div class="col-md-12">
