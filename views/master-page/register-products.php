@@ -25,15 +25,20 @@ else if($_SESSION['user']['role'] === 3) {
                     <div class="product__table-wrapper">
                     <h2 class="form-wrapper" id="txt_title">Register Products</h2>
                     
-                <div class="box" style="margin-top: 20px; margin-bottom: 20px;" >
-                    <form method="post" enctype="multipart/form-data">
-                        <div class="input-group mb-3">
-                        <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
-                            <button type="submit" name = "import-excel" value="Import" class="btn btn-main " onclick="Product.importExcelFile()" id="inputGroupFileAddon04">Upload</button>
-                        </div>        
-                        <p class="error"><?php if(!empty($msg)){echo $msg; } ?></p>   
-                    </form>    
-                </div>
+                    <div class="box" style="margin-top: 20px; margin-bottom: 20px;">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick="fileinfo()"></i>
+                                    </span>
+                                </div>
+                                <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
+                                <button type="submit" name="import-excel" value="Import" class="btn btn-main" onclick="Product.importExcelFile()" id="inputGroupFileAddon04">Upload</button>
+                            </div>        
+                                 <p class="error"><?php if(!empty($msg)){echo $msg; } ?></p>   
+                        </form>    
+                    </div>
 
                 
                         <div class="form-wrapper">
@@ -125,5 +130,8 @@ else if($_SESSION['user']['role'] === 3) {
 </body>
 <script src="../../libs/scripts/master-page/register-products.js" ></script>
 <script src="../../libs/scripts/pos/session_timer.js"></script>
-
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+</svg> -->
 </html>
