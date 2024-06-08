@@ -298,9 +298,38 @@ const Product = (() => {
     };
 
     thisProduct.importExcelFile = () => {
+        // Prevent default form submission behavior
+        event.preventDefault();
+    
         var formData = new FormData();
         var fileInput = document.getElementById('fileInput');
         var file = fileInput.files[0];
+    
+        // Check if no file is selected
+        if (!file) {
+            // Display SweetAlert for empty file upload
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty',
+                text: 'Please select a file to upload',
+                confirmButtonText: 'OK'
+            });
+            return; // Exit the function early if no file is selected
+        }
+    
+        // Check if the file extension is not xls, xlsx, or csv
+        var allowedExtensions = ['xls', 'xlsx', 'csv'];
+        var fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(fileExtension)) {
+            // Display SweetAlert for invalid file extension
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File',
+                text: 'Please upload a file with the extension .xls, .xlsx, or .csv',
+                confirmButtonText: 'OK'
+            });
+            return; // Exit the function early if file extension is invalid
+        }
     
         formData.append('file', file);
     
@@ -311,15 +340,32 @@ const Product = (() => {
             contentType: false,
             processData: false,
             success: function(response) {
-                // Handle success response
-                console.log('Import successful:', response);
-            },
-            error: function(xhr, status, error) {
+             // Reset the file input
+             fileInput.value = '';
+             // Handle success response
+             console.log('Import successful:', response);
+             // Display success message
+             Swal.fire({
+                 position: 'center',
+                 icon: 'success',
+                 title: 'Data imported successfully',
+                 showConfirmButton: true,
+             });
+        },
+            error: function(response) {
                 // Handle error response
-                console.error('Error occurred during import:', error);
+                console.error('Error occurred during import:', response);
+                // Display SweetAlert for invalid file
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File',
+                    text: 'An error occurred during file upload. Please try again later.',
+                    confirmButtonText: 'OK'
+                });
             }
         });
-    }
+    };
+     
 
 
     // $(document).on('click', '#inputGroupFileAddon04', function() {

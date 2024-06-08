@@ -6,12 +6,14 @@ include_once('../model/Product.php');
 include_once('../model/ProductDetails.php');
 include_once('../model/TCPDF.php');
 include_once('../model/XLSX.php');
+include_once('../model/Import.php');
 
 $action = $_GET['action'];
 $Category = new Category($conn);
 $Product = new Product($conn);
 $ProductDetails = new ProductDetails($conn);
 $TCPDF = new PDF($conn);
+$ExcelImporter = new ExcelImporter($conn);
 // $XLSX = new EXCEL($conn);
 
 if(isset($_GET['barcode'])){
@@ -739,3 +741,48 @@ else if ($action == 'getFilteredProductTableByType') {
 
     echo json_encode($table_data);
 }
+
+// else if ($action == 'importExcel') {
+//     if(isset($_FILES['file'])) {
+//         $import_result = $ExcelImporter->importData($_FILES['file']);
+
+
+//         if($import_result) {
+//             // Import successful
+//             echo json_encode(array('success' => true, 'message' => 'Excel data imported successfully.'));
+//         } else {
+//             // Import failed
+//             echo json_encode(array('success' => false, 'message' => 'Failed to import Excel data.'));
+//         }
+//     } else {
+//         // No file uploaded
+//         echo json_encode(array('success' => false, 'message' => 'No file uploaded.'));
+//     }
+// }
+
+else if ($action == 'importExcel') {
+    if(isset($_FILES['file'])) {
+        $allowed_extensions = array('xlsx', 'xls', 'csv');
+        $file_extension = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        
+        if (in_array($file_extension, $allowed_extensions)) {
+            $import_result = $ExcelImporter->importData($_FILES['file']);
+    
+            if($import_result) {
+                // Import successful
+                echo json_encode(array('success' => true, 'message' => 'Excel data imported successfully.'));
+            } else {
+                // Import failed
+                echo json_encode(array('success' => false, 'message' => 'Failed to import Excel data.'));
+            }
+        } else {
+            // Invalid file format
+            echo json_encode(array('success' => false, 'message' => 'Invalid file format. Please upload a valid Excel file.'));
+        }
+    } else {
+        // No file uploaded
+        echo json_encode(array('success' => false, 'message' => 'No file uploaded.'));
+    }
+}
+
+
