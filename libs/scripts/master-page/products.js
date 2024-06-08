@@ -434,6 +434,52 @@ const Product = (() => {
         Product.loadFilteredTableData();
     }
 
+    $(document).ready(function(){
+        $('#upload_csv').on('submit', function(event){
+            event.preventDefault();
+            $.ajax({
+                url:"fetch.php",
+                method:"POST",
+                data:new FormData(this),
+                dataType:"json",
+                contentType:false,
+                cache:false,
+                processData:false,
+                success:function(jsonData)
+                {
+                    {
+                        var html = '<table class="table table-striped table-bordered">';
+                        if(data.column)
+                        {
+                         html += '<tr>';
+                         for(var count = 0; count < data.column.length; count++)
+                         {
+                          html += '<th>'+data.column[count]+'</th>';
+                         }
+                         html += '</tr>';
+                        }
+                    
+                        if(data.row_data)
+                        {
+                         for(var count = 0; count < data.row_data.length; count++)
+                         {
+                          html += '<tr>';
+                          html += '<td class="student_name">'+data.row_data[count].student_name+'</td>';
+                          html += '<td class="student_phone">'+data.row_data[count].student_phone+'</td></tr>';
+                         }
+                        }
+                        html += '<table>';
+                        html += '<div align="center"><button type="button" id="import_data" class="btn btn-success">Import</button></div>';
+                    
+                        $('#csv_file_data').html(html);
+                        $('#upload_csv')[0].reset();
+                       }
+
+                }
+            })
+        });
+    });
+
 
     return thisProduct;
 })();
