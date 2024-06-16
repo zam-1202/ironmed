@@ -33,7 +33,7 @@ else if($_SESSION['user']['role'] === 3) {
                                         <i class="bi bi-info-circle" title="You can only upload files with the extensions xlsx, xls, and csv" style="font-size: 1rem; cursor: pointer;" onclick="Product.clickFileInfo()"></i>
                                     </span>
                                 </div>
-                                <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" />
+                                <input type="file" name="excel-file" required data-parslet-type="file" data-parsley-trigger="keyup" class="form-control" id="fileInput" style="color: #2cafa8;" accept=".xlsx, .xls, .csv" />
                                 <button type="submit" name="import-excel" value="Import" class="btn btn-main" onclick="Product.importExcelFile()" id="inputGroupFileAddon04">Upload</button>
                             </div>        
                                  <p class="error"><?php if(!empty($msg)){echo $msg; } ?></p>   
