@@ -227,10 +227,9 @@ class Product
         $this->conn->close();
         return $result->fetch_assoc();
     }
-
+    
     public function updateOverstock()
     {
-        // $quantity = "SELECT quantity FROM product_details INNER JOIN products p ON p.id = quantity";
 
         $sql = "UPDATE products 
                 LEFT JOIN (
@@ -240,15 +239,20 @@ class Product
                 ) AS pd ON pd.product_id = products.id
                 SET stock_status = 3
                 WHERE pd.total_quantity > max_stock;";
-        
         $this->conn->query($sql);
 
-        $sql = "SELECT count(*) as total_oversupply FROM products WHERE stock_status = 3";
-       
+        $sql = "SELECT name as total_oversupply
+        FROM products
+        WHERE stock_status = 3";
         $result = $this->conn->query($sql);
-        $count = $result->fetch_assoc();
 
-        $_SESSION['alert']['overStock'] = $count['total_oversupply'];
+        $total_oversupply = [];
+        while ($row = $result->fetch_assoc()) {
+            $total_oversupply[] = $row;
+        }
+
+        $_SESSION['alert']['overStock'] =count($total_oversupply);
+        $_SESSION['total_oversupply'] = $total_oversupply;
         
         // $this->conn->close();
     }

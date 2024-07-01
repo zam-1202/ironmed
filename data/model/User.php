@@ -278,7 +278,8 @@ class User
     
             $_SESSION['user'] = [
                 'id' => $id,
-                'fullname' => $first_name . ' ' . $last_name,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
                 'role' => $role,
                 'username' => $username,
                 'email' => $email,

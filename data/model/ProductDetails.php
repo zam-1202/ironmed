@@ -267,25 +267,50 @@ class ProductDetails
     }
     
     
-
-
     public function updateExpiredStatus()
     {
         $date_today = date("Y-m-d");
-
+        
+        // Update expired_status for products that have expired today
         $sql = "UPDATE product_details SET expired_status = 1 WHERE expiration_date <= '$date_today' AND designation = 0";
-        
         $this->conn->query($sql);
-
-        $sql = "SELECT count(*) as total_expired FROM product_details WHERE expired_status = 1 AND expiration_date <= '$date_today'";
-       
-        $result = $this->conn->query($sql);
-        $count = $result->fetch_assoc();
-
-        $_SESSION['alert']['expiredToday'] = $count['total_expired'];
         
-        // $this->conn->close();
+        // Select details of products that are expired today and include product name
+        $sql = "SELECT pd.*, p.name AS product_name 
+                FROM product_details pd
+                JOIN products p ON pd.product_id = p.id
+                WHERE pd.expired_status = 1 AND pd.expiration_date <= '$date_today'";
+        $result = $this->conn->query($sql);
+        
+        $expired_products = [];
+        while ($row = $result->fetch_assoc()) {
+            $expired_products[] = $row;
+        }
+        
+        $_SESSION['alert']['expiredToday'] = count($expired_products);
+        $_SESSION['expired_products'] = $expired_products;
     }
+    
+    
+
+    // public function updateExpiredStatus()
+    // {
+    //     $date_today = date("Y-m-d");
+
+    //     $sql = "UPDATE product_details SET expired_status = 1 WHERE expiration_date <= '$date_today' AND designation = 0";
+        
+    //     $this->conn->query($sql);
+
+    //     $sql = "SELECT count(*) as total_expired FROM product_details WHERE expired_status = 1 AND expiration_date <= '$date_today'";
+       
+    //     $result = $this->conn->query($sql);
+    //     $count = $result->fetch_assoc();
+
+    //     $_SESSION['alert']['expiredToday'] = $count['total_expired'];
+        
+    //     // $this->conn->close();
+    // }
+
     public function updateNearExpiration()
     {
         $date_ahead = date('Y-m-d', strtotime('+7 days'));
