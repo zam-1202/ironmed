@@ -1881,3 +1881,204 @@ table thead {
 .custom-icon {
   color: white; /* Change the color of the icon */
 }
+
+/* Custom Dropdown */
+.custom-dropdown.notify-drop {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px; 
+  padding: 10px;
+  z-index: 1000;
+  width: 400px;
+  right: 0;
+  border-radius: 6px;
+}
+
+/* Notification Dropdown Content Styles */
+.custom-dropdown.notify-drop .drop-content {
+  max-height: 300px; /* Limit the height and make it scrollable */
+  overflow-y: auto;
+}
+
+.custom-dropdown.notify-drop .drop-content::-webkit-scrollbar-track {
+  background-color: #2dafa9;
+}
+
+.custom-dropdown.notify-drop .drop-content::-webkit-scrollbar {
+  width: 8px;
+  background-color: #e9e9e9;
+}
+
+.custom-dropdown.notify-drop .drop-content::-webkit-scrollbar-thumb {
+  background-color: #bdbdbd;
+}
+
+/* .custom-dropdown.notify-drop .drop-content > li {
+  border-bottom: 1px solid #c2c2c2;
+  padding: 10px 0px;
+} */
+
+/* .custom-dropdown.notify-drop .drop-content > li:nth-child(2n+0) {
+  background-color: #2dafa9;
+} */
+
+.custom-dropdown.notify-drop .drop-content > li .notify-img {
+  float: left;
+  display: inline-block;
+  width: 45px;
+  height: 20px;
+  margin: 0px 0px 8px 0px;
+  position: relative;
+  z-index: 1;
+}
+
+
+.notify-drop-footer {
+  color: black;
+  background-color: #dfdfdf;
+  border-radius: 6px;
+}
+
+.notify-drop-footer:hover {
+  background-color: #2dafa9;
+  opacity: 1;
+}
+
+.notify-drop-footer:hover a {
+  color: white;
+}
+
+
+.notify-drop-footer a {
+  color: black;
+  text-decoration: none;
+}
+
+.icon-black {
+  color: black;
+}
+
+/* TEXT IN NOTIFICATION */
+
+.product-name {
+  font-size: 12px;
+  background-color: #e7e7e7;
+  color: #333;
+  height: 40px;
+  line-height: 10px;
+  padding: 10px 0;
+  position: relative;
+  border-radius: 6px;
+  margin-bottom: -19px;
+}
+
+.product-name:hover {
+  background-color: #f3f3f3;
+  height: 40px;
+  opacity: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.icon-black {
+  color: black;
+  position: absolute;
+  top: 50%; /* Align vertically */
+  transform: translateY(-50%); /* Center vertically */
+  right: 10px; /* Adjust to place it at the right side */
+  z-index: 1000;
+}
+
+.notify-drop-title {
+  position: relative;
+}
+
+.mark-read-btn {
+  color: #969696;
+  background-color: transparent !important;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+/* Optional: Adjust the hover/focus styles as needed */
+.mark-read-btn:hover,
+.mark-read-btn:focus {
+  background-color: transparent !important;
+  outline: none;
+}
+
+.mark-read-btn:hover {
+  color: #2dafa9;
+}
+
+
+.col-md-2.text-right .bi.bi-x-circle-fill.icon-black:hover {
+  color: #2dafa9;
+}
+
+
+.custom-dropdown.notify-drop .drop-content > li .notify-img img {
+  width: 20px;
+}
+
+.custom-dropdown.notify-drop .drop-content > li .col-md-9, 
+.custom-dropdown.notify-drop .drop-content > li .col-sm-9, 
+.custom-dropdown.notify-drop .drop-content > li .col-xs-9 {
+  font-size: 11px; /* Set the default text size for the product name and message */
+}
+
+.custom-dropdown.notify-drop .drop-content > li .col-md-9 .rIcon, 
+.custom-dropdown.notify-drop .drop-content > li .col-sm-9 .rIcon, 
+.custom-dropdown.notify-drop .drop-content > li .col-xs-9 .rIcon {
+  font-size: 12px; /* Set the text size for the read icon link */
+}
+
+.custom-dropdown.notify-drop .drop-content > li .col-md-9 .time, 
+.custom-dropdown.notify-drop .drop-content > li .col-sm-9 .time, 
+.custom-dropdown.notify-drop .drop-content > li .col-xs-9 .time {
+  font-size: 10px; /* Set the text size for the read status text */
+}
+
+.custom-dropdown.notify-drop .drop-content > li {
+  padding: 10px 0; /* Adjust the padding if necessary */
+}
+
+.custom-dropdown.notify-drop .drop-content > li .notify-img {
+  margin: 0 10px 8px 0; /* Adjust the margin if necessary */
+}
+
+/* User Button */
+.dropdown-content {
+  position: absolute;
+  right: 0;
+  background-color: #2dafa9;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  text-decoration: none;
+  display: block;
+}
+
+.username-display {
+  cursor: default; /* Use default cursor for the username */
+  color: white; /* Set initial text color to white */
+  user-select: none; /* Disable text selection */
+}
+
+.username-display:hover {
+  background-color: transparent;
+}
+
+.username-display:hover + .dropdown-content {
+  display: block;
+}
