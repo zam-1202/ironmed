@@ -189,7 +189,7 @@ const Admin = (() => {
         const numbersRegex = /\d/;
         const first_name = $('#txt_first_name').val().trim();
         const last_name = $('#txt_last_name').val().trim();
-        const username = $('#txt_user_name').val();
+        const username = $('#txt_user_name').val().trim();
         const email = $('#txt_email').val();
         const newpassword = $('#txt_adminnewpassword').val();
         const confirm_password = $('#txt_adminconfirm_password').val();
@@ -226,6 +226,18 @@ const Admin = (() => {
                 showConfirmButton: true,
             });
             registerButton.prop('disabled', true);
+        } else if (/  /.test(username) || username.startsWith(' ') || username.endsWith(' ')) {
+                txtFirstName.addClass('red-input').removeClass('green-input');
+                mes.innerHTML = "Username contains multiple spaces";
+                mes.style.color = 'red';
+                btnUpdatePassword.disabled = true;
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Please enter a valid username',
+                    showConfirmButton: true,
+                });
+                registerButton.prop('disabled', true);            
         } else if (specialCharsRegex.test(first_name)) {
             Swal.fire({
                 position: 'center',
@@ -571,7 +583,7 @@ const Admin = (() => {
         const numbersRegex = /\d/;
         let first_name = $('#txt_first_name').val().trim();
         let last_name = $('#txt_last_name').val().trim();
-        let username = $('#txt_user_name').val();
+        let username = $('#txt_user_name').val().trim();
         let email = $('#txt_email').val();
         let newpassword = $('#txt_adminnewpassword').val();
         let confirm_password = $('#txt_adminconfirm_password').val();
